@@ -5,11 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
 import styles from "./Footer.module.scss";
-import { footerContent } from "@/resources/content";
-import { footerStyles } from "@/resources/styles-config";
+import {footerContent} from "@/resources/content";
+import {footerStyles} from "@/resources/styles-config";
 import {SmartLinkProps} from "@/types/smart-link";
-import {media} from "@/resources/media";
-import {FaApplePay, FaCcAmex, FaCcMastercard, FaCcVisa, FaFacebookF, FaGooglePay, FaInstagram, FaLinkedinIn, FaTwitter} from "react-icons/fa";
+import visa from "@/assets/cards/visa.png";
+import mastercard from "@/assets/cards/mastercard.png";
+import {
+    FaInstagram,
+    FaLinkedinIn,
+} from "react-icons/fa";
 
 const SmartLink: React.FC<SmartLinkProps> = ({
                                                  href,
@@ -43,23 +47,23 @@ const SmartLink: React.FC<SmartLinkProps> = ({
 };
 
 const Footer: React.FC = () => {
-    const { logo, columns, contact, socials, legal } = footerContent;
-
-    const LegalAddress = () =>
-        Array.isArray(legal?.addressLines) && legal.addressLines.length ? (
-            <address className={styles["footer__legal-address"]}>
-                {legal.addressLines.map((line: string) => (
-                    <div key={line}>{line}</div>
-                ))}
-            </address>
-        ) : null;
+    const {logo, columns, contact, socials, legal} = footerContent;
 
     const PaymentMethods = () => (
         <div className={styles["footer__payments"]}>
-            <div className={styles["footer__column-title"]}>Payment Methods</div>
             <div className={styles.paymentsContent}>
-                <FaCcVisa className={styles.paymentIcon} />
-                <FaCcMastercard className={styles.paymentIcon} />
+                <Image
+                    src={visa}
+                    alt="Visa"
+                    placeholder="blur"
+                    className={styles.paymentIcon}
+                />
+                <Image
+                    src={mastercard}
+                    alt="Mastercard"
+                    placeholder="blur"
+                    className={styles.paymentIcon}
+                />
             </div>
         </div>
     );
@@ -86,7 +90,11 @@ const Footer: React.FC = () => {
                         <a href={`tel:${contact.phone}`}>{contact.phone}</a>
                     </div>
                 )}
-                <LegalAddress />
+                {contact.address && (
+                    <div className={styles["footer__contact-item"]}>
+                        <p>{contact.address}</p>
+                    </div>
+                )}
             </div>
         ) : null;
 
@@ -171,27 +179,17 @@ const Footer: React.FC = () => {
 
                         {legal && (
                             <div className={styles["footer__column"]}>
-                                <LegalBlock />
+                                <LegalBlock/>
                             </div>
                         )}
-
-                        <PaymentMethods />
 
                         {/* 🔹 Колонка соцмереж */}
                         <div className={styles["footer__column"]}>
                             <div className={styles["footer__column-title"]}>Follow Us</div>
                             <div className={styles["footer__socials"]}>
-                                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className={styles["footer__social-link"]}>
-                                    <FaFacebookF />
-                                </a>
-                                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className={styles["footer__social-link"]}>
-                                    <FaInstagram />
-                                </a>
-                                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className={styles["footer__social-link"]}>
-                                    <FaLinkedinIn />
-                                </a>
-                                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className={styles["footer__social-link"]}>
-                                    <FaTwitter />
+                                <a href="https://www.instagram.com/foconta.uk" target="_blank" rel="noopener noreferrer"
+                                   aria-label="Instagram" className={styles["footer__social-link"]}>
+                                    <FaInstagram/>
                                 </a>
                             </div>
                         </div>
@@ -208,7 +206,7 @@ const Footer: React.FC = () => {
                             width={0}
                             height={0}
                             sizes="120px"
-                            style={{ width: "var(--footer-logo-w)", height: "var(--footer-logo-h)" }}
+                            style={{width: "var(--footer-logo-w)", height: "var(--footer-logo-h)"}}
                         />
                     </SmartLink>
                     <nav className={styles["footer__center-links"]}>
@@ -224,9 +222,8 @@ const Footer: React.FC = () => {
                         {contact.phone && <a href={`tel:${contact.phone}`}>{contact.phone}</a>}
                     </div>
                     <div className={styles["footer__center-legal"]}>
-                        <LegalBlock />
+                        <LegalBlock/>
                     </div>
-                    <PaymentMethods />
                 </div>
             )}
 
@@ -240,7 +237,7 @@ const Footer: React.FC = () => {
                                 width={0}
                                 height={0}
                                 sizes="120px"
-                                style={{ width: "var(--footer-logo-w)", height: "var(--footer-logo-h)" }}
+                                style={{width: "var(--footer-logo-w)", height: "var(--footer-logo-h)"}}
                             />
                         </SmartLink>
                     </div>
@@ -260,10 +257,9 @@ const Footer: React.FC = () => {
                         {legal && (
                             <div className={styles["footer__mega-col"]}>
                                 <div className={styles["footer__column-title"]}>Company</div>
-                                <LegalBlock />
+                                <LegalBlock/>
                             </div>
                         )}
-                        <PaymentMethods />
                     </div>
                 </div>
             )}
@@ -280,7 +276,7 @@ const Footer: React.FC = () => {
                                     width={200}
                                     height={0}
                                     sizes="120px"
-                                    style={{ width: "var(--footer-logo-w)", height: "var(--footer-logo-h)" }}
+                                    style={{width: "var(--footer-logo-w)", height: "var(--footer-logo-h)"}}
                                 />
                             </SmartLink>
                         </div>
@@ -298,9 +294,6 @@ const Footer: React.FC = () => {
                             {contact.email && <a href={`mailto:${contact.email}`}>{contact.email}</a>}
                             {contact.phone && <a href={`tel:${contact.phone}`}>{contact.phone}</a>}
                         </div>
-
-                        {/* Payments */}
-                        <PaymentMethods/>
                     </div>
 
                     {/* Нижня частина */}
@@ -317,10 +310,9 @@ const Footer: React.FC = () => {
             )}
 
 
-
-
             <div className={styles["footer__rights"]}>
                 © {new Date().getFullYear()} All rights reserved.
+                <PaymentMethods/>
             </div>
         </footer>
     );
