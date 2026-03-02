@@ -14,27 +14,33 @@ export default function BalanceCard() {
 
     return (
         <section className={styles.balanceCard}>
-            <div className={styles.header}>
-                <GiTwoCoins className={styles.icon} />
-                <div>
-                    <h3>Token Balance</h3>
-                    <p>{user?.tokens ?? 0}<span> TOK</span></p>
+            <div>
+                <div className={styles.header}>
+                    <GiTwoCoins className={styles.icon} />
+                    <div>
+                        <h3>Token Balance</h3>
+                        <p>{user?.tokens ?? 0}<span> TOK</span></p>
+                    </div>
+                </div>
+
+                <div className={styles.actions}>
+                    <Link href="/pricing" className={styles.link}>
+                        <ButtonUI
+                            variant="solid"
+                            color="primary"
+                            size="lg"
+                            hoverEffect="none"
+                        >
+                            Add Tokens
+                        </ButtonUI>
+                    </Link>
+                    <LogoutButton/>
                 </div>
             </div>
 
-            <div className={styles.actions}>
-                <Link href="/pricing" className={styles.link}>
-                    <ButtonUI
-                        variant="solid"
-                        color="primary"
-                        size="lg"
-                        hoverEffect="lift"
-                    >
-                        Add Tokens
-                    </ButtonUI>
-                </Link>
-                <LogoutButton icon={<FaSignOutAlt />} />
-            </div>
+            <Link href="/dashboard">
+                <ButtonUI text="Create My Plan"/>
+            </Link>
         </section>
     );
 }

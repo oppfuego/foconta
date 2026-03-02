@@ -12,28 +12,34 @@ import styles from "./ManualGenerator.module.scss";
 import { useAlert } from "@/context/AlertContext";
 import { useUser } from "@/context/UserContext";
 
-const BASE_COST = 40;
+// ✅ New pricing
+const BASE_COST_BY_PLAN: Record<"ai" | "reviewed", number> = {
+    ai: 1500,       // AI generation
+    reviewed: 5000, // Human-written / reviewed
+};
 
+// ✅ Updated language add-on (was 5, scaled up ~187.5 -> rounded)
 const LANGUAGES = [
     { value: "English", label: "English (default)", cost: 0 },
-    { value: "Ukrainian", label: "Українська", cost: 5 },
-    { value: "German", label: "Deutsch", cost: 5 },
-    { value: "French", label: "Français", cost: 5 },
-    { value: "Spanish", label: "Español", cost: 5 },
+    { value: "Ukrainian", label: "Українська", cost: 200 },
+    { value: "German", label: "Deutsch", cost: 200 },
+    { value: "French", label: "Français", cost: 200 },
+    { value: "Spanish", label: "Español", cost: 200 },
 ];
 
+// ✅ Updated extras (scaled from old costs by ~37.5 and rounded)
 const EXTRAS = [
-    { name: "marketingStrategy", label: "Marketing Strategy", cost: 10 },
-    { name: "financialProjection", label: "3-Year Financial Forecast", cost: 15 },
-    { name: "riskAnalysis", label: "Risk & Mitigation Plan", cost: 8 },
-    { name: "growthRoadmap", label: "Growth Roadmap", cost: 10 },
-    { name: "competitorReview", label: "Competitor Analysis", cost: 7 },
-    { name: "pitchDeck", label: "Investor Pitch Deck", cost: 15 },
-    { name: "brandingGuide", label: "Branding & Visual Identity", cost: 12 },
-    { name: "teamStructure", label: "Organizational Structure", cost: 8 },
-    { name: "customerJourney", label: "Customer Journey Map", cost: 10 },
-    { name: "salesForecast", label: "Sales Forecast", cost: 12 },
-    { name: "fundingPlan", label: "Funding Strategy", cost: 9 },
+    { name: "marketingStrategy", label: "Marketing Strategy", cost: 400 },         // 10 -> 375 -> 400
+    { name: "financialProjection", label: "3-Year Financial Forecast", cost: 600 },// 15 -> 562.5 -> 600
+    { name: "riskAnalysis", label: "Risk & Mitigation Plan", cost: 300 },          // 8 -> 300
+    { name: "growthRoadmap", label: "Growth Roadmap", cost: 400 },                 // 10 -> 375 -> 400
+    { name: "competitorReview", label: "Competitor Analysis", cost: 275 },         // 7 -> 262.5 -> 275
+    { name: "pitchDeck", label: "Investor Pitch Deck", cost: 600 },                // 15 -> 562.5 -> 600
+    { name: "brandingGuide", label: "Branding & Visual Identity", cost: 450 },     // 12 -> 450
+    { name: "teamStructure", label: "Organizational Structure", cost: 300 },       // 8 -> 300
+    { name: "customerJourney", label: "Customer Journey Map", cost: 400 },         // 10 -> 375 -> 400
+    { name: "salesForecast", label: "Sales Forecast", cost: 450 },                 // 12 -> 450
+    { name: "fundingPlan", label: "Funding Strategy", cost: 350 },                 // 9 -> 337.5 -> 350
 ];
 
 const schema = Yup.object().shape({
@@ -110,6 +116,17 @@ const BusinessGeneratorForm = () => {
     const handleNext = () => setStep((s) => Math.min(5, s + 1));
     const handlePrev = () => setStep((s) => Math.max(1, s - 1));
 
+    const calcExtraCost = (extras: string[]) =>
+        extras.reduce((sum, name) => {
+            const e = EXTRAS.find((o) => o.name === name);
+            return sum + (e?.cost || 0);
+        }, 0);
+
+    const calcLanguageCost = (language: string) => {
+        const l = LANGUAGES.find((x) => x.value === language);
+        return l?.cost || 0;
+    };
+
     return (
         <Formik<FormValues>
             initialValues={initialValues}
@@ -117,12 +134,10 @@ const BusinessGeneratorForm = () => {
             onSubmit={async (values) => {
                 setLoading(true);
                 try {
-                    const extraCost = values.extras.reduce((s, n) => {
-                        const e = EXTRAS.find((o) => o.name === n);
-                        return s + (e?.cost || 0);
-                    }, 0);
-                    const languageCost = values.language !== "English" ? 5 : 0;
-                    const totalTokens = BASE_COST + extraCost + languageCost;
+                    const baseTokens = BASE_COST_BY_PLAN[values.planType];
+                    const extraCost = calcExtraCost(values.extras);
+                    const languageCost = calcLanguageCost(values.language);
+                    const totalTokens = baseTokens + extraCost + languageCost;
 
                     const payload = {
                         category: "business",
@@ -131,7 +146,7 @@ const BusinessGeneratorForm = () => {
                         extras: values.extras,
                         totalTokens,
                         email: user?.email,
-                        fields: { ...values }, // все в одне поле
+                        fields: { ...values },
                     };
 
                     const res = await fetch("/api/universal/create-order", {
@@ -153,12 +168,10 @@ const BusinessGeneratorForm = () => {
             }}
         >
             {({ values, setFieldValue, setValues }) => {
-                const extraCost = values.extras.reduce((s, n) => {
-                    const e = EXTRAS.find((o) => o.name === n);
-                    return s + (e?.cost || 0);
-                }, 0);
-                const languageCost = values.language !== "English" ? 5 : 0;
-                const totalTokens = BASE_COST + extraCost + languageCost;
+                const baseTokens = BASE_COST_BY_PLAN[values.planType];
+                const extraCost = calcExtraCost(values.extras);
+                const languageCost = calcLanguageCost(values.language);
+                const totalTokens = baseTokens + extraCost + languageCost;
 
                 return (
                     <Form className={styles.form}>
@@ -246,16 +259,8 @@ const BusinessGeneratorForm = () => {
                                         as={Input}
                                         placeholder="Product / Service Description"
                                     />
-                                    <Field
-                                        name="uniqueValue"
-                                        as={Input}
-                                        placeholder="Unique Value Proposition"
-                                    />
-                                    <Field
-                                        name="customerPain"
-                                        as={Input}
-                                        placeholder="Customer Pain / Problem"
-                                    />
+                                    <Field name="uniqueValue" as={Input} placeholder="Unique Value Proposition" />
+                                    <Field name="customerPain" as={Input} placeholder="Customer Pain / Problem" />
                                 </motion.div>
                             )}
 
@@ -269,11 +274,7 @@ const BusinessGeneratorForm = () => {
                                     className={styles.step}
                                 >
                                     <h3>Goal & Settings</h3>
-                                    <Field
-                                        name="goal"
-                                        as={Input}
-                                        placeholder="Main Goal (e.g. attract investors)"
-                                    />
+                                    <Field name="goal" as={Input} placeholder="Main Goal (e.g. attract investors)" />
                                     <div className={styles.row}>
                                         <div className={styles.inputGroup}>
                                             <label>Language</label>
@@ -288,14 +289,15 @@ const BusinessGeneratorForm = () => {
                                                 ))}
                                             </Select>
                                         </div>
+
                                         <div className={styles.inputGroup}>
                                             <label>Plan Type</label>
                                             <Select
                                                 value={values.planType}
-                                                onChange={(_, v) => setFieldValue("planType", v || "ai")}
+                                                onChange={(_, v) => setFieldValue("planType", (v || "ai") as FormValues["planType"])}
                                             >
-                                                <Option value="ai">AI Instant</Option>
-                                                <Option value="reviewed">Reviewed (24h)</Option>
+                                                <Option value="ai">AI Instant (1500 tokens)</Option>
+                                                <Option value="reviewed">Human-written (5000 tokens)</Option>
                                             </Select>
                                         </div>
                                     </div>
@@ -346,22 +348,12 @@ const BusinessGeneratorForm = () => {
 
                         <div className={styles.nav}>
                             {step > 1 && (
-                                <ButtonUI
-                                    type="button"
-                                    variant="outline"
-                                    color="secondary"
-                                    onClick={handlePrev}
-                                >
+                                <ButtonUI type="button" variant="outline" color="secondary" onClick={handlePrev}>
                                     ← Back
                                 </ButtonUI>
                             )}
                             {step < 5 && (
-                                <ButtonUI
-                                    type="button"
-                                    color="primary"
-                                    variant="solid"
-                                    onClick={handleNext}
-                                >
+                                <ButtonUI type="button" color="primary" variant="solid" onClick={handleNext}>
                                     Next →
                                 </ButtonUI>
                             )}
@@ -379,7 +371,7 @@ const BusinessGeneratorForm = () => {
                             transition={{ duration: 0.4 }}
                         >
                             <p>
-                                Base: {BASE_COST} | Extras: +{extraCost} | Language: +{languageCost}
+                                Base: {baseTokens} | Extras: +{extraCost} | Language: +{languageCost}
                             </p>
                             <h4>
                                 Total: <span>{totalTokens}</span> tokens
