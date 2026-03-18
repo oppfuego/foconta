@@ -1,4 +1,5 @@
 import { PageSchema } from "@/components/constructor/page-render/types";
+import {COMPANY_ADDRESS} from "@/resources/constants";
 
 const privacyPolicySchema: PageSchema = {
     meta: {
@@ -35,7 +36,7 @@ const privacyPolicySchema: PageSchema = {
             description:
                 "We respect your privacy. This Privacy Policy explains what personal data we collect, why we use it, how long we keep it, and how you can exercise your rights when using foconta.co.uk and related services (the “Service”).",
             bullets: [
-                "Controller: THE COMPANY YOU NEED LTD (Company No. 15967968), 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF (“Foconta”, “we”, “us”, “our”).",
+                `Controller: THE COMPANY YOU NEED LTD (Company No. 15967968), Academy House, ${COMPANY_ADDRESS} (“Foconta”, “we”, “us”, “our”).`,
                 "Contact: info@foconta.co.uk",
                 "Scope & age: This Policy applies to Users of the Service. The Service is intended for individuals 18+.",
             ],
@@ -210,7 +211,7 @@ const privacyPolicySchema: PageSchema = {
             title: "12. Contact & Complaints",
             bullets: [
                 "Controller: THE COMPANY YOU NEED LTD",
-                "Address: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF",
+                `Address: ${COMPANY_ADDRESS}`,
                 "Email (privacy): info@foconta.co.uk",
                 "If you are not satisfied with our response, you can lodge a complaint with the UK Information Commissioner’s Office (ICO). If you are an EU resident, you may also have the right to complain to your local supervisory authority.",
             ],

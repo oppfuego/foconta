@@ -6,6 +6,7 @@ import { signAccessToken, signRefreshToken } from "../utils/jwt";
 import { ENV } from "../config/env";
 import { Types } from "mongoose";
 import {sendEmail} from "@/backend/utils/sendEmail";
+import { normalizeRegistrationPayload, RegistrationPayload } from "@/shared/auth/registration";
 
 function parseDurationToSec(input: string): number {
     const m = input.match(/^(\d+)([smhd])?$/i);
@@ -19,18 +20,26 @@ function parseDurationToSec(input: string): number {
 const REFRESH_TTL_SEC = parseDurationToSec(ENV.REFRESH_TOKEN_EXPIRES);
 
 export const authService = {
-    async register(data: { name: string; email: string; password: string }) {
-        const existing = await User.findOne({ email: data.email.toLowerCase() });
+    async register(data: RegistrationPayload) {
+        const normalized = normalizeRegistrationPayload(data);
+        const existing = await User.findOne({ email: normalized.email });
         if (existing) throw new Error("Email already registered");
 
-        const hashed = await bcrypt.hash(data.password, 12);
-        const user = await User.create({ ...data, email: data.email.toLowerCase(), password: hashed });
+        const hashed = await bcrypt.hash(normalized.password, 12);
+        const user = await User.create({
+            ...normalized,
+            password: hashed,
+        });
         const result = await this.issueTokensAndSession(user._id, user.email, user.role, undefined, undefined);
-        await sendEmail(
-            user.email,
-            "Welcome to Averis 🎉",
-            `Hi ${user.name}, thanks for registering at Averis.`
-        );
+        try {
+            await sendEmail(
+                user.email,
+                "Welcome to Averis",
+                `Hi ${user.firstName || user.name}, thanks for registering at Averis.`
+            );
+        } catch (error) {
+            console.error("Welcome email failed:", error);
+        }
 
         return { user, ...result };
     },

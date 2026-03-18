@@ -5,6 +5,7 @@ import { transactionService } from "../services/transaction.service";
 import OpenAI from "openai";
 import { ENV } from "../config/env";
 import mongoose from "mongoose";
+import { orderEmailService } from "@/backend/services/order-email.service";
 
 const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
@@ -187,11 +188,6 @@ export const universalService = {
         if (user.tokens < totalCost)
             throw new Error(`Insufficient tokens (have ${user.tokens}, need ${totalCost})`);
 
-        // charge
-        user.tokens -= totalCost;
-        await user.save();
-        await transactionService.record(user._id, email, totalCost, "spend", user.tokens);
-
         // main generation
         const mainPrompt = buildPrompt(body);
         let mainText = "";
@@ -244,7 +240,47 @@ export const universalService = {
             readyAt,
         };
 
-        const order = await UniversalOrder.create(orderDoc);
+        user.tokens -= totalCost;
+        await user.save();
+
+        let order;
+        try {
+            order = await UniversalOrder.create(orderDoc);
+        } catch (error) {
+            user.tokens += totalCost;
+            await user.save();
+            throw error;
+        }
+
+        try {
+            await transactionService.record(user._id, email, totalCost, "spend", user.tokens);
+        } catch (error) {
+            console.error("Universal transaction logging failed:", error);
+        }
+
+        if (!order.confirmationEmailSentAt) {
+            try {
+                await orderEmailService.sendConfirmation({
+                    orderId: order._id.toString(),
+                    orderType: "Universal order",
+                    email: user.email,
+                    firstName: user.firstName,
+                    createdAt: order.createdAt,
+                    tokensUsed: totalCost,
+                    summaryLines: [
+                        `Category: ${body.category}`,
+                        `Plan type: ${body.planType}`,
+                        `Language: ${body.language || "English"}`,
+                        `Extras: ${(body.extras || []).length ? body.extras.join(", ") : "None"}`,
+                    ],
+                });
+                order.confirmationEmailSentAt = new Date();
+                await order.save();
+            } catch (error) {
+                console.error("Universal confirmation email failed:", error);
+            }
+        }
+
         return order.toObject({ flattenMaps: true });
     },
 

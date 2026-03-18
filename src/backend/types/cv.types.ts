@@ -24,6 +24,7 @@ export interface CVOrderType {
 
     response: string;
     extrasData?: Record<string, string>;
+    confirmationEmailSentAt?: Date | null;
 
     status: "pending" | "ready";
     readyAt: Date;

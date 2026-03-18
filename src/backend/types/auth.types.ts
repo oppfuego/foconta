@@ -5,6 +5,7 @@ export type AuthError =
     | { type: "UserNotFound"; message: string }
     | { type: "InvalidCredentials"; message: string }
     | { type: "EmailAlreadyRegistered"; message: string }
+    | { type: "InvalidRegistration"; message: string }
     | { type: "MissingAuthHeader"; message: string }
     | { type: "InvalidOrExpiredToken"; message: string }
     | { type: "GenericError"; message: string };
@@ -28,4 +29,3 @@ export interface TokensResponse {
     accessToken: string;
     refreshToken: string;
 }
-

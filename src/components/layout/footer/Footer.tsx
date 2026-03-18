@@ -191,6 +191,10 @@ const Footer: React.FC = () => {
                                    aria-label="Instagram" className={styles["footer__social-link"]}>
                                     <FaInstagram/>
                                 </a>
+                                <a href="https://www.linkedin.com/company/foconta/" target="_blank" rel="noopener noreferrer"
+                                   aria-label="Linkedinin" className={styles["footer__social-link"]}>
+                                    <FaLinkedinIn/>
+                                </a>
                             </div>
                         </div>
                     </div>

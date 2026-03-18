@@ -42,13 +42,6 @@ const nextConfig: NextConfig = {
     eslint: {
         ignoreDuringBuilds: true,
     },
-    typescript: {
-        ignoreBuildErrors: true,
-    },
-
-    turbo: {
-        enabled: true,
-    },
 };
 
 export default nextConfig;

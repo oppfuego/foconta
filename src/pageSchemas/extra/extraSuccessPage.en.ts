@@ -68,7 +68,7 @@ const caseStudiesSchema: PageSchema = {
                     year: "2024",
                     title: "Consultant Scales into Agency",
                     description:
-                        "A freelance strategist transformed into a 5-person consultancy after using ${COMPANY_NAME} templates to structure growth and attract B2B clients.",
+                        `A freelance strategist transformed into a 5-person consultancy after using ${COMPANY_NAME} templates to structure growth and attract B2B clients.`,
                 },
             ],
         },
@@ -143,26 +143,26 @@ const caseStudiesSchema: PageSchema = {
             title: "How We Build Successful Projects",
             steps: [
                 {
-                    title: "1. Understanding Your Idea",
+                    title: "Understanding Your Idea",
                     description: "We start with a detailed call or form to capture your business essence.",
                 },
                 {
-                    title: "2. Research & Strategy",
+                    title: "Research & Strategy",
                     description:
                         "Our analysts conduct market and competitor research to validate your vision.",
                 },
                 {
-                    title: "3. AI Draft & Expert Review",
+                    title: "AI Draft & Expert Review",
                     description:
                         "AI creates the draft; experts refine every section for clarity and investor logic.",
                 },
                 {
-                    title: "4. Feedback & Delivery",
+                    title: "Feedback & Delivery",
                     description:
                         "You receive your complete, polished business plan within 24 hours — ready to pitch.",
                 },
                 {
-                    title: "5. Ongoing Support",
+                    title: "Ongoing Support",
                     description:
                         "Need revisions or investor feedback? Our experts remain available post-delivery.",
                 },

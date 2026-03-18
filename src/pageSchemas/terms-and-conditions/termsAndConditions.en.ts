@@ -1,4 +1,5 @@
 import { PageSchema } from "@/components/constructor/page-render/types";
+import {COMPANY_ADDRESS} from "@/resources/constants";
 
 const termsSchema: PageSchema = {
     meta: {
@@ -35,7 +36,7 @@ const termsSchema: PageSchema = {
             type: "text",
             title: "1. Introduction",
             description:
-                "1.1. These Terms and Conditions (“Terms”) govern your access to and use of foconta.co.uk, our related pages, applications, and downloadable content (the “Service”), operated by THE COMPANY YOU NEED LTD (company number 15967968, registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF) (“Foconta”, “we”, “us”, “our”).\n\n1.2. By creating an account, purchasing Tokens, or generating any business plan, report, presentation, spreadsheet, PDF or other digital output through the Service, you agree to these Terms. If you do not agree, do not use the Service.",
+                `1.1. These Terms and Conditions (“Terms”) govern your access to and use of foconta.co.uk, our related pages, applications, and downloadable content (the “Service”), operated by THE COMPANY YOU NEED LTD (company number 15967968, registered office: ${COMPANY_ADDRESS}) (“Foconta”, “we”, “us”, “our”).\n\n1.2. By creating an account, purchasing Tokens, or generating any business plan, report, presentation, spreadsheet, PDF or other digital output through the Service, you agree to these Terms. If you do not agree, do not use the Service.`,
         },
 
         {
@@ -185,7 +186,7 @@ const termsSchema: PageSchema = {
             title: "21. Contact Details",
             bullets: [
                 "THE COMPANY YOU NEED LTD",
-                "Registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF",
+                `Registered office: ${COMPANY_ADDRESS}`,
                 "Company number: 15967968",
                 "Email: info@foconta.co.uk",
                 "Tel: +44 7537 166412",

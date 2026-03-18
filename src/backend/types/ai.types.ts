@@ -6,6 +6,7 @@ export interface AiOrderType {
     email: string;
     prompt: string;
     response: string;
+    confirmationEmailSentAt?: Date | null;
     createdAt: Date;
 }
 

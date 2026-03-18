@@ -1,4 +1,5 @@
 import { PageSchema } from "@/components/constructor/page-render/types";
+import {COMPANY_ADDRESS} from "@/resources/constants";
 
 const cookiePolicyEn: PageSchema = {
     meta: {
@@ -35,7 +36,7 @@ const cookiePolicyEn: PageSchema = {
             description:
                 "This Cookies Policy explains how Foconta (“we”, “us”, “our”) uses cookies and similar technologies (including localStorage, sessionStorage, pixels, and SDKs) on foconta.co.uk and related services (the “Service”). It complements our Privacy Policy. By interacting with our cookie banner or the preferences centre, you can manage consent to non-essential cookies as described below.",
             bullets: [
-                "Controller: THE COMPANY YOU NEED LTD (Company No. 15967968), 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF.",
+                `Controller: THE COMPANY YOU NEED LTD (Company No. 15967968), ${COMPANY_ADDRESS}.`,
                 "Contact: info@foconta.co.uk",
             ],
         },
@@ -126,7 +127,7 @@ const cookiePolicyEn: PageSchema = {
             title: "11. Contact",
             bullets: [
                 "Email: info@foconta.co.uk",
-                "Postal address: THE COMPANY YOU NEED LTD, 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF",
+                `Postal address: THE COMPANY YOU NEED LTD, ${COMPANY_ADDRESS}`,
             ],
         },
     ],

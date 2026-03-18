@@ -162,27 +162,27 @@ const schema: PageSchema = {
             title: "How the 24-Hour Plan Works",
             steps: [
                 {
-                    title: "1. Submit Your Idea",
+                    title: "Submit Your Idea",
                     description:
                         "Fill out a simple form about your business goals, audience, and product.",
                 },
                 {
-                    title: "2. Expert Review",
+                    title: "Expert Review",
                     description:
                         "A real business writer reviews your details and defines the best structure.",
                 },
                 {
-                    title: "3. Research & Writing",
+                    title: "Research & Writing",
                     description:
                         "We analyze your market, build forecasts, and create a tailored plan.",
                 },
                 {
-                    title: "4. Final Quality Check",
+                    title: "Final Quality Check",
                     description:
                         "Every plan is double-checked for clarity, accuracy, and investor appeal.",
                 },
                 {
-                    title: "5. Delivery in 24h",
+                    title: "Delivery in 24h",
                     description:
                         "Receive your editable, professional business plan — ready to share or pitch.",
                 },

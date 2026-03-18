@@ -5,6 +5,7 @@ export interface AiOrderDocument extends Document {
     email: string;
     prompt: string;
     response: string;
+    confirmationEmailSentAt?: Date | null;
     createdAt: Date;
 }
 
@@ -13,6 +14,7 @@ const aiOrderSchema = new Schema<AiOrderDocument>({
     email: { type: String, required: true },
     prompt: { type: String, required: true },
     response: { type: String, required: true },
+    confirmationEmailSentAt: { type: Date, default: null },
     createdAt: { type: Date, default: Date.now },
 });
 

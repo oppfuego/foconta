@@ -91,42 +91,42 @@ While AI helps speed up calculations, it’s the **human touch** that turns numb
             title: "How It Works — Your Path to a Complete Business Plan",
             steps: [
                 {
-                    title: "1. Submit Your Request",
+                    title: "Submit Your Request",
                     description:
                         "Fill out a short form describing your idea, target audience, and goals. It only takes 5 minutes to get started.",
                 },
                 {
-                    title: "2. Get Matched with a Specialist",
+                    title: "Get Matched with a Specialist",
                     description:
                         "Within 1 hour, we assign your project to an expert with experience in your industry (tech, e-commerce, manufacturing, etc.).",
                 },
                 {
-                    title: "3. Consultation & Clarification",
+                    title: "Consultation & Clarification",
                     description:
                         "Your assigned specialist may reach out to clarify details or suggest improvements before writing begins.",
                 },
                 {
-                    title: "4. AI Research Support",
+                    title: "AI Research Support",
                     description:
                         "We use AI tools to collect relevant market data, competitor benchmarks, and forecast models — saving hours of manual research.",
                 },
                 {
-                    title: "5. Expert Writing Process",
+                    title: "Expert Writing Process",
                     description:
                         "Our analyst structures your plan with clear logic, tailored tone, and proper financial projections.",
                 },
                 {
-                    title: "6. Quality Review",
+                    title: "Quality Review",
                     description:
                         "Before delivery, a senior editor reviews the plan for coherence, consistency, and investor alignment.",
                 },
                 {
-                    title: "7. Receive Your Plan Within 24 Hours",
+                    title: "Receive Your Plan Within 24 Hours",
                     description:
                         "You’ll receive your full document via email and dashboard — formatted, styled, and ready to share.",
                 },
                 {
-                    title: "8. Post-Delivery Support",
+                    title: "Post-Delivery Support",
                     description:
                         "Need adjustments or presentation help? Our team offers revisions and pitch-deck adaptation upon request.",
                 },

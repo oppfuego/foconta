@@ -1,30 +1,19 @@
 import { AlertColor } from "@mui/material/Alert";
+import {
+    buildRegistrationPayload,
+    getAllowedCountryOptions,
+    registrationInitialValues,
+    validateRegistrationValues,
+} from "@/shared/auth/registration";
 
-export const signUpInitialValues = {
-    name: "",
-    email: "",
-    password: "",
-    terms: false,
-};
+export const signUpInitialValues = registrationInitialValues;
 
-type SignUpErrors = {
-    name?: string;
-    email?: string;
-    password?: string;
-    terms?: string;
-};
+export const signUpCountryOptions = getAllowedCountryOptions().map((country) => ({
+    value: country.code,
+    label: country.name,
+}));
 
-export const signUpValidation = (values: typeof signUpInitialValues) => {
-    const errors: SignUpErrors = {};
-
-    if (!values.name) errors.name = "Required";
-    if (!values.email) errors.email = "Required";
-    if (!values.password) errors.password = "Required";
-    if (!values.terms)
-        errors.terms = "You must agree to the Terms and Conditions";
-
-    return errors;
-};
+export const signUpValidation = validateRegistrationValues;
 
 export const signUpOnSubmit = async (
     values: typeof signUpInitialValues,
@@ -33,10 +22,12 @@ export const signUpOnSubmit = async (
     router: { replace: (url: string) => void; refresh: () => void }
 ) => {
     try {
+        const payload = buildRegistrationPayload(values);
         const res = await fetch("/api/auth/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(values),
+            credentials: "include",
+            body: JSON.stringify(payload),
         });
         const data = await res.json();
 

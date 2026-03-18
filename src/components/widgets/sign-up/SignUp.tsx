@@ -7,13 +7,22 @@ import {
     signUpValidation,
     signUpInitialValues,
     signUpOnSubmit,
+    signUpCountryOptions,
 } from "@/validationSchemas/sign-up/schema";
 import FormUI from "@/components/ui/form/FormUI";
 
 export type SignUpValues = {
-    name: string;
+    firstName: string;
+    lastName: string;
+    dateOfBirth: string;
     email: string;
+    phoneNumber: string;
+    street: string;
+    city: string;
+    country: string;
+    postCode: string;
     password: string;
+    confirmPassword: string;
     terms: boolean;
 };
 
@@ -36,9 +45,23 @@ export default function SignUpPage() {
                     description="Create your account"
                     isSubmitting={isSubmitting}
                     fields={[
-                        { name: "name", type: "text", placeholder: "Name" },
-                        { name: "email", type: "email", placeholder: "Email" },
-                        { name: "password", type: "password", placeholder: "Password" },
+                        { name: "firstName", label: "First name", type: "text", placeholder: "Enter your first name" },
+                        { name: "lastName", label: "Last name", type: "text", placeholder: "Enter your last name" },
+                        { name: "dateOfBirth", label: "Date of birth", type: "date", placeholder: "Select your date of birth" },
+                        { name: "email", label: "Email", type: "email", placeholder: "Enter your email address" },
+                        { name: "phoneNumber", label: "Phone number", type: "text", placeholder: "Enter your phone number" },
+                        { name: "street", label: "Street", type: "text", placeholder: "Enter your street address" },
+                        { name: "city", label: "City", type: "text", placeholder: "Enter your city" },
+                        {
+                            name: "country",
+                            label: "Country",
+                            type: "select",
+                            placeholder: "Select your country",
+                            options: signUpCountryOptions,
+                        },
+                        { name: "postCode", label: "Post code", type: "text", placeholder: "Enter your post code" },
+                        { name: "password", label: "Password", type: "password", placeholder: "Create a password" },
+                        { name: "confirmPassword", label: "Confirm password", type: "password", placeholder: "Re-enter your password" },
                     ]}
                     submitLabel="Sign Up"
                     showTerms // ✅ додає чекбокс і блокує кнопку

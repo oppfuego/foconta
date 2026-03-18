@@ -4,10 +4,15 @@
   gap: 1.6rem;
   line-height: 1.65;
   width: 100%;
+
+  /* ✅ Один шрифт для всього блоку (заголовок теж успадкує, але ми "не трогаєм" його стилі) */
+  font-family: var(--font-family, inherit);
+
+  /* базовий колір лишаємо, але для тексту нижче явно задаємо */
   color: var(--text-primary);
 }
 
-/* 🧭 Заголовок — елегантний, середньої товщини */
+/* 🧭 Заголовок — НЕ чіпаємо (залишаємо як було) */
 .title {
   font-weight: 500;
   font-size: 2rem;
@@ -19,7 +24,6 @@
   width: 100%;
   word-break: keep-all;
 
-  /* ✨ легкий сірий акцент нижче замість біфора */
   & + .description {
     margin-top: 0.5rem;
   }
@@ -33,17 +37,24 @@
   }
 }
 
+/* ✅ Уніфікований стиль для НЕ-заголовків */
+.description,
+.bulletList li {
+  font-family: inherit;           /* один шрифт */
+  color: var(--text-secondary);   /* один колір */
+  font-weight: 400;               /* однакова товщина */
+}
+
 /* 📄 Опис */
 .description {
   font-size: 1.05rem;
-  color: var(--text-secondary);
   margin: 0;
   line-height: 1.75;
   max-width: 860px;
   width: 100%;
 }
 
-/* 🧾 Булет-список — стримані лінії */
+/* 🧾 Булет-список */
 .bulletList {
   display: flex;
   flex-direction: column;
@@ -57,10 +68,9 @@
     position: relative;
     padding-left: 1.5rem;
     font-size: 1rem;
-    color: var(--text-primary);
     line-height: 1.6;
 
-    /* ▪️ замість круга — тонка лінія-акцент */
+    /* ▪️ маркер лишаємо як є */
     &::before {
       content: "";
       position: absolute;
@@ -74,14 +84,9 @@
   }
 }
 
-/* 📋 Дескр + булети */
+/* 📋 Дескр + булети (НЕ робимо жирним і НЕ міняємо колір) */
 .descriptionWithBullets {
   margin-top: 1rem;
-
-  .description {
-    font-weight: 500;
-    color: var(--text-secondary);
-  }
 }
 
 /* 🧩 Центрування */
@@ -104,7 +109,7 @@
   }
 }
 
-/* 💼 Ховер для секцій (легкий акцент) */
+/* 💼 Ховер для заголовка — лишаємо */
 .textBlock:hover .title {
   color: var(--primary-color);
   transition: color 0.3s ease;

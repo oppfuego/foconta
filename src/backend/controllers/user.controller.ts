@@ -3,6 +3,7 @@ import { userService } from "../services/user.service";
 import { UserType } from "@/backend/types/user.types";
 import { sendEmail } from "@/backend/utils/sendEmail";
 import { transactionService } from "@/backend/services/transaction.service";
+import { toUser } from "@/backend/utils/user.mapper";
 
 export const userController = {
     async buyTokens(userId: string, amount: number): Promise<UserType> {
@@ -14,11 +15,13 @@ export const userController = {
         await transactionService.record(user._id, user.email, amount, "add", user.tokens);
         console.log("✅ Transaction created successfully");
 
-        sendEmail(
+        void sendEmail(
             user.email,
             "Tokens Purchased",
             `You have successfully purchased ${amount} tokens. Your new balance is ${user.tokens} tokens.`
-        );
+        ).catch((error) => {
+            console.error("Token purchase email failed:", error);
+        });
 
         return formatUser(user);
     },
@@ -35,24 +38,18 @@ export const userController = {
 
         await transactionService.record(user._id, user.email, amount, "spend", user.tokens);
 
-        sendEmail(
+        void sendEmail(
             user.email,
             "Tokens Spent",
             `You have spent ${amount} tokens${reason ? ` for ${reason}` : ""}. Your new balance is ${user.tokens} tokens.`
-        );
+        ).catch((error) => {
+            console.error("Token spend email failed:", error);
+        });
 
         return formatUser(user);
     },
 };
 
 function formatUser(user: any): UserType {
-    return {
-        _id: user._id.toString(),
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        tokens: user.tokens,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-    };
+    return toUser(user);
 }

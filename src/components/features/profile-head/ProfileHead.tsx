@@ -13,7 +13,7 @@ const ProfileHead = () => {
             <FaUserCircle className={styles.avatar} />
             <div className={styles.text}>
                 <h1>
-                    Welcome back
+                    Welcome back{user?.firstName ? `, ${user.firstName}` : ""}
                 </h1>
                 <p>
                     Manage your AI business tools, documents, and insights in one place.

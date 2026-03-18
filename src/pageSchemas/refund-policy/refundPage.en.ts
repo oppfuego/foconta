@@ -1,4 +1,5 @@
 import { PageSchema } from "@/components/constructor/page-render/types";
+import {COMPANY_ADDRESS} from "@/resources/constants";
 
 const refundPolicySchema: PageSchema = {
     meta: {
@@ -86,9 +87,9 @@ const refundPolicySchema: PageSchema = {
                 "For redeemed items: a description of the issue and supporting evidence (e.g., screenshots, file details);",
                 "Preferred refund method (original payment method is standard).",
                 "Upon receipt we will:",
-                "• Acknowledge within 5 business days;",
-                "• Investigate and, if needed, request additional information;",
-                "• Provide a decision and, if approved, process the refund within 5–10 business days (subject to bank/payment-provider timelines).",
+                "Acknowledge within 5 business days;",
+                "Investigate and, if needed, request additional information;",
+                "Provide a decision and, if approved, process the refund within 5–10 business days (subject to bank/payment-provider timelines).",
             ],
         },
         {
@@ -139,7 +140,7 @@ const refundPolicySchema: PageSchema = {
             title: "12. Contact Details",
             bullets: [
                 "THE COMPANY YOU NEED LTD",
-                "Registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF",
+                `Registered office: ${COMPANY_ADDRESS}`,
                 "Email (support): info@foconta.co.uk",
                 "Tel: +44 7537 166412",
                 "Accepted currencies: GBP (£), EUR (€), USD ($)",
