@@ -43,6 +43,14 @@ function buildHtml(input: OrderConfirmationInput) {
 
 export const mailService = {
     async sendOrderConfirmationEmail(input: OrderConfirmationInput) {
+        console.log("[mailService] Order confirmation requested", {
+            to: input.to,
+            subject: input.subject,
+            hasFirstName: Boolean(input.firstName),
+            detailsCount: input.details.length,
+            transactionDate: input.transactionDate?.toISOString?.() || String(input.transactionDate),
+        });
+
         const text = [
             input.firstName ? `Hi ${input.firstName},` : "Hello,",
             input.summary,
@@ -51,9 +59,18 @@ export const mailService = {
         ].join("\n");
 
         try {
-            await sendEmail(input.to, input.subject, text, buildHtml(input));
+            const result = await sendEmail(input.to, input.subject, text, buildHtml(input));
+            console.log("[mailService] Order confirmation sent", {
+                to: input.to,
+                subject: input.subject,
+                provider: result.provider,
+            });
         } catch (error) {
-            console.error("Order confirmation email failed:", error);
+            console.error("[mailService] Order confirmation email failed", {
+                to: input.to,
+                subject: input.subject,
+                error: error instanceof Error ? error.message : String(error),
+            });
         }
     },
 };

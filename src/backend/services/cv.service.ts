@@ -207,6 +207,13 @@ export const cvService = {
             status: isManager ? "pending" : "ready",
             readyAt,
         });
+        console.log("[cvService.createOrder] Success path reached", {
+            userId,
+            email: user.email,
+            orderId: orderDoc._id?.toString?.(),
+            status: orderDoc.status,
+            tokensUsed: totalCost,
+        });
 
         const order = orderDoc.toObject() as CVOrderType;
 

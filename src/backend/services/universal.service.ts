@@ -246,6 +246,14 @@ export const universalService = {
         };
 
         const order = await UniversalOrder.create(orderDoc);
+        console.log("[universalService.createOrder] Success path reached", {
+            userId,
+            email: user.email,
+            orderId: order._id?.toString?.(),
+            status: order.status,
+            tokensUsed: orderDoc.totalTokens,
+            category: orderDoc.category,
+        });
 
         await mailService.sendOrderConfirmationEmail({
             to: user.email,

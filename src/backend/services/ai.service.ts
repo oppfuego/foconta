@@ -57,6 +57,12 @@ export const aiService = {
             prompt,
             response: polishedText.trim(),
         });
+        console.log("[aiService.processPrompt] Success path reached", {
+            userId,
+            email: user.email,
+            orderId: order._id?.toString?.(),
+            tokensUsed: finalCost,
+        });
 
         await mailService.sendOrderConfirmationEmail({
             to: user.email,

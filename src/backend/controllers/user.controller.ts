@@ -13,6 +13,13 @@ export const userController = {
         console.log("💳 Adding tokens for user:", userId);
         const transaction = await transactionService.record(user._id, user.email, amount, "add", user.tokens);
         console.log("✅ Transaction created successfully");
+        console.log("[userController.buyTokens] Success path reached", {
+            userId,
+            email: user.email,
+            amount,
+            balanceAfter: user.tokens,
+            transactionId: transaction._id?.toString?.(),
+        });
 
         await mailService.sendOrderConfirmationEmail({
             to: user.email,
@@ -41,6 +48,14 @@ export const userController = {
         await user.save();
 
         const transaction = await transactionService.record(user._id, user.email, amount, "spend", user.tokens);
+        console.log("[userController.spendTokens] Success path reached", {
+            userId,
+            email: user.email,
+            amount,
+            reason: reason || null,
+            balanceAfter: user.tokens,
+            transactionId: transaction._id?.toString?.(),
+        });
 
         await mailService.sendOrderConfirmationEmail({
             to: user.email,
