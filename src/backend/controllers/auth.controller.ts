@@ -1,12 +1,12 @@
 import { connectDB } from "../config/db";
 import { authService } from "../services/auth.service";
-import { LogoutResponse } from "@/backend/types/auth.types";
+import { User } from "../models/user.model";
+import { AuthResponse, AuthError, LogoutResponse } from "@/backend/types/auth.types";
 import { UserType } from "@/backend/types/user.types";
-import { toUser } from "@/backend/utils/user.mapper";
-import { RegistrationPayload } from "@/shared/auth/registration";
+import { signAccessToken } from "../utils/jwt";
 
 export const authController = {
-    async register(body: RegistrationPayload) {
+    async register(body: { name: string; email: string; password: string }) {
         await connectDB();
         const { user, accessToken, refreshToken } = await authService.register(body);
         return { user: toUser(user), tokens: { accessToken, refreshToken } };
@@ -42,3 +42,15 @@ export const authController = {
         return { message: "All sessions revoked" };
     },
 };
+
+function toUser(u: any): UserType {
+    return {
+        _id: u._id.toString(),
+        name: u.name,
+        email: u.email,
+        role: u.role,
+        tokens: u.tokens,
+        createdAt: u.createdAt,
+        updatedAt: u.updatedAt,
+    };
+}

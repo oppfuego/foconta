@@ -2,8 +2,6 @@ import { AiOrder } from "../models/aiOrder.model";
 import { User } from "../models/user.model";
 import { ENV } from "../config/env";
 import OpenAI from "openai";
-import { orderEmailService } from "@/backend/services/order-email.service";
-import { transactionService } from "@/backend/services/transaction.service";
 
 const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
@@ -21,6 +19,9 @@ export const aiService = {
 
         const finalCost = cost ?? parseInt(ENV.AI_COST_PER_REQUEST || "30", 10);
         if (user.tokens < finalCost) throw new Error("InsufficientTokens");
+
+        user.tokens -= finalCost;
+        await user.save();
 
         let chunksCount = 1;
         for (const key in LENGTH_MAP) {
@@ -49,50 +50,12 @@ export const aiService = {
             throw new Error("OpenAIError: " + err.message);
         }
 
-        user.tokens -= finalCost;
-        await user.save();
-
-        let order;
-        try {
-            order = await AiOrder.create({
-                userId,
-                email,
-                prompt,
-                response: polishedText.trim(),
-            });
-        } catch (error) {
-            user.tokens += finalCost;
-            await user.save();
-            throw error;
-        }
-
-        try {
-            await transactionService.record(user._id, user.email, finalCost, "spend", user.tokens);
-        } catch (error) {
-            console.error("AI transaction logging failed:", error);
-        }
-
-        if (!order.confirmationEmailSentAt) {
-            try {
-                await orderEmailService.sendConfirmation({
-                    orderId: order._id.toString(),
-                    orderType: "AI order",
-                    email: user.email,
-                    firstName: user.firstName,
-                    createdAt: order.createdAt,
-                    tokensUsed: finalCost,
-                    summaryLines: [
-                        `Prompt length: ${prompt.length} characters`,
-                        `Transaction recorded against your token balance`,
-                        `Generated response created successfully`,
-                    ],
-                });
-                order.confirmationEmailSentAt = new Date();
-                await order.save();
-            } catch (error) {
-                console.error("AI confirmation email failed:", error);
-            }
-        }
+        const order = await AiOrder.create({
+            userId,
+            email,
+            prompt,
+            response: polishedText.trim(),
+        });
 
         return order;
     },

@@ -9,19 +9,14 @@ const InputUI: React.FC<FormikInputProps> = ({ formik, ...props }) => {
         const [field, meta] = useField(props.name);
         return (
             <>
-                <Input
-                    {...field}
-                    {...props}
-                    error={!!meta.error && meta.touched}
-                    sx={{ minHeight: 48, borderRadius: "12px" }}
-                />
+                <Input {...field} {...props} error={!!meta.error && meta.touched} />
                 {meta.touched && meta.error && (
                     <div style={{ color: "red", fontSize: 12 }}>{meta.error}</div>
                 )}
             </>
         );
     }
-    return <Input {...props} sx={{ minHeight: 48, borderRadius: "12px" }} />;
+    return <Input {...props} />;
 };
 
 export default InputUI;

@@ -11,17 +11,7 @@ export async function POST(req: NextRequest) {
         return res;
     } catch (e: any) {
         const msg = e?.message || "Registration error";
-        const isDuplicate = msg.includes("registered");
-        const isValidation =
-            isDuplicate ||
-            msg.includes("required") ||
-            msg.includes("valid") ||
-            msg.includes("supported") ||
-            msg.includes("match") ||
-            msg.includes("future");
-        return NextResponse.json(
-            { type: isDuplicate ? "EmailAlreadyRegistered" : "InvalidRegistration", message: msg },
-            { status: isValidation ? 400 : 500 }
-        );
+        const code = msg.includes("registered") ? 400 : 500;
+        return NextResponse.json({ type: "EmailAlreadyRegistered", message: msg }, { status: code });
     }
 }

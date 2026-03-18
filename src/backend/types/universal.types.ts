@@ -12,7 +12,6 @@ export interface UniversalOrderType {
     language?: string;
     response: string;
     extrasData: Record<string, string>;
-    confirmationEmailSentAt?: Date | null;
     status: "pending" | "ready";
     readyAt: Date;
     createdAt: Date;

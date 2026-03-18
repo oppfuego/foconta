@@ -5,7 +5,6 @@ import OpenAI from "openai";
 import { CVOrderType } from "../types/cv.types";
 import mongoose from "mongoose";
 import { transactionService } from "../services/transaction.service";
-import { orderEmailService } from "@/backend/services/order-email.service";
 
 const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
@@ -133,6 +132,23 @@ export const cvService = {
         // 🧾 Перевірка балансу
         if (user.tokens < totalCost) throw new Error("InsufficientTokens");
 
+        // 💳 Списуємо токени та записуємо транзакцію
+        user.tokens -= totalCost;
+        await user.save();
+
+        await transactionService.record(
+            user._id,
+            user.email,
+            totalCost,
+            "spend",
+            user.tokens
+        );
+
+        log("createOrder", `💸 Tokens spent & transaction recorded`, {
+            totalCost,
+            balanceAfter: user.tokens,
+        });
+
         // 🧠 Генерація CV
         const isManager = body.reviewType === "manager";
         const mainPrompt = isManager
@@ -180,67 +196,18 @@ export const cvService = {
             ? new Date(Date.now() + 60 * 1000) // тест — 1 хв
             : new Date();
 
-        user.tokens -= totalCost;
-        await user.save();
-
-        let orderDoc;
-        try {
-            orderDoc = await CVOrder.create({
-                userId: new mongoose.Types.ObjectId(userId),
-                email,
-                ...body,
-                response: mainText,
-                extrasData,
-                status: isManager ? "pending" : "ready",
-                readyAt,
-            });
-        } catch (error) {
-            user.tokens += totalCost;
-            await user.save();
-            throw error;
-        }
-
-        try {
-            await transactionService.record(
-                user._id,
-                user.email,
-                totalCost,
-                "spend",
-                user.tokens
-            );
-            log("createOrder", `💸 Tokens spent & transaction recorded`, {
-                totalCost,
-                balanceAfter: user.tokens,
-            });
-        } catch (error) {
-            log("createOrder", "Transaction logging failed", error);
-        }
+        // 💾 Створюємо CVOrder
+        const orderDoc = await CVOrder.create({
+            userId: new mongoose.Types.ObjectId(userId),
+            email,
+            ...body,
+            response: mainText,
+            extrasData,
+            status: isManager ? "pending" : "ready",
+            readyAt,
+        });
 
         const order = orderDoc.toObject() as CVOrderType;
-
-        if (!orderDoc.confirmationEmailSentAt) {
-            try {
-                await orderEmailService.sendConfirmation({
-                    orderId: orderDoc._id.toString(),
-                    orderType: "CV order",
-                    email: user.email,
-                    firstName: user.firstName,
-                    createdAt: orderDoc.createdAt,
-                    tokensUsed: totalCost,
-                    summaryLines: [
-                        `Review type: ${body.reviewType}`,
-                        `CV style: ${body.cvStyle}`,
-                        `Extras: ${(body.extras || []).length ? body.extras.join(", ") : "None"}`,
-                        `Status: ${orderDoc.status}`,
-                    ],
-                });
-                orderDoc.confirmationEmailSentAt = new Date();
-                await orderDoc.save();
-            } catch (error) {
-                log("createOrder", "Confirmation email failed", error);
-            }
-        }
-
         log("createOrder", "✅ Completed", { id: order._id, extrasKeys: Object.keys(extrasData) });
 
         return order;
