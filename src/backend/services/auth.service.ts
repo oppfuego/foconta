@@ -6,6 +6,65 @@ import { signAccessToken, signRefreshToken } from "../utils/jwt";
 import { ENV } from "../config/env";
 import { Types } from "mongoose";
 import {sendEmail} from "@/backend/utils/sendEmail";
+import { isAllowedCountry, RESTRICTED_COUNTRY_NAMES } from "@/resources/countries";
+
+type RegisterInput = {
+    firstName: string;
+    lastName: string;
+    dateOfBirth: string;
+    email: string;
+    phoneNumber: string;
+    street: string;
+    city: string;
+    country: string;
+    postCode: string;
+    password: string;
+};
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function trimRequired(value: unknown, field: string) {
+    const normalized = typeof value === "string" ? value.trim() : "";
+    if (!normalized) throw new Error(`${field} is required`);
+    return normalized;
+}
+
+function validateRegisterInput(data: RegisterInput) {
+    const firstName = trimRequired(data.firstName, "First name");
+    const lastName = trimRequired(data.lastName, "Last name");
+    const dateOfBirth = trimRequired(data.dateOfBirth, "Date of birth");
+    const email = trimRequired(data.email, "Email").toLowerCase();
+    const phoneNumber = trimRequired(data.phoneNumber, "Phone number");
+    const street = trimRequired(data.street, "Street");
+    const city = trimRequired(data.city, "City");
+    const country = trimRequired(data.country, "Country");
+    const postCode = trimRequired(data.postCode, "Post code");
+
+    if (!emailPattern.test(email)) throw new Error("Invalid email");
+    if ((data.password || "").length < 8) {
+        throw new Error("Password must be at least 8 characters");
+    }
+
+    const birthDate = new Date(dateOfBirth);
+    if (Number.isNaN(birthDate.getTime())) throw new Error("Invalid date of birth");
+    if (!isAllowedCountry(country) || RESTRICTED_COUNTRY_NAMES.has(country)) {
+        throw new Error("Selected country is not supported");
+    }
+
+    return {
+        firstName,
+        lastName,
+        name: `${firstName} ${lastName}`.trim(),
+        dateOfBirth: birthDate,
+        email,
+        phoneNumber,
+        street,
+        city,
+        country,
+        postCode,
+        password: data.password,
+    };
+}
 
 function parseDurationToSec(input: string): number {
     const m = input.match(/^(\d+)([smhd])?$/i);
@@ -19,17 +78,18 @@ function parseDurationToSec(input: string): number {
 const REFRESH_TTL_SEC = parseDurationToSec(ENV.REFRESH_TOKEN_EXPIRES);
 
 export const authService = {
-    async register(data: { name: string; email: string; password: string }) {
-        const existing = await User.findOne({ email: data.email.toLowerCase() });
+    async register(data: RegisterInput) {
+        const payload = validateRegisterInput(data);
+        const existing = await User.findOne({ email: payload.email });
         if (existing) throw new Error("Email already registered");
 
-        const hashed = await bcrypt.hash(data.password, 12);
-        const user = await User.create({ ...data, email: data.email.toLowerCase(), password: hashed });
+        const hashed = await bcrypt.hash(payload.password, 12);
+        const user = await User.create({ ...payload, password: hashed });
         const result = await this.issueTokensAndSession(user._id, user.email, user.role, undefined, undefined);
         await sendEmail(
             user.email,
             "Welcome to Averis 🎉",
-            `Hi ${user.name}, thanks for registering at Averis.`
+            `Hi ${user.firstName || user.name}, thanks for registering at Averis.`
         );
 
         return { user, ...result };
@@ -56,8 +116,7 @@ export const authService = {
 
     async issueTokensAndSession(userId: Types.ObjectId, email: string, role: string, userAgent?: string, ip?: string) {
         // refresh як рандомний токен (не JWT); у БД зберігаємо hash
-        const rawRefresh = randomToken(64);
-        const tokenHash = sha256(rawRefresh);
+        const tokenHash = sha256(randomToken(64));
 
         const expiresAt = new Date(Date.now() + REFRESH_TTL_SEC * 1000);
         const session = await RefreshSession.create({

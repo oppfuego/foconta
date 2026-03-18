@@ -4,11 +4,13 @@ import { Form, Field, ErrorMessage, useFormikContext } from "formik";
 import styles from "./FormUI.module.scss";
 import InputUI from "@/components/ui/input/InputUI";
 import ButtonUI from "@/components/ui/button/ButtonUI";
+import SelectUI from "@/components/ui/select/SelectUI";
 
 interface FieldConfig {
     name: string;
     type: string;
     placeholder?: string;
+    options?: Array<{ label: string; value: string }>;
 }
 
 interface FormUIProps {
@@ -44,10 +46,20 @@ const FormUI: React.FC<FormUIProps> = ({
                 <h2 className={styles.title}>{title}</h2>
                 {description && <p className={styles.description}>{description}</p>}
 
-                <Form className={styles.formContent}>
-                    {fields.map((field) => (
-                        <InputUI key={field.name} {...field} formik />
-                    ))}
+                    <Form className={styles.formContent}>
+                    {fields.map((field) =>
+                        field.type === "select" ? (
+                            <SelectUI
+                                key={field.name}
+                                name={field.name}
+                                options={field.options || []}
+                                placeholder={field.placeholder}
+                                formik
+                            />
+                        ) : (
+                            <InputUI key={field.name} {...field} formik />
+                        )
+                    )}
 
                     {showTerms && (
                         <div className={styles.termsBlock}>

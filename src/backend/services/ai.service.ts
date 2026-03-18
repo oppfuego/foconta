@@ -2,6 +2,7 @@ import { AiOrder } from "../models/aiOrder.model";
 import { User } from "../models/user.model";
 import { ENV } from "../config/env";
 import OpenAI from "openai";
+import { mailService } from "@/backend/services/mail.service";
 
 const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
@@ -55,6 +56,19 @@ export const aiService = {
             email,
             prompt,
             response: polishedText.trim(),
+        });
+
+        await mailService.sendOrderConfirmationEmail({
+            to: user.email,
+            firstName: user.firstName,
+            subject: "AI Order Confirmation",
+            summary: "Your AI order was completed successfully.",
+            transactionDate: order.createdAt || new Date(),
+            details: [
+                `Service: AI prompt generation`,
+                `Tokens used: ${finalCost}`,
+                `Prompt preview: ${prompt.slice(0, 120)}`,
+            ],
         });
 
         return order;

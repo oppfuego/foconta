@@ -5,6 +5,7 @@ import { transactionService } from "../services/transaction.service";
 import OpenAI from "openai";
 import { ENV } from "../config/env";
 import mongoose from "mongoose";
+import { mailService } from "../services/mail.service";
 
 const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
@@ -245,6 +246,20 @@ export const universalService = {
         };
 
         const order = await UniversalOrder.create(orderDoc);
+
+        await mailService.sendOrderConfirmationEmail({
+            to: user.email,
+            firstName: user.firstName,
+            subject: "Order Confirmation",
+            summary: "Your order was completed successfully.",
+            transactionDate: order.createdAt || new Date(),
+            details: [
+                `Service category: ${body.category}`,
+                `Plan type: ${body.planType}`,
+                `Tokens used: ${orderDoc.totalTokens}`,
+            ],
+        });
+
         return order.toObject({ flattenMaps: true });
     },
 

@@ -5,6 +5,7 @@ import OpenAI from "openai";
 import { CVOrderType } from "../types/cv.types";
 import mongoose from "mongoose";
 import { transactionService } from "../services/transaction.service";
+import { mailService } from "../services/mail.service";
 
 const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
@@ -208,6 +209,20 @@ export const cvService = {
         });
 
         const order = orderDoc.toObject() as CVOrderType;
+
+        await mailService.sendOrderConfirmationEmail({
+            to: user.email,
+            firstName: user.firstName,
+            subject: "CV Order Confirmation",
+            summary: "Your CV order was completed successfully.",
+            transactionDate: orderDoc.createdAt || new Date(),
+            details: [
+                `Service: CV ${body.reviewType === "manager" ? "manager review" : "standard generation"}`,
+                `Tokens used: ${totalCost}`,
+                `Extras: ${(body.extras || []).length ? body.extras.join(", ") : "None"}`,
+            ],
+        });
+
         log("createOrder", "✅ Completed", { id: order._id, extrasKeys: Object.keys(extrasData) });
 
         return order;

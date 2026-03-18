@@ -1,8 +1,8 @@
 import { connectDB } from "../config/db";
 import { userService } from "../services/user.service";
 import { UserType } from "@/backend/types/user.types";
-import { sendEmail } from "@/backend/utils/sendEmail";
 import { transactionService } from "@/backend/services/transaction.service";
+import { mailService } from "@/backend/services/mail.service";
 
 export const userController = {
     async buyTokens(userId: string, amount: number): Promise<UserType> {
@@ -11,14 +11,21 @@ export const userController = {
         const user = await userService.addTokens(userId, amount);
 
         console.log("💳 Adding tokens for user:", userId);
-        await transactionService.record(user._id, user.email, amount, "add", user.tokens);
+        const transaction = await transactionService.record(user._id, user.email, amount, "add", user.tokens);
         console.log("✅ Transaction created successfully");
 
-        sendEmail(
-            user.email,
-            "Tokens Purchased",
-            `You have successfully purchased ${amount} tokens. Your new balance is ${user.tokens} tokens.`
-        );
+        await mailService.sendOrderConfirmationEmail({
+            to: user.email,
+            firstName: user.firstName,
+            subject: "Payment Confirmation",
+            summary: "Your token purchase was completed successfully.",
+            transactionDate: transaction.createdAt || new Date(),
+            details: [
+                `Purchase type: Token top-up`,
+                `Tokens added: ${amount}`,
+                `Balance after payment: ${user.tokens} tokens`,
+            ],
+        });
 
         return formatUser(user);
     },
@@ -33,13 +40,20 @@ export const userController = {
         user.tokens -= amount;
         await user.save();
 
-        await transactionService.record(user._id, user.email, amount, "spend", user.tokens);
+        const transaction = await transactionService.record(user._id, user.email, amount, "spend", user.tokens);
 
-        sendEmail(
-            user.email,
-            "Tokens Spent",
-            `You have spent ${amount} tokens${reason ? ` for ${reason}` : ""}. Your new balance is ${user.tokens} tokens.`
-        );
+        await mailService.sendOrderConfirmationEmail({
+            to: user.email,
+            firstName: user.firstName,
+            subject: "Order Confirmation",
+            summary: "Your token deduction was completed successfully.",
+            transactionDate: transaction.createdAt || new Date(),
+            details: [
+                `Tokens used: ${amount}`,
+                `Reason: ${reason || "Account usage"}`,
+                `Balance after transaction: ${user.tokens} tokens`,
+            ],
+        });
 
         return formatUser(user);
     },
@@ -48,8 +62,16 @@ export const userController = {
 function formatUser(user: any): UserType {
     return {
         _id: user._id.toString(),
-        name: user.name,
+        name: user.name || [user.firstName, user.lastName].filter(Boolean).join(" ").trim(),
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
+        phoneNumber: user.phoneNumber,
+        dateOfBirth: user.dateOfBirth,
+        street: user.street,
+        city: user.city,
+        country: user.country,
+        postCode: user.postCode,
         role: user.role,
         tokens: user.tokens,
         createdAt: user.createdAt,
