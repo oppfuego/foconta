@@ -10,6 +10,7 @@ import {footerStyles} from "@/resources/styles-config";
 import {SmartLinkProps} from "@/types/smart-link";
 import visa from "@/assets/cards/visa.png";
 import mastercard from "@/assets/cards/mastercard.png";
+import pciDss from "@/assets/cards/pci-dss-compliant-logo-vector.svg";
 import {
     FaInstagram,
     FaLinkedinIn,
@@ -62,6 +63,11 @@ const Footer: React.FC = () => {
                     src={mastercard}
                     alt="Mastercard"
                     placeholder="blur"
+                    className={styles.paymentIcon}
+                />
+                <Image
+                    src={pciDss}
+                    alt="PCI DSS Compliant"
                     className={styles.paymentIcon}
                 />
             </div>
