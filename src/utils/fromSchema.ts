@@ -42,7 +42,7 @@ export async function metadataFromSchema(meta: MetaSchema): Promise<Metadata> {
             title,
             description,
             url: canonicalAbs,
-            siteName: "Averis",
+            siteName: "Foconta",
             type: "website",
             locale: "uk_UA",
             images: [

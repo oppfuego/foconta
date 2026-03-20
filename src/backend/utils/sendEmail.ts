@@ -37,7 +37,7 @@ function defaultTemplate(title: string, message: string) {
         </div>
         <hr style="margin:20px 0; border:none; border-top:1px solid #eee;" />
         <p style="font-size:14px; color:#777; text-align:center;">
-          © ${new Date().getFullYear()} Averis – All rights reserved.
+          © ${new Date().getFullYear()} Foconts – All rights reserved.
         </p>
       </div>
     </div>

@@ -88,8 +88,8 @@ export const authService = {
         const result = await this.issueTokensAndSession(user._id, user.email, user.role, undefined, undefined);
         await sendEmail(
             user.email,
-            "Welcome to Averis 🎉",
-            `Hi ${user.firstName || user.name}, thanks for registering at Averis.`
+            "Welcome to Foconta 🎉",
+            `Hi ${user.firstName || user.name}, thanks for registering at Foconta.`
         );
 
         return { user, ...result };
