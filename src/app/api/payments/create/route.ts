@@ -3,10 +3,11 @@ import { requireAuth } from "@/backend/middlewares/auth.middleware";
 import { ENV } from "@/backend/config/env";
 import { connectDB } from "@/backend/config/db";
 import { PaymentOrder } from "@/backend/models/paymentOrder.model";
+import { appendPaymentLog } from "@/backend/utils/logger";
 import crypto from "crypto";
 
 const TOKENS_PER_GBP = 100;
-const RATES_TO_GBP: Record<string, number> = { GBP: 1, EUR: 1.17, USD: 1.29 };
+const RATES_TO_GBP: Record<string, number> = { EUR: 1.17, USD: 1.29 };
 const ISO_CURRENCY_PREFIX = "iso4217:";
 
 function roundMoney(value: number): number {
@@ -69,6 +70,14 @@ export async function POST(req: NextRequest) {
 
         const normalizedCurrency = (currency || "GBP").toUpperCase();
 
+        await appendPaymentLog("payment.create.received", {
+            userId: payload.sub,
+            email: payload.email || null,
+            requestedCurrency: currency || "GBP",
+            normalizedCurrency,
+            requestedAmount: amount,
+        });
+
         // Determine provider currency & method GUID
         let providerCurrency: "USD" | "EUR";
         let methodGuid: string;
@@ -97,6 +106,17 @@ export async function POST(req: NextRequest) {
 
         const successUrl = `${ENV.APP_URL}/payment-result?ref=${encodeURIComponent(referenceId)}`;
         const callbackUrl = `${ENV.APP_URL}/api/payments/callback`;
+
+        await appendPaymentLog("payment.create.converted", {
+            referenceId,
+            requestedCurrency: normalizedCurrency,
+            providerCurrency,
+            currencyFallback,
+            requestedAmount: amount,
+            gbpEquivalent,
+            providerAmount,
+            tokens,
+        });
 
         // Build body per Armenotech v3 API
         const body = {
@@ -147,11 +167,23 @@ export async function POST(req: NextRequest) {
         } else {
             const text = await response.text().catch(() => "");
             console.error("[Payment] Non-JSON response:", text.slice(0, 500));
+            await appendPaymentLog("payment.create.provider_non_json", {
+                referenceId,
+                status: response.status,
+                responsePreview: text.slice(0, 500),
+            });
             return NextResponse.json({ message: "Payment provider returned invalid response" }, { status: 502 });
         }
 
         if (!response.ok) {
             console.error("[Payment] Provider error:", response.status, JSON.stringify(responseBody).slice(0, 500));
+            await appendPaymentLog("payment.create.provider_error", {
+                referenceId,
+                status: response.status,
+                providerCurrency,
+                providerAmount,
+                responsePreview: JSON.stringify(responseBody).slice(0, 500),
+            });
             return NextResponse.json({ message: "Payment provider error" }, { status: 502 });
         }
 
@@ -164,6 +196,11 @@ export async function POST(req: NextRequest) {
 
         if (!redirectUrl) {
             console.error("[Payment] No redirect URL in response:", JSON.stringify(responseBody).slice(0, 500));
+            await appendPaymentLog("payment.create.redirect_missing", {
+                referenceId,
+                status: response.status,
+                responsePreview: JSON.stringify(responseBody).slice(0, 500),
+            });
             return NextResponse.json({ message: "No payment URL received from provider" }, { status: 502 });
         }
 
@@ -186,6 +223,18 @@ export async function POST(req: NextRequest) {
             ]) || null,
         });
 
+        await appendPaymentLog("payment.create.completed", {
+            referenceId,
+            userId: payload.sub,
+            requestedCurrency: normalizedCurrency,
+            providerCurrency,
+            requestedAmount: amount,
+            providerAmount,
+            tokens,
+            currencyFallback,
+            redirectUrl,
+        });
+
         return NextResponse.json({
             redirect_url: redirectUrl,
             reference_id: referenceId,
@@ -196,6 +245,9 @@ export async function POST(req: NextRequest) {
         });
     } catch (err: any) {
         console.error("[Payment] Create error:", err);
+        await appendPaymentLog("payment.create.failed", {
+            errorMessage: err?.message || "Unknown create payment error",
+        });
         return NextResponse.json({ message: err.message }, { status: 400 });
     }
 }

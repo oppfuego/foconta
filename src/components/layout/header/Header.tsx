@@ -84,9 +84,9 @@ const Header: React.FC = () => {
                         <div className={styles.currencySwitch}>
                             <div
                                 className={`${styles.toggle} ${currency === "EUR" ? styles.active : ""}`}
-                                onClick={() => setCurrency(currency === "GBP" ? "EUR" : "GBP")}
-                            >
-                                <span className={styles.labelLeft}>GBP</span>
+                                onClick={() => setCurrency(currency === "EUR" ? "USD" : "EUR")}
+                                >
+                                <span className={styles.labelLeft}>EUR</span>
                                 <span className={styles.labelRight}>EUR</span>
                                 <div className={styles.thumb}/>
                             </div>
@@ -98,10 +98,10 @@ const Header: React.FC = () => {
 
                         <div className={styles.currencySwitch}>
                             <div className={styles.toggleTrack}>
-                                {["GBP", "EUR", "USD"].map((c) => (
+                                {["EUR", "USD"].map((c) => (
                                     <button
                                         key={c}
-                                        onClick={() => setCurrency(c as "GBP" | "EUR" | "USD")}
+                                        onClick={() => setCurrency(c as "EUR" | "USD")}
                                         className={`${styles.option} ${currency === c ? styles.active : ""}`}
                                     >
                                         {c}
