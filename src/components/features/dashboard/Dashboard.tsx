@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 import AllOrders from "@/components/widgets/all-orders/AllOrders";
 import TransactionHistory from "@/components/widgets/all-transactions/AllTransactions";
+import PaymentOrders from "@/components/widgets/payment-orders/PaymentOrders";
 import styles from "./Dashboard.module.scss";
 
 export default function Dashboard() {
-    const [activeTab, setActiveTab] = useState<"orders" | "transactions">("orders");
+    const [activeTab, setActiveTab] = useState<"orders" | "transactions" | "payments">("orders");
 
     return (
         <div className={styles.dashboard}>
@@ -28,6 +29,14 @@ export default function Dashboard() {
                 >
                     Transactions
                 </button>
+                <button
+                    className={`${styles.toggleButton} ${
+                        activeTab === "payments" ? styles.active : ""
+                    }`}
+                    onClick={() => setActiveTab("payments")}
+                >
+                    Payments
+                </button>
             </div>
 
             {/* 🔹 Контент */}
@@ -36,9 +45,13 @@ export default function Dashboard() {
                     <div key="orders" className={styles.fadeIn}>
                         <AllOrders />
                     </div>
-                ) : (
+                ) : activeTab === "transactions" ? (
                     <div key="transactions" className={styles.fadeIn}>
                         <TransactionHistory />
+                    </div>
+                ) : (
+                    <div key="payments" className={styles.fadeIn}>
+                        <PaymentOrders />
                     </div>
                 )}
             </div>

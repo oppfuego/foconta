@@ -25,4 +25,11 @@ export const ENV = {
     SMTP_PASS: env("SMTP_PASS", ""),
     EMAIL_FROM: env("EMAIL_FROM", ""),
     RESEND_API: env("RESEND_API", ""),
+    APS_MERCHANT_GUID: env("APS_MERCHANT_GUID", ""),
+    APS_METHOD_GUID_USD: env("APS_METHOD_GUID_USD", ""),
+    APS_METHOD_GUID_EUR: env("APS_METHOD_GUID_EUR", ""),
+    APS_CALLBACK_SECRET: env("APS_CALLBACK_SECRET", ""),
+    APS_APP_TOKEN: env("APS_APP_TOKEN", ""),
+    APS_APP_SECRET: env("APS_APP_SECRET", ""),
+    APS_API_URL: env("APS_API_URL", "https://merchant.aps.money/api/v1"),
 };
