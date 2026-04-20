@@ -42,6 +42,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
     const { currency, sign, convertFromGBP, convertToGBP } = useCurrency();
 
     const [customAmount, setCustomAmount] = useState<number>(0.01);
+    const [loading, setLoading] = useState(false);
     const isCustom = price === "dynamic";
 
     // 💷 Базова ціна у GBP
@@ -64,45 +65,53 @@ const PricingCard: React.FC<PricingCardProps> = ({
             return;
         }
 
+        setLoading(true);
         try {
-            let body: any;
+            let paymentAmount: number;
 
             if (isCustom) {
                 const gbpEquivalent = convertToGBP(customAmount);
                 if (gbpEquivalent < 0.01) {
                     showAlert("Minimum is 0.01", "Enter at least 0.01 GBP equivalent", "warning");
+                    setLoading(false);
                     return;
                 }
-                body = { currency, amount: customAmount };
+                paymentAmount = customAmount;
             } else {
-                body = { amount: tokens, currency };
+                paymentAmount = convertedPrice;
             }
 
-            const res = await fetch("/api/user/buy-tokens", {
+            const res = await fetch("/api/payments/create", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify(body),
+                body: JSON.stringify({ amount: paymentAmount, currency }),
             });
 
-            if (!res.ok) throw new Error(await res.text());
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message || "Payment failed");
+            }
+
             const data = await res.json();
 
-            const tokenCount = isCustom
-                ? Math.floor(convertToGBP(customAmount) * TOKENS_PER_GBP)
-                : tokens;
+            if (data.currency_fallback) {
+                showAlert(
+                    "Currency not available",
+                    `${data.requested_currency} is not yet configured. You will be charged in ${data.provider_currency} instead.`,
+                    "info"
+                );
+                await new Promise((r) => setTimeout(r, 2500));
+            }
 
-            showAlert(
-                "Success!",
-                isCustom
-                    ? `You paid ${sign}${customAmount.toFixed(2)} ${currency} (≈ ${tokenCount} tokens)`
-                    : `You purchased ${tokenCount} tokens.`,
-                "success"
-            );
-
-            console.log("Updated user:", data.user);
+            if (data.redirect_url) {
+                window.location.href = data.redirect_url;
+            } else {
+                throw new Error("No payment URL received");
+            }
         } catch (err: any) {
             showAlert("Error", err.message || "Something went wrong", "error");
+            setLoading(false);
         }
     };
 
@@ -161,8 +170,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 ))}
             </ul>
 
-            <ButtonUI fullWidth onClick={handleBuy}>
-                {user ? buttonText : "Sign Up to Buy"}
+            <ButtonUI fullWidth onClick={handleBuy} disabled={loading}>
+                {loading ? "Redirecting..." : user ? buttonText : "Sign Up to Buy"}
             </ButtonUI>
 
             {badgeBottom && <span className={styles.badgeBottom}>{badgeBottom}</span>}
