@@ -106,14 +106,11 @@
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
 
-  &[data-currency="GBP"] {
+  &[data-currency="EUR"] {
     transform: translateX(0);
   }
-  &[data-currency="EUR"] {
-    transform: translateX(60px);
-  }
   &[data-currency="USD"] {
-    transform: translateX(120px);
+    transform: translateX(60px);
   }
 }
 

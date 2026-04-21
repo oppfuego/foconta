@@ -43,7 +43,7 @@ const refundPolicySchema: PageSchema = {
                 "Submit requests to info@foconta.co.uk with your order reference and details.",
                 "This Policy may be updated; material changes will be notified as described in §8.",
                 "If you consented to immediate supply and opened/downloaded the digital content, your statutory right to cancel may be lost (see §4.7).",
-                "Accepted currencies: GBP (£), EUR (€), USD ($). Payment methods: Visa, Mastercard.",
+                "Accepted currencies: EUR (€), USD ($). Payment methods: Visa, Mastercard.",
             ],
         },
         {
@@ -56,7 +56,7 @@ const refundPolicySchema: PageSchema = {
             type: "text",
             title: "3. Definitions",
             bullets: [
-                "Tokens / Credits — internal prepaid credits used on the Service. The current target purchase rate (100 Tokens = 1.00 GBP / 1.17 EUR / 1.29 USD) is displayed at the time of purchase and may change from time to time.",
+                "Tokens / Credits — internal prepaid credits used on the Service. The current target purchase rate (100 Tokens = 1.17 EUR / 1.29 USD) is displayed at the time of purchase and may change from time to time.",
                 "Unused Tokens — Tokens credited to your Account but not yet redeemed.",
                 "Redeemed / Spent Tokens — Tokens already used to access or generate an Output/Service (e.g., business plan section, market note, financial model/spreadsheet, PDF export, expert review).",
                 "Promotional / Bonus Tokens — Tokens issued as part of a promotion, bonus, or incentive and marked as such.",
@@ -128,8 +128,8 @@ const refundPolicySchema: PageSchema = {
             type: "text",
             title: "11. Examples (Illustrative Only)",
             bullets: [
-                "Unused Tokens (GBP): Purchase 2,000 Tokens; spend 300; unused 1,700 → refund equals the pro-rata amount based on the original GBP purchase price (minus any non-recoverable processor fees, where applicable).",
-                "Unused Tokens (EUR/USD): Same as above, but refund is in EUR or USD at the original amount paid for that top-up (subject to provider rules/fees).",
+                "Unused Tokens (EUR): Purchase 2,000 Tokens; spend 300; unused 1,700 → refund equals the pro-rata amount based on the original EUR purchase price (minus any non-recoverable processor fees, where applicable).",
+                "Unused Tokens (USD): Same as above, but refund is in USD at the original amount paid for that top-up (subject to provider rules/fees).",
                 "Opened Output: If you consented to immediate supply and downloaded the PDF/report/model, refunds apply only if defective or not as described (§4.2).",
                 "Promotional Tokens: 100 bonus Tokens awarded in a promotion → non-refundable.",
                 "Add-ons: Base Tokens + add-on Token price(s) displayed before confirmation; once redeemed, non-refundable except under §4.2 or where required by law.",
@@ -143,7 +143,7 @@ const refundPolicySchema: PageSchema = {
                 `Registered office: ${COMPANY_ADDRESS}`,
                 "Email (support): info@foconta.co.uk",
                 "Tel: +44 7537 166412",
-                "Accepted currencies: GBP (£), EUR (€), USD ($)",
+                "Accepted currencies: EUR (€), USD ($)",
                 "Payment methods: Visa, Mastercard",
             ],
         },

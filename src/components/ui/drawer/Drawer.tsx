@@ -61,8 +61,8 @@ const DrawerMenu: FC<DrawerMenuProps> = ({ open, onClose }) => {
                                 onChange={(e) => setCurrency(e.target.value)}
                                 className={styles.currencySelect}
                             >
-                                <option value="GBP">£ GBP</option>
                                 <option value="EUR">€ EUR</option>
+                                <option value="USD">$ USD</option>
                             </select>
                         </div>
                 </div>
