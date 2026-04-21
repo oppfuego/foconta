@@ -97,21 +97,14 @@ const Header: React.FC = () => {
                         <AuthButtons />
 
                         <div className={styles.currencySwitch}>
-                            <div className={styles.toggleTrack}>
-                                {["EUR", "USD"].map((c) => (
-                                    <button
-                                        key={c}
-                                        onClick={() => setCurrency(c as "EUR" | "USD")}
-                                        className={`${styles.option} ${currency === c ? styles.active : ""}`}
-                                    >
-                                        {c}
-                                    </button>
-                                ))}
-                                <div
-                                    className={styles.thumb}
-                                    data-currency={currency}
-                                />
-                            </div>
+                            <select
+                                value={currency}
+                                onChange={(e) => setCurrency(e.target.value)}
+                                className={styles.currencySelect}
+                            >
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                            </select>
                         </div>
 
                     </div>
