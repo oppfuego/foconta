@@ -34,7 +34,6 @@ Our experts use AI only to accelerate research and structure, while the strategy
             align: "right",
             showTrustBadge: true,
             primaryCta: { text: "Request My Plan", link: "/sign-up" },
-            secondaryCta: { text: "See How It Works", link: "#process" },
         },
 
         // ⚡ HIGHLIGHT STRIP

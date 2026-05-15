@@ -63,13 +63,6 @@ Learn how to find, analyze, and present your market in a way that investors unde
             ],
         },
 
-        {
-            type: "custom",
-            component: "MissionBanner",
-            title: "Need an Expert Market Analysis?",
-            description: `Our analysts will research your market, competitors, and pricing trends — and deliver investor-ready insights in 24 hours.`,
-            image: "ctaMarket",
-        },
     ],
 };
 

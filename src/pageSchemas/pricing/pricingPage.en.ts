@@ -32,8 +32,6 @@ const schema: PageSchema = {
 Whether you need a quick AI draft or a full expert-written plan with investor deck, we make business planning simple, transparent, and professional.`,
             image: "image19",
             align: "right",
-            primaryCta: { text: "Get My Plan", link: "/checkout" },
-            secondaryCta: { text: "Compare Packages", link: "#plans" },
         },
 
         // 💡 INTRO

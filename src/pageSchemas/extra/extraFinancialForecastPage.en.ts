@@ -50,15 +50,6 @@ ${COMPANY_NAME} experts break down forecasting into easy, data-backed steps — 
             ],
         },
 
-        {
-            type: "custom",
-            component: "TextWithButton",
-            title: "Need Help Building a Forecast?",
-            description: `Our team will create a professional forecast for your business plan — with clear metrics, cash flow, and profitability charts.`,
-            buttonText: "Request Forecast Help",
-            buttonLink: "/checkout?plan=expert",
-            align: "center",
-        },
     ],
 };
 

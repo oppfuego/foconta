@@ -77,15 +77,6 @@ ${COMPANY_NAME} experts share how to structure it to instantly communicate value
             ],
         },
 
-        {
-            type: "custom",
-            component: "TextWithButton",
-            title: "Need Help Writing Yours?",
-            description: `Our experts will prepare a powerful, investor-ready executive summary within 24 hours.`,
-            buttonText: "Order 24h Plan",
-            buttonLink: "/checkout?plan=expert",
-            align: "center",
-        },
     ],
 };
 
