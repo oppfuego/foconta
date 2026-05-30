@@ -217,7 +217,7 @@ export const cvService = {
 
         const order = orderDoc.toObject() as CVOrderType;
 
-        await mailService.sendOrderConfirmationEmail({
+        mailService.sendOrderConfirmationEmail({
             to: user.email,
             firstName: user.firstName,
             subject: "CV Order Confirmation",
@@ -228,7 +228,7 @@ export const cvService = {
                 `Tokens used: ${totalCost}`,
                 `Extras: ${(body.extras || []).length ? body.extras.join(", ") : "None"}`,
             ],
-        });
+        }).catch((e) => console.error("[cv] Order confirmation email failed:", e));
 
         log("createOrder", "✅ Completed", { id: order._id, extrasKeys: Object.keys(extrasData) });
 

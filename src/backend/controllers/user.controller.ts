@@ -89,6 +89,12 @@ function formatUser(user: any): UserType {
         postCode: user.postCode,
         role: user.role,
         tokens: user.tokens,
+        specializations: user.specializations || [],
+        expertBio: user.expertBio || "",
+        expertBalance: user.expertBalance || 0,
+        expertAvatar: user.expertAvatar || "",
+        isExpertVerified: user.isExpertVerified || false,
+        paymentDetails: user.paymentDetails || "",
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
     };

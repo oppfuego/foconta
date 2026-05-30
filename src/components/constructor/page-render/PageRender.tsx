@@ -41,6 +41,7 @@ import VideoDemo from "@/components/constructor/video-demo/VideoDemo";
 import StoryTimeline from "@/components/constructor/story-timeline/StoryTimeline";
 import InfoBlock from "@/components/constructor/Info-block/InfoBlock";
 import TextWithButton from "@/components/constructor/text-with-button/TextWithButton";
+import ExpertCTA from "@/components/constructor/expert-cta/ExpertCTA";
 
 // ------------------- helpers -------------------
 
@@ -145,6 +146,15 @@ function RenderCustom(b: CustomBlock) {
                 />
             );
 
+        case "ExpertCTA":
+            return (
+                <ExpertCTA
+                    title={b.title}
+                    description={b.description}
+                    buttonText={b.buttonText}
+                    buttonLink={b.buttonLink}
+                />
+            );
 
         case "HeroSection":
             return (

@@ -15,6 +15,10 @@ export const authController = {
         country: string;
         postCode: string;
         password: string;
+        role?: "user" | "expert";
+        specializations?: string[];
+        expertBio?: string;
+        paymentDetails?: string;
     }) {
         await connectDB();
         const { user, accessToken, refreshToken } = await authService.register(body);
@@ -67,6 +71,12 @@ function toUser(u: any): UserType {
         postCode: u.postCode,
         role: u.role,
         tokens: u.tokens,
+        specializations: u.specializations || [],
+        expertBio: u.expertBio || "",
+        expertBalance: u.expertBalance || 0,
+        expertAvatar: u.expertAvatar || "",
+        isExpertVerified: u.isExpertVerified || false,
+        paymentDetails: u.paymentDetails || "",
         createdAt: u.createdAt,
         updatedAt: u.updatedAt,
     };

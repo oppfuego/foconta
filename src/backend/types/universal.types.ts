@@ -12,9 +12,11 @@ export interface UniversalOrderType {
     language?: string;
     response: string;
     extrasData: Record<string, string>;
-    status: "pending" | "ready";
+    status: "pending" | "ready" | "in_progress" | "done";
     readyAt: Date;
     createdAt: Date;
+    expertId?: Types.ObjectId | null;
+    pdfUrl?: string | null;
 }
 
 export interface CreateUniversalOrderRequest {
@@ -25,6 +27,7 @@ export interface CreateUniversalOrderRequest {
     planType: "default" | "reviewed";
     language?: string;
     email: string;
+    specialization?: string;
 }
 
 export interface CreateUniversalOrderResponse {

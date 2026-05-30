@@ -2,6 +2,7 @@ import { connectDB } from "../config/db";
 import { UniversalOrder, UniversalOrderDocument } from "../models/universalOrder.model";
 import { User } from "../models/user.model";
 import { transactionService } from "../services/transaction.service";
+import { expertService } from "../services/expert.service";
 import OpenAI from "openai";
 import { ENV } from "../config/env";
 import mongoose from "mongoose";
@@ -193,7 +194,82 @@ export const universalService = {
         await user.save();
         await transactionService.record(user._id, email, totalCost, "spend", user.tokens);
 
-        // main generation
+        const totalTokensCharged = Number(body.totalTokens) + (languageCost || 0);
+
+        // ========== EXPERT PATH (reviewed) ==========
+        if (body.planType === "reviewed") {
+            const specialization = body.specialization || body.category || "general";
+            const expertId = await expertService.assignOrderToExpert(specialization);
+
+            const orderDoc = {
+                userId: new mongoose.Types.ObjectId(userId),
+                email,
+                category: body.category,
+                fields: body.fields,
+                planType: body.planType,
+                extras: body.extras || [],
+                totalTokens: totalTokensCharged,
+                language: body.language || "English",
+                response: "",
+                extrasData: {},
+                status: "pending" as const,
+                expertId: expertId ? new mongoose.Types.ObjectId(expertId) : null,
+                pdfUrl: null,
+            };
+
+            const order = await UniversalOrder.create(orderDoc);
+            console.log("[universalService.createOrder] Expert order created", {
+                userId,
+                email: user.email,
+                orderId: order._id?.toString?.(),
+                expertId,
+                category: orderDoc.category,
+            });
+
+            if (expertId) {
+                User.findById(expertId).then((expert) => {
+                    if (expert) {
+                        mailService.sendExpertOrderAssignedEmail(expert.email, {
+                            orderId: order._id.toString(),
+                            category: body.category,
+                            clientEmail: email,
+                        }).catch((e) => console.error("[universal] Expert assign email failed:", e));
+                    }
+                    if (ENV.SMTP_USER && expert) {
+                        mailService.sendAdminNewExpertOrderEmail(
+                            ENV.SMTP_USER,
+                            {
+                                orderId: order._id.toString(),
+                                category: body.category,
+                                clientEmail: email,
+                            },
+                            {
+                                expertName: expert.name || "Unknown",
+                                expertEmail: expert.email || "Unknown",
+                                action: "created",
+                            }
+                        ).catch((e) => console.error("[universal] Admin order email failed:", e));
+                    }
+                }).catch((e) => console.error("[universal] Expert lookup failed:", e));
+            }
+
+            mailService.sendOrderConfirmationEmail({
+                to: user.email,
+                firstName: user.firstName,
+                subject: "Expert Order Placed",
+                summary: "Your order has been placed! An expert will prepare your business plan. You'll be notified when it's ready.",
+                transactionDate: order.createdAt || new Date(),
+                details: [
+                    `Service category: ${body.category}`,
+                    `Plan type: Expert-Written`,
+                    `Tokens used: ${totalTokensCharged}`,
+                ],
+            }).catch((e) => console.error("[universal] Order confirmation email failed:", e));
+
+            return order.toObject({ flattenMaps: true });
+        }
+
+        // ========== AI PATH (default) — unchanged ==========
         const mainPrompt = buildPrompt(body);
         let mainText = "";
         try {
@@ -212,7 +288,6 @@ export const universalService = {
             throw new Error("AI generation failed, please retry later");
         }
 
-        // extras generation
         const extrasData: Record<string, string> = {};
         if (Array.isArray(body.extras) && body.extras.length > 0) {
             for (const extra of body.extras) {
@@ -227,9 +302,6 @@ export const universalService = {
             }
         }
 
-        const readyAt =
-            body.planType === "reviewed" ? new Date(Date.now() + 24 * 60 * 60 * 1000) : new Date();
-
         const orderDoc = {
             userId: new mongoose.Types.ObjectId(userId),
             email,
@@ -237,12 +309,12 @@ export const universalService = {
             fields: body.fields,
             planType: body.planType,
             extras: body.extras || [],
-            totalTokens: Number(body.totalTokens) + (languageCost || 0),
+            totalTokens: totalTokensCharged,
             language: body.language || "English",
             response: mainText,
             extrasData,
-            status: body.planType === "reviewed" ? "pending" : "ready",
-            readyAt,
+            status: "ready" as const,
+            readyAt: new Date(),
         };
 
         const order = await UniversalOrder.create(orderDoc);
@@ -255,7 +327,7 @@ export const universalService = {
             category: orderDoc.category,
         });
 
-        await mailService.sendOrderConfirmationEmail({
+        mailService.sendOrderConfirmationEmail({
             to: user.email,
             firstName: user.firstName,
             subject: "Order Confirmation",
@@ -266,7 +338,7 @@ export const universalService = {
                 `Plan type: ${body.planType}`,
                 `Tokens used: ${orderDoc.totalTokens}`,
             ],
-        });
+        }).catch((e) => console.error("[universal] AI order confirmation email failed:", e));
 
         return order.toObject({ flattenMaps: true });
     },

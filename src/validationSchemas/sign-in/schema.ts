@@ -32,7 +32,11 @@ export async function signInOnSubmit(
 
         if (res.ok && data?.user) {
             showAlert("Login successful!", "", "success");
-            router.replace("/");
+            if (data.user.role === "expert") {
+                router.replace("/expert");
+            } else {
+                router.replace("/");
+            }
             router.refresh();
         } else {
             showAlert(data?.message || "Login failed", "", "error");

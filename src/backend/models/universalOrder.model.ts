@@ -4,7 +4,7 @@ export interface UniversalOrderDocument extends Document {
     userId: mongoose.Types.ObjectId;
     email: string;
 
-    category: string; // e.g. "training", "cv", "marketing"
+    category: string;
     fields: Record<string, any>;
     extras: string[];
     totalTokens: number;
@@ -14,9 +14,12 @@ export interface UniversalOrderDocument extends Document {
     response: string;
     extrasData: Record<string, string>;
 
-    status: "pending" | "ready";
+    status: "pending" | "ready" | "in_progress" | "done";
     readyAt: Date;
     createdAt: Date;
+
+    expertId?: mongoose.Types.ObjectId | null;
+    pdfUrl?: string | null;
 }
 
 const universalOrderSchema = new Schema<UniversalOrderDocument>(
@@ -30,15 +33,17 @@ const universalOrderSchema = new Schema<UniversalOrderDocument>(
         totalTokens: { type: Number, required: true },
         planType: { type: String, enum: ["default", "reviewed"], default: "default" },
 
-        // 🌍 необов’язкове поле
         language: { type: String, required: false, default: "English" },
 
         response: { type: String, default: "" },
         extrasData: { type: Map, of: String, default: {} },
 
-        status: { type: String, enum: ["pending", "ready"], default: "ready" },
+        status: { type: String, enum: ["pending", "ready", "in_progress", "done"], default: "ready" },
         readyAt: { type: Date },
         createdAt: { type: Date, default: Date.now },
+
+        expertId: { type: Schema.Types.ObjectId, ref: "User", default: null },
+        pdfUrl: { type: String, default: null },
     },
     { strict: false }
 );

@@ -2,7 +2,7 @@ import { AlertColor } from "@mui/material/Alert";
 import { RESTRICTED_COUNTRY_NAMES, isAllowedCountry } from "@/resources/countries";
 import type { SignUpValues } from "@/components/widgets/sign-up/SignUp";
 
-export const signUpInitialValues: SignUpValues = {
+export const signUpInitialValues: Omit<SignUpValues, "role" | "specializations" | "expertBio" | "paymentDetails"> = {
     firstName: "",
     lastName: "",
     dateOfBirth: "",
@@ -76,11 +76,17 @@ export const signUpValidation = (values: SignUpValues) => {
         errors.terms = "You must agree to the Terms and Conditions";
     }
 
+    if (values.role === "expert") {
+        if (!values.specializations || values.specializations.length === 0) {
+            errors.specializations = "Select at least one specialization";
+        }
+    }
+
     return errors;
 };
 
 function buildPayload(values: SignUpValues) {
-    return {
+    const base = {
         firstName: trim(values.firstName),
         lastName: trim(values.lastName),
         dateOfBirth: values.dateOfBirth,
@@ -91,7 +97,19 @@ function buildPayload(values: SignUpValues) {
         country: trim(values.country),
         postCode: trim(values.postCode),
         password: values.password,
+        role: values.role || "user",
     };
+
+    if (values.role === "expert") {
+        return {
+            ...base,
+            specializations: values.specializations,
+            expertBio: values.expertBio || "",
+            paymentDetails: values.paymentDetails || "",
+        };
+    }
+
+    return base;
 }
 
 export const signUpOnSubmit = async (
@@ -110,7 +128,11 @@ export const signUpOnSubmit = async (
 
         if (res.ok && data?.user) {
             showAlert("Registration successful!", "", "success");
-            router.replace("/");
+            if (data.user.role === "expert") {
+                router.replace("/expert");
+            } else {
+                router.replace("/");
+            }
             router.refresh();
         } else {
             showAlert(data?.message || "Registration failed", "", "error");

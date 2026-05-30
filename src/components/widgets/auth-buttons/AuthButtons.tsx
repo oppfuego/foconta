@@ -10,22 +10,23 @@ const AuthButtons: React.FC = () => {
     const user = useUser();
 
     if (user) {
+        const profileHref = user.role === "expert" ? "/expert" : "/profile";
+
         return (
             <div className={styles.userCompact}>
-                <Link href="/profile" className={styles.userButton}>
-                    <div className={styles.balance}>
-                        <GrMoney className={styles.iconMoney} />
-                        <span>{user?.tokens ?? 0}</span>
-                    </div>
+                <Link href={profileHref} className={styles.userButton}>
+                    {user.role !== "expert" && (
+                        <div className={styles.balance}>
+                            <GrMoney className={styles.iconMoney} />
+                            <span>{user?.tokens ?? 0}</span>
+                        </div>
+                    )}
                     <FaUser className={styles.iconUser} />
                 </Link>
             </div>
-
-        )
-        ;
+        );
     }
 
-    // 🔹 Якщо неавторизований
     return (
         <div className={styles.nonAuthedButtons}>
             <Link href="/sign-in">

@@ -64,7 +64,7 @@ export const aiService = {
             tokensUsed: finalCost,
         });
 
-        await mailService.sendOrderConfirmationEmail({
+        mailService.sendOrderConfirmationEmail({
             to: user.email,
             firstName: user.firstName,
             subject: "AI Order Confirmation",
@@ -75,7 +75,7 @@ export const aiService = {
                 `Tokens used: ${finalCost}`,
                 `Prompt preview: ${prompt.slice(0, 120)}`,
             ],
-        });
+        }).catch((e) => console.error("[ai] Order confirmation email failed:", e));
 
         return order;
     },

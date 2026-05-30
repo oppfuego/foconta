@@ -6,6 +6,7 @@ import { signAccessToken, signRefreshToken } from "../utils/jwt";
 import { ENV } from "../config/env";
 import { Types } from "mongoose";
 import {sendEmail} from "@/backend/utils/sendEmail";
+import { mailService } from "@/backend/services/mail.service";
 import { isAllowedCountry, RESTRICTED_COUNTRY_NAMES } from "@/resources/countries";
 
 type RegisterInput = {
@@ -19,6 +20,10 @@ type RegisterInput = {
     country: string;
     postCode: string;
     password: string;
+    role?: "user" | "expert";
+    specializations?: string[];
+    expertBio?: string;
+    paymentDetails?: string;
 };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -51,7 +56,9 @@ function validateRegisterInput(data: RegisterInput) {
         throw new Error("Selected country is not supported");
     }
 
-    return {
+    const role = data.role === "expert" ? "expert" : "user";
+
+    const result: any = {
         firstName,
         lastName,
         name: `${firstName} ${lastName}`.trim(),
@@ -63,7 +70,19 @@ function validateRegisterInput(data: RegisterInput) {
         country,
         postCode,
         password: data.password,
+        role,
     };
+
+    if (role === "expert") {
+        if (!data.specializations || !Array.isArray(data.specializations) || data.specializations.length === 0) {
+            throw new Error("At least one specialization is required for experts");
+        }
+        result.specializations = data.specializations;
+        result.expertBio = (data.expertBio || "").trim();
+        result.paymentDetails = (data.paymentDetails || "").trim();
+    }
+
+    return result;
 }
 
 function parseDurationToSec(input: string): number {
@@ -86,11 +105,29 @@ export const authService = {
         const hashed = await bcrypt.hash(payload.password, 12);
         const user = await User.create({ ...payload, password: hashed });
         const result = await this.issueTokensAndSession(user._id, user.email, user.role, undefined, undefined);
-        await sendEmail(
-            user.email,
-            "Welcome to Foconta 🎉",
-            `Hi ${user.firstName || user.name}, thanks for registering at Foconta.`
-        );
+
+        if (user.role === "expert") {
+            mailService.sendExpertWelcomeEmail(
+                user.email,
+                user.firstName || user.name
+            ).catch((e) => console.error("[auth] Expert welcome email failed:", e));
+            if (ENV.SMTP_USER) {
+                mailService.sendAdminNewExpertRegisteredEmail(
+                    ENV.SMTP_USER,
+                    {
+                        expertName: user.name || `${user.firstName} ${user.lastName}`,
+                        expertEmail: user.email,
+                        specializations: user.specializations || [],
+                    }
+                ).catch((e) => console.error("[auth] Admin expert notification failed:", e));
+            }
+        } else {
+            sendEmail(
+                user.email,
+                "Welcome to Foconta 🎉",
+                `Hi ${user.firstName || user.name}, thanks for registering at Foconta.`
+            ).catch((e) => console.error("[auth] Welcome email failed:", e));
+        }
 
         return { user, ...result };
     },

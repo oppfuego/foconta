@@ -14,7 +14,13 @@ export interface IUserSchema extends Document {
     country?: string;
     postCode?: string;
     tokens: number;
-    role: "user" | "admin";
+    role: "user" | "admin" | "expert";
+    specializations: string[];
+    expertBio: string;
+    expertBalance: number;
+    expertAvatar: string;
+    isExpertVerified: boolean;
+    paymentDetails: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -32,7 +38,13 @@ export interface UserType {
     country?: string;
     postCode?: string;
     tokens: number;
-    role: "user" | "admin";
+    role: "user" | "admin" | "expert";
+    specializations: string[];
+    expertBio: string;
+    expertBalance: number;
+    expertAvatar: string;
+    isExpertVerified: boolean;
+    paymentDetails: string;
     createdAt: Date;
     updatedAt: Date;
 }

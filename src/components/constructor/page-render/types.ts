@@ -246,6 +246,15 @@ export type TextWithButtonBlock = {
     align?: "left" | "center" | "right";
 };
 
+export type ExpertCTABlock = {
+    type: "custom";
+    component: "ExpertCTA";
+    title?: string;
+    description?: string;
+    buttonText?: string;
+    buttonLink?: string;
+};
+
 
 export type LogoStripBlock = {
     type: "custom";
@@ -286,7 +295,8 @@ export type CustomBlock =
     | TestimonialsSliderBlock
     | VideoDemoBlock
     | TextWithButtonBlock
-    | InfoBlock;
+    | InfoBlock
+    | ExpertCTABlock;
 
 export type PageBlock =
     | TextBlock

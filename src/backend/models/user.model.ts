@@ -14,8 +14,14 @@ const UserSchema: Schema<IUserSchema> = new Schema(
         city: { type: String, trim: true },
         country: { type: String, trim: true },
         postCode: { type: String, trim: true },
-        role: { type: String, enum: ["user", "admin"], default: "user" },
-        tokens: { type: Number, default: 10 }
+        role: { type: String, enum: ["user", "admin", "expert"], default: "user" },
+        tokens: { type: Number, default: 10 },
+        specializations: { type: [String], default: [] },
+        expertBio: { type: String, default: "" },
+        expertBalance: { type: Number, default: 0 },
+        expertAvatar: { type: String, default: "" },
+        isExpertVerified: { type: Boolean, default: false },
+        paymentDetails: { type: String, default: "" }
     },
     { timestamps: true }
 );

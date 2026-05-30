@@ -187,6 +187,16 @@ const servicesSchema: PageSchema = {
                 },
             ],
         },
+
+        // 🤝 EXPERT CTA
+        {
+            type: "custom",
+            component: "ExpertCTA",
+            title: "Are You a Business Expert?",
+            description: `Join ${COMPANY_NAME} and help entrepreneurs create professional business plans. Earn money for your expertise — on your own schedule.`,
+            buttonText: "Become an Expert",
+            buttonLink: "/sign-up?role=expert",
+        },
     ],
 };
 

@@ -1,12 +1,11 @@
 .form {
   position: relative;
-  max-width: 960px;
-  margin: 3rem auto;
-  padding: 2.5rem 3rem 6rem;
-  border-radius: 20px;
+  max-width: 1060px;
+  margin: 2rem auto;
+  padding: 3rem 3.5rem 6rem;
+  border-radius: 24px;
   background: var(--surface-color);
   box-shadow: 0 10px 40px var(--shadow-color);
-  backdrop-filter: blur(14px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -24,78 +23,206 @@
   text-align: center;
 
   h2 {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
     font-weight: 800;
     color: var(--text-primary);
     background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
   }
+}
 
-  p {
-    color: var(--text-secondary);
-    font-size: 1rem;
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+/* === PROGRESS BAR === */
+.progressBar {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  overflow-x: auto;
+}
+
+.progressStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  min-width: 80px;
+  transition: all 0.2s ease;
+
+  &:hover .progressCircle {
+    border-color: var(--primary-color);
   }
+}
+
+.progressCircle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--surface-color);
+  transition: all 0.3s ease;
+}
+
+.progressLabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+.progressStep.active .progressCircle {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.progressStep.active .progressLabel {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.progressStep.completed .progressCircle {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #fff;
+}
+
+.progressStep.completed .progressLabel {
+  color: #16a34a;
 }
 
 /* === STEP BLOCKS === */
 .step {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.4rem;
   background: var(--surface-muted);
   border: 1px solid var(--border-color);
-  border-radius: 14px;
-  padding: 1.8rem;
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.02);
+  border-radius: 16px;
+  padding: 2rem 2.2rem;
   transition: all 0.4s ease;
 
   h3 {
     color: var(--secondary-color);
     font-weight: 700;
-    margin-bottom: 0.8rem;
+    font-size: 1.3rem;
+    margin-bottom: 0;
   }
+}
+
+.stepHint {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+}
+
+/* === FIELD GROUP === */
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.fieldLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
 /* === GRID ROW === */
 .row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
-/* === INPUTS === */
-.inputGroup {
+/* === PLAN TYPE SELECTOR === */
+.planTypeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.planTypeCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.4rem;
+  border-radius: 14px;
+  border: 2px solid var(--border-color);
+  background: var(--surface-color);
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: var(--tertiary-color);
+    transform: translateY(-2px);
+  }
+}
+
+.planTypeActive {
+  border-color: var(--primary-color) !important;
+  background: var(--quaternary-color);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);
+}
+
+.planTypeIcon {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.planTypeContent {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.2rem;
 
-  label {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-  }
-
-  input,
-  select,
-  textarea {
-    border-radius: 8px;
-    background: var(--surface-color);
-    border: 1px solid var(--border-color);
+  h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
     color: var(--text-primary);
   }
+
+  p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+}
+
+.planTypeCost {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-top: 0.3rem;
 }
 
 /* === EXTRAS GRID === */
 .optionsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.1rem;
-  margin-top: 1rem;
+  gap: 1rem;
 }
 
-/* === EXTRA CARD === */
 .option {
   border: 1px solid var(--border-color);
   border-radius: 14px;
@@ -111,12 +238,12 @@
   &:hover {
     border-color: var(--primary-color);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(50, 214, 154, 0.15);
   }
 
   input {
     accent-color: var(--primary-color);
     margin-right: 0.8rem;
+    transform: scale(1.1);
   }
 
   span {
@@ -132,10 +259,48 @@
   }
 
   &.active {
-    background: linear-gradient(90deg, var(--quaternary-color), var(--surface-muted));
+    background: var(--quaternary-color);
     border-color: var(--primary-color);
-    transform: scale(1.03);
   }
+}
+
+/* === REVIEW GRID === */
+.reviewGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reviewItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.8rem 1rem;
+  background: var(--surface-color);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.reviewFull {
+  grid-column: 1 / -1;
+}
+
+.reviewLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.reviewValue {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
 }
 
 /* === NAVIGATION BUTTONS === */
@@ -143,17 +308,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem;
   gap: 1rem;
-
-  button {
-    min-width: 120px;
-    font-size: 0.95rem;
-    color: var(--text-inverse);
-  }
 }
 
-/* === TOKEN BAR (bottom summary) === */
+.navSpacer {
+  flex: 1;
+}
+
+/* === TOKEN BAR === */
 .tokenBar {
   position: sticky;
   bottom: 0;
@@ -161,75 +323,77 @@
   width: 100%;
   background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
   color: var(--text-inverse);
-  padding: 1.4rem 2rem;
-  border-radius: 0 0 20px 20px;
+  padding: 1.2rem 2rem;
+  border-radius: 0 0 24px 24px;
   box-shadow: 0 -3px 15px var(--shadow-color);
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
   z-index: 20;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
-
-  p {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--tertiary-color);
-    letter-spacing: 0.3px;
-    margin-bottom: 0.3rem;
-    opacity: 0.95;
-  }
-
-  h4 {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--text-inverse);
-
-    span {
-      color: var(--tertiary-color);
-      margin-left: 0.3rem;
-    }
-  }
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 -4px 18px rgba(50, 214, 154, 0.25);
-  }
 }
 
-/* === ANIMATIONS === */
-@media (prefers-reduced-motion: no-preference) {
-  .step {
-    transform-origin: top center;
-    transition: all 0.3s ease-in-out;
+.tokenDetails {
+  display: flex;
+  gap: 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.tokenTotal {
+  font-size: 1.2rem;
+  font-weight: 800;
+
+  strong {
+    color: var(--tertiary-color);
+    margin: 0 0.2rem;
   }
 }
 
 /* === RESPONSIVENESS === */
 @media (max-width: 768px) {
   .form {
-    padding: 1.5rem 1.4rem 5rem;
+    padding: 1.5rem 1.2rem 5rem;
+    border-radius: 16px;
+  }
+
+  .header h2 {
+    font-size: 1.8rem;
   }
 
   .step {
-    padding: 1.2rem;
+    padding: 1.4rem;
+  }
+
+  .progressBar {
+    gap: 0.3rem;
+  }
+
+  .progressLabel {
+    font-size: 0.65rem;
+  }
+
+  .progressCircle {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
   }
 
   .tokenBar {
-    padding: 1.2rem 1.4rem;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.4rem;
+    padding: 1rem 1.2rem;
     border-radius: 0;
   }
 
-  .tokenBar p {
-    font-size: 0.95rem;
+  .tokenDetails {
+    gap: 0.8rem;
+    font-size: 0.8rem;
   }
 
-  .tokenBar h4 {
-    font-size: 1.2rem;
+  .tokenTotal {
+    font-size: 1rem;
   }
 }

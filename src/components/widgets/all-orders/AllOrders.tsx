@@ -3,18 +3,21 @@
 import React from "react";
 import {useAllOrders} from "@/context/AllOrdersContext";
 import styles from "./AllOrders.module.scss";
-import {FaFileDownload, FaRegClock, FaCoins} from "react-icons/fa";
+import {FaFileDownload, FaRegClock, FaCoins, FaHourglassHalf, FaCheckCircle, FaSpinner} from "react-icons/fa";
 import ButtonUI from "@/components/ui/button/ButtonUI";
 import Link from "next/link";
-import {downloadCVPDF} from "@/components/features/pdf-extractor/PDFExtractorCV";
 import {downloadUniversalPDF} from "@/pdf-creator/PdfCreator";
-import {CVOrderType} from "@/backend/types/cv.types";
 import {UniversalOrderType} from "@/backend/types/universal.types";
+
+const EXPERT_STATUS_CONFIG: Record<string, { label: string; className: string; icon: React.ReactNode }> = {
+    pending: { label: "Pending", className: "expertPending", icon: <FaHourglassHalf /> },
+    in_progress: { label: "In Progress", className: "expertInProgress", icon: <FaSpinner /> },
+    done: { label: "Completed", className: "expertDone", icon: <FaCheckCircle /> },
+};
 
 const AllOrders: React.FC = () => {
     const {aiOrders, loading, refreshOrders} = useAllOrders();
 
-    // ❇️ Universal orders — переіменовуємо для зручності
     const universalOrders = aiOrders as unknown as UniversalOrderType[];
 
     const formatDate = (dateStr: string) => {
@@ -31,31 +34,11 @@ const AllOrders: React.FC = () => {
         return date.toLocaleTimeString("en-US", {hour: "2-digit", minute: "2-digit"});
     };
 
-    const formatId = (id: string) => id.slice(-6);
-
-    const handleDownloadCV = async (order: CVOrderType) => {
-        try {
-            if (order.extrasData && Object.keys(order.extrasData).length > 0) {
-                await downloadCVPDF(order);
-                return;
-            }
-            const res = await fetch(`/api/cv/get-order?id=${order._id}`, {
-                method: "GET",
-                headers: {"Content-Type": "application/json"},
-            });
-            const data = await res.json();
-            if (data?.order) await downloadCVPDF(data.order);
-        } catch (err: any) {
-            console.error("❌ CV Download error:", err.message);
-        }
-    };
+    const formatId = (id: string) => String(id).slice(-6);
 
     const handleDownloadUniversal = async (order: UniversalOrderType) => {
         try {
-            console.log("🧾 ORDER BEFORE DOWNLOAD:", order);
-
             if (order.extrasData && Object.keys(order.extrasData).length > 0) {
-                console.log("✅ EXTRAS FROM MEMORY:", order.extrasData);
                 await downloadUniversalPDF(order);
                 return;
             }
@@ -66,14 +49,11 @@ const AllOrders: React.FC = () => {
             });
             const data = await res.json();
 
-            console.log("🌐 ORDER FROM API:", data?.order);
-
             if (data?.order) await downloadUniversalPDF(data.order);
         } catch (err: any) {
-            console.error("❌ Training Download error:", err.message);
+            console.error("Download error:", err.message);
         }
     };
-
 
     if (loading) return <p className={styles.loading}>Loading orders...</p>;
 
@@ -90,6 +70,9 @@ const AllOrders: React.FC = () => {
             </div>
         );
 
+    const aiGeneratedOrders = universalOrders.filter((o) => o.planType !== "reviewed");
+    const expertOrders = universalOrders.filter((o) => o.planType === "reviewed");
+
     return (
         <section className={styles.ordersSection}>
             <div className={styles.header}>
@@ -100,23 +83,78 @@ const AllOrders: React.FC = () => {
                 </ButtonUI>
             </div>
 
-            {/* ====================== UNIVERSAL ORDERS ====================== */}
-            {universalOrders.length > 0 && (
+            {/* ============ EXPERT ORDERS ============ */}
+            {expertOrders.length > 0 && (
                 <>
-                    <h4 className={styles.sectionTitle}>Training Orders</h4>
+                    <h4 className={styles.sectionTitle}>Expert-Written Plans</h4>
                     <div className={styles.ordersGrid}>
-                        {universalOrders.map((order) => (
-                            <div key={order._id} className={styles.card}>
+                        {expertOrders.map((order) => {
+                            const statusKey = order.status || "pending";
+                            const statusCfg = EXPERT_STATUS_CONFIG[statusKey] || EXPERT_STATUS_CONFIG.pending;
+                            const isDone = statusKey === "done";
+                            const pdfUrl = (order as any).pdfUrl;
+
+                            return (
+                                <div key={String(order._id)} className={styles.card}>
+                                    <div className={styles.cardHeader}>
+                                        <div className={styles.idWrapper}>
+                                            <span className={styles.orderId}>#{formatId(String(order._id))}</span>
+                                            <span className={`${styles.badge} ${styles[statusCfg.className]}`}>
+                                                {statusCfg.icon}
+                                                <span style={{ marginLeft: 4 }}>{statusCfg.label}</span>
+                                            </span>
+                                        </div>
+                                        {isDone && pdfUrl && (
+                                            <a
+                                                href={pdfUrl}
+                                                download
+                                                className={styles.downloadBtn}
+                                                aria-label="Download PDF"
+                                            >
+                                                <FaFileDownload/>
+                                            </a>
+                                        )}
+                                    </div>
+
+                                    <div className={styles.cardBody}>
+                                        <div className={styles.meta}>
+                                            <span className={styles.date}>
+                                                <FaRegClock/> {formatDate(order.createdAt as any)} at {formatTime(order.createdAt as any)}
+                                            </span>
+                                            <span className={styles.tokens}>
+                                                <FaCoins/> -{order.totalTokens} tokens
+                                            </span>
+                                        </div>
+                                        <p className={styles.extraInfo}>
+                                            Category: <strong>{order.category}</strong> | Language:{" "}
+                                            {order.language || "English"}
+                                        </p>
+                                        {!isDone && (
+                                            <p className={styles.expertMessage}>
+                                                Your plan is being prepared by an expert. You'll be notified when it's ready.
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </>
+            )}
+
+            {/* ============ AI ORDERS ============ */}
+            {aiGeneratedOrders.length > 0 && (
+                <>
+                    <h4 className={styles.sectionTitle}>AI-Generated Plans</h4>
+                    <div className={styles.ordersGrid}>
+                        {aiGeneratedOrders.map((order) => (
+                            <div key={String(order._id)} className={styles.card}>
                                 <div className={styles.cardHeader}>
                                     <div className={styles.idWrapper}>
-                                        <span className={styles.orderId}>#{formatId(order._id)}</span>
-                                        <span
-                                            className={`${styles.badge} ${
-                                                order.planType === "reviewed" ? styles.manager : styles.instant
-                                            }`}
-                                        >
-                      {order.planType === "reviewed" ? "Reviewed" : "Instant"}
-                    </span>
+                                        <span className={styles.orderId}>#{formatId(String(order._id))}</span>
+                                        <span className={`${styles.badge} ${styles.instant}`}>
+                                            Instant
+                                        </span>
                                     </div>
                                     <button
                                         className={styles.downloadBtn}
@@ -130,12 +168,12 @@ const AllOrders: React.FC = () => {
                                 <div className={styles.cardBody}>
                                     <p className={styles.email}>{order.email}</p>
                                     <div className={styles.meta}>
-                    <span className={styles.date}>
-                      <FaRegClock/> {formatDate(order.createdAt)} at {formatTime(order.createdAt)}
-                    </span>
+                                        <span className={styles.date}>
+                                            <FaRegClock/> {formatDate(order.createdAt as any)} at {formatTime(order.createdAt as any)}
+                                        </span>
                                         <span className={styles.tokens}>
-                      <FaCoins/> -{order.totalTokens} tokens
-                    </span>
+                                            <FaCoins/> -{order.totalTokens} tokens
+                                        </span>
                                     </div>
                                     <p className={styles.extraInfo}>
                                         Category: <strong>{order.category}</strong> | Language:{" "}

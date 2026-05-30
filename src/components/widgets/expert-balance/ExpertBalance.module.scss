@@ -1,0 +1,194 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.balanceCards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.balanceCard {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.balanceHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  h3 {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+}
+
+.icon {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  background: var(--quaternary-color);
+  padding: 0.6rem;
+  border-radius: 14px;
+}
+
+.amount {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary-color);
+}
+
+.withdrawBtn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.statCard {
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  border-radius: 20px;
+  padding: 2rem;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    opacity: 0.85;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.statAmount {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.statNote {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-top: 0.5rem;
+}
+
+.historySection {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-color);
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.loadingText,
+.emptyText {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.historyItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  background: var(--surface-muted);
+  border-radius: 10px;
+}
+
+.historyMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.historyAmount {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.historyNet {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.historyMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+
+.historyDate {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.historyStatus {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.status_pending {
+  background: rgba(250, 204, 21, 0.15);
+  color: #ca8a04;
+}
+
+.status_processed {
+  background: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+}
+
+.status_rejected {
+  background: rgba(239, 68, 68, 0.15);
+  color: #dc2626;
+}

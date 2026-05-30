@@ -25,7 +25,6 @@ const Header: React.FC = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // динамічні стилі при скролі
     const scrolledStyle: React.CSSProperties = {};
     if (isScrolled && headerStyles.type !== "default") {
         switch (headerStyles.scrollMode) {
@@ -38,6 +37,8 @@ const Header: React.FC = () => {
                 break;
         }
     }
+
+    const isExpert = user?.role === "expert";
 
     return (
         <>
@@ -54,7 +55,6 @@ const Header: React.FC = () => {
                 transition={{duration: 0.6, ease: "easeOut"}}
             >
                 <div className={styles.headerInner}>
-                    {/* Ліва частина — логотип */}
                     <a href={headerContent.logo.href} className={styles.logo}>
                         <Image
                             width={190}
@@ -64,53 +64,36 @@ const Header: React.FC = () => {
                         />
                     </a>
 
-                    {/* Центр — навігація */}
                     <nav className={styles.nav}>
                         {headerContent.links.map((link) => (
                             <a key={link.label} href={link.href} className={styles.link}>
                                 {link.label}
                             </a>
                         ))}
-                        {/*{user && (
-                            <a href="/dashboard" className={styles.link}>
-                                Dashboard
+                        {isExpert && (
+                            <a href="/expert" className={styles.link}>
+                                Expert Panel
                             </a>
-                        )}*/}
+                        )}
                     </nav>
-
-                    {/* Права частина — кнопки */}
-                    {/*<div className={styles.actionsNav}>
-                        <AuthButtons/>
-                        <div className={styles.currencySwitch}>
-                            <div
-                                className={`${styles.toggle} ${currency === "EUR" ? styles.active : ""}`}
-                                onClick={() => setCurrency(currency === "EUR" ? "USD" : "EUR")}
-                                >
-                                <span className={styles.labelLeft}>EUR</span>
-                                <span className={styles.labelRight}>EUR</span>
-                                <div className={styles.thumb}/>
-                            </div>
-                        </div>
-                    </div>*/}
 
                     <div className={styles.actionsNav}>
                         <AuthButtons />
 
-                        <div className={styles.currencySwitch}>
-                            <select
-                                value={currency}
-                                onChange={(e) => setCurrency(e.target.value)}
-                                className={styles.currencySelect}
-                            >
-                                <option value="EUR">EUR</option>
-                                <option value="USD">USD</option>
-                            </select>
-                        </div>
-
+                        {!isExpert && (
+                            <div className={styles.currencySwitch}>
+                                <select
+                                    value={currency}
+                                    onChange={(e) => setCurrency(e.target.value)}
+                                    className={styles.currencySelect}
+                                >
+                                    <option value="EUR">EUR</option>
+                                    <option value="USD">USD</option>
+                                </select>
+                            </div>
+                        )}
                     </div>
 
-
-                    {/* Mobile menu */}
                     <div className={styles.menuButton}>
                         <IconButton
                             onClick={() => setDrawerOpen(true)}

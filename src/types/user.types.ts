@@ -1,4 +1,4 @@
-export type UserRole = "user" | "admin";
+export type UserRole = "user" | "admin" | "expert";
 
 export interface IUser {
     _id: string;
@@ -14,6 +14,12 @@ export interface IUser {
     postCode?: string;
     role: UserRole;
     tokens: number | null;
+    specializations: string[];
+    expertBio: string;
+    expertBalance: number;
+    expertAvatar: string;
+    isExpertVerified: boolean;
+    paymentDetails: string;
     createdAt: string;
     updatedAt: string;
 }

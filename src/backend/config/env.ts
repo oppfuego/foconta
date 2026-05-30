@@ -1,6 +1,6 @@
 export function env(name: string, fallback?: string): string {
     const value = process.env[name] ?? fallback;
-    if (!value) {
+    if (value === undefined || value === null) {
         throw new Error(`${name} is not defined in environment variables.`);
     }
     return value;

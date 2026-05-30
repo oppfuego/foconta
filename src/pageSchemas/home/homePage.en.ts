@@ -373,6 +373,16 @@ const schema: PageSchema = {
             ],
         },
 
+        // 🤝 EXPERT CTA
+        {
+            type: "custom",
+            component: "ExpertCTA",
+            title: "Are You a Business Expert?",
+            description: `Join ${COMPANY_NAME}, help entrepreneurs build their business plans, and earn money for your expertise. Set your own schedule and work from anywhere.`,
+            buttonText: "Become an Expert",
+            buttonLink: "/sign-up?role=expert",
+        },
+
         // ❓ FAQ
         {
             type: "faq",
