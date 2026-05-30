@@ -106,7 +106,7 @@ const AllOrders: React.FC = () => {
                                         </div>
                                         {isDone && pdfUrl && (
                                             <a
-                                                href={pdfUrl}
+                                                href={`/api/expert/orders/${String(order._id)}/pdf`}
                                                 download
                                                 className={styles.downloadBtn}
                                                 aria-label="Download PDF"

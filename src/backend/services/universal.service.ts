@@ -346,6 +346,7 @@ export const universalService = {
     async getOrders(userId: string) {
         await connectDB();
         const docs = await UniversalOrder.find({ userId })
+            .select("-pdfData")
             .sort({ createdAt: -1 })
             .lean<UniversalOrderDocument[]>({ virtuals: true });
 

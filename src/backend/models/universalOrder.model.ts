@@ -20,6 +20,8 @@ export interface UniversalOrderDocument extends Document {
 
     expertId?: mongoose.Types.ObjectId | null;
     pdfUrl?: string | null;
+    pdfData?: string | null;
+    pdfFileName?: string | null;
 }
 
 const universalOrderSchema = new Schema<UniversalOrderDocument>(
@@ -44,6 +46,8 @@ const universalOrderSchema = new Schema<UniversalOrderDocument>(
 
         expertId: { type: Schema.Types.ObjectId, ref: "User", default: null },
         pdfUrl: { type: String, default: null },
+        pdfData: { type: String, default: null },
+        pdfFileName: { type: String, default: null },
     },
     { strict: false }
 );

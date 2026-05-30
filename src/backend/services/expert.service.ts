@@ -6,13 +6,12 @@ import { mailService } from "./mail.service";
 import { ENV } from "../config/env";
 import { TOKENS_TO_CURRENCY_RATE } from "@/resources/pricing";
 import mongoose from "mongoose";
-import { promises as fs } from "fs";
-import path from "path";
 
 export const expertService = {
     async getOrders(expertId: string) {
         await connectDB();
         const orders = await UniversalOrder.find({ expertId })
+            .select("-pdfData")
             .sort({ createdAt: -1 })
             .lean();
         return orders.map((d: any) => {
@@ -38,15 +37,11 @@ export const expertService = {
         if (!order) throw new Error("Order not found or not assigned to you");
         if (order.status !== "in_progress") throw new Error("Order is not in progress");
 
-        const uploadsDir = path.join(process.cwd(), "public", "uploads", "expert-pdfs");
-        await fs.mkdir(uploadsDir, { recursive: true });
-        const fileName = `${Date.now()}-${pdfFileName}`;
-        const filePath = path.join(uploadsDir, fileName);
-        await fs.writeFile(filePath, pdfBuffer);
-
-        const pdfUrl = `/uploads/expert-pdfs/${fileName}`;
+        const base64 = pdfBuffer.toString("base64");
+        (order as any).pdfData = base64;
+        (order as any).pdfFileName = pdfFileName;
         order.status = "done";
-        (order as any).pdfUrl = pdfUrl;
+        (order as any).pdfUrl = "stored";
         order.readyAt = new Date();
         await order.save();
 
