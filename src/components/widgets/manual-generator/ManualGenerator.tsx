@@ -11,7 +11,8 @@ import ButtonUI from "@/components/ui/button/ButtonUI";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./ManualGenerator.module.scss";
 import { useAlert } from "@/context/AlertContext";
-import { useUser } from "@/context/UserContext";
+import { useUser, useUserContext } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 import { EXPERT_SPECIALIZATIONS } from "@/resources/specializations";
 import { FaCheck, FaRobot, FaUserTie } from "react-icons/fa";
 
@@ -84,6 +85,8 @@ const stepVariants = {
 const BusinessGeneratorForm = () => {
     const { showAlert } = useAlert();
     const user = useUser();
+    const { refreshUser } = useUserContext();
+    const router = useRouter();
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const totalSteps = STEP_LABELS.length;
@@ -160,12 +163,14 @@ const BusinessGeneratorForm = () => {
                         } else {
                             showAlert("Success", "Business plan generated successfully!", "success");
                         }
+                        refreshUser();
+                        setTimeout(() => router.push("/profile"), 1500);
                     } else {
                         showAlert("Error", data.message || "Failed to generate", "error");
+                        setLoading(false);
                     }
                 } catch {
                     showAlert("Error", "Network or server issue", "error");
-                } finally {
                     setLoading(false);
                 }
             }}

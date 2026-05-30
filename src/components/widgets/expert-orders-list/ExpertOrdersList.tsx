@@ -90,6 +90,9 @@ export default function ExpertOrdersList() {
             });
             if (res.ok) {
                 await fetchOrders();
+            } else {
+                const data = await res.json().catch(() => ({}));
+                console.error("Upload failed:", res.status, data.message);
             }
         } catch (err) {
             console.error("Failed to complete order:", err);
