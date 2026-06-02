@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { useUser } from "@/context/UserContext";
 import { useAlert } from "@/context/AlertContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import ButtonUI from "@/components/ui/button/ButtonUI";
@@ -15,11 +14,9 @@ interface WithdrawalFormProps {
 }
 
 export default function WithdrawalForm({ maxAmount, onClose, onSuccess }: WithdrawalFormProps) {
-    const user = useUser();
     const { showAlert } = useAlert();
     const { sign, currency, convertFromGBP } = useCurrency();
     const [amount, setAmount] = useState("");
-    const [paymentDetails, setPaymentDetails] = useState(user?.paymentDetails || "");
     const [loading, setLoading] = useState(false);
     const [mounted, setMounted] = useState(false);
 
@@ -42,10 +39,6 @@ export default function WithdrawalForm({ maxAmount, onClose, onSuccess }: Withdr
             showAlert("Invalid amount", "", "error");
             return;
         }
-        if (!paymentDetails.trim()) {
-            showAlert("Payment details are required", "", "error");
-            return;
-        }
 
         setLoading(true);
         try {
@@ -55,7 +48,6 @@ export default function WithdrawalForm({ maxAmount, onClose, onSuccess }: Withdr
                 credentials: "include",
                 body: JSON.stringify({
                     amount: numAmount,
-                    paymentDetails: paymentDetails.trim(),
                 }),
             });
             const data = await res.json();
@@ -99,17 +91,6 @@ export default function WithdrawalForm({ maxAmount, onClose, onSuccess }: Withdr
                         {!isEur && numAmount > 0 && (
                             <span className={styles.convertedHint}>≈ {fmtConverted(numAmount)} at current rate</span>
                         )}
-                    </div>
-
-                    <div className={styles.field}>
-                        <label>Payment Details (IBAN / Card Number)</label>
-                        <input
-                            type="text"
-                            value={paymentDetails}
-                            onChange={(e) => setPaymentDetails(e.target.value)}
-                            placeholder="e.g. DE89 3704 0044 0532 0130 00"
-                            className={styles.input}
-                        />
                     </div>
 
                     {numAmount > 0 && (

@@ -5,7 +5,6 @@ export interface WithdrawalDocument extends Document {
     amount: number;
     commission: number;
     netAmount: number;
-    paymentDetails: string;
     status: "pending" | "processed" | "rejected";
     createdAt: Date;
     processedAt?: Date;
@@ -17,7 +16,6 @@ const withdrawalSchema = new Schema<WithdrawalDocument>(
         amount: { type: Number, required: true },
         commission: { type: Number, required: true },
         netAmount: { type: Number, required: true },
-        paymentDetails: { type: String, required: true },
         status: {
             type: String,
             enum: ["pending", "processed", "rejected"],

@@ -175,7 +175,6 @@ export const mailService = {
         amount: number;
         commission: number;
         netAmount: number;
-        paymentDetails: string;
         withdrawalId: string;
     }) {
         const subject = `Withdrawal Request from ${expertDetails.expertName}`;
@@ -184,7 +183,6 @@ export const mailService = {
             `Amount: €${withdrawalDetails.amount.toFixed(2)}`,
             `Commission (20%): €${withdrawalDetails.commission.toFixed(2)}`,
             `Net payout: €${withdrawalDetails.netAmount.toFixed(2)}`,
-            `Payment details: ${withdrawalDetails.paymentDetails}`,
             `Withdrawal ID: ${withdrawalDetails.withdrawalId}`,
         ].join("\n");
         const html = buildSimpleHtml(subject, "Withdrawal Request:", [
@@ -192,7 +190,6 @@ export const mailService = {
             `Amount: €${withdrawalDetails.amount.toFixed(2)}`,
             `Commission (20%): €${withdrawalDetails.commission.toFixed(2)}`,
             `Net payout: €${withdrawalDetails.netAmount.toFixed(2)}`,
-            `Payment details: ${withdrawalDetails.paymentDetails}`,
             `Withdrawal ID: ${withdrawalDetails.withdrawalId}`,
         ]);
         try {

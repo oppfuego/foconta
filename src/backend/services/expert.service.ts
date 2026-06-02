@@ -155,13 +155,12 @@ export const expertService = {
         return Withdrawal.find({ expertId }).sort({ createdAt: -1 }).lean();
     },
 
-    async requestWithdrawal(expertId: string, amount: number, paymentDetails: string) {
+    async requestWithdrawal(expertId: string, amount: number) {
         await connectDB();
         const expert = await User.findById(expertId);
         if (!expert || expert.role !== "expert") throw new Error("Expert not found");
         if (amount <= 0) throw new Error("Invalid amount");
         if (amount > (expert.expertBalance || 0)) throw new Error("Insufficient balance");
-        if (!paymentDetails.trim()) throw new Error("Payment details are required");
 
         const commission = amount * 0.2;
         const netAmount = amount * 0.8;
@@ -174,7 +173,6 @@ export const expertService = {
             amount,
             commission,
             netAmount,
-            paymentDetails: paymentDetails.trim(),
             status: "pending",
         });
 
@@ -189,7 +187,6 @@ export const expertService = {
                     amount,
                     commission,
                     netAmount,
-                    paymentDetails: paymentDetails.trim(),
                     withdrawalId: withdrawal._id.toString(),
                 }
             ).catch((e) => console.error("[expert] Withdrawal admin email failed:", e));

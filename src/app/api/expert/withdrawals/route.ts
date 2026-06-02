@@ -37,11 +37,10 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: "Expert access only" }, { status: 403 });
         }
 
-        const { amount, paymentDetails } = await req.json();
+        const { amount } = await req.json();
         const withdrawal = await expertService.requestWithdrawal(
             payload.sub,
-            amount,
-            paymentDetails
+            amount
         );
         return NextResponse.json({ withdrawal });
     } catch (err: any) {
