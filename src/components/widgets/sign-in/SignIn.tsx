@@ -8,6 +8,7 @@ import {
     signInInitialValues,
     signInOnSubmit
 } from "@/validationSchemas/sign-in/schema";
+import { useUserContext } from "@/context/UserContext";
 import FormUI from "@/components/ui/form/FormUI";
 import Link from "next/link";
 import styles from "./SignIn.module.scss";
@@ -17,6 +18,7 @@ export type SignInValues = { email: string; password: string };
 export default function SignInPage() {
     const { showAlert } = useAlert();
     const router = useRouter();
+    const { refreshUser } = useUserContext();
 
     return (
         <div>
@@ -24,7 +26,7 @@ export default function SignInPage() {
                 initialValues={signInInitialValues}
                 validate={signInValidation}
                 onSubmit={async (values, { setSubmitting }: FormikHelpers<SignInValues>) =>
-                    signInOnSubmit(values, { setSubmitting }, showAlert, router)
+                    signInOnSubmit(values, { setSubmitting }, showAlert, router, refreshUser)
                 }
             >
                 {({ isSubmitting }) => (

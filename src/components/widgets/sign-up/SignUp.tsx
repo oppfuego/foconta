@@ -14,6 +14,7 @@ import SelectUI from "@/components/ui/select/SelectUI";
 import ButtonUI from "@/components/ui/button/ButtonUI";
 import { COUNTRY_OPTIONS } from "@/resources/countries";
 import { EXPERT_SPECIALIZATIONS } from "@/resources/specializations";
+import { useUserContext } from "@/context/UserContext";
 import styles from "./SignUp.module.scss";
 
 export type SignUpValues = {
@@ -32,12 +33,12 @@ export type SignUpValues = {
     role: "user" | "expert";
     specializations: string[];
     expertBio: string;
-    paymentDetails: string;
 };
 
 export default function SignUpPage() {
     const { showAlert } = useAlert();
     const router = useRouter();
+    const { refreshUser } = useUserContext();
     const searchParams = useSearchParams();
     const initialRole = searchParams.get("role") === "expert" ? "expert" : "user";
 
@@ -46,7 +47,6 @@ export default function SignUpPage() {
         role: initialRole,
         specializations: [],
         expertBio: "",
-        paymentDetails: "",
     };
 
     return (
@@ -56,7 +56,7 @@ export default function SignUpPage() {
             onSubmit={async (
                 values,
                 { setSubmitting }: FormikHelpers<SignUpValues>
-            ) => signUpOnSubmit(values, { setSubmitting }, showAlert, router)}
+            ) => signUpOnSubmit(values, { setSubmitting }, showAlert, router, refreshUser)}
         >
             {({ isSubmitting, values, setFieldValue }) => {
                 const isExpert = values.role === "expert";
@@ -151,12 +151,6 @@ export default function SignUpPage() {
                                             />
                                         </div>
 
-                                        <InputUI
-                                            name="paymentDetails"
-                                            type="text"
-                                            placeholder="Payment details (IBAN or card number) — optional"
-                                            formik
-                                        />
                                     </div>
                                 )}
 

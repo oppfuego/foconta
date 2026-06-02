@@ -18,7 +18,8 @@ export async function signInOnSubmit(
     values: SignInValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
     showAlert: (msg: string, desc?: string, severity?: AlertColor) => void,
-    router: { replace: (url: string) => void; refresh: () => void }
+    router: { replace: (url: string) => void; refresh: () => void },
+    refreshUser?: () => Promise<void>
 ) {
     try {
         const res = await fetch("/api/auth/login", {
@@ -32,12 +33,12 @@ export async function signInOnSubmit(
 
         if (res.ok && data?.user) {
             showAlert("Login successful!", "", "success");
+            if (refreshUser) await refreshUser();
             if (data.user.role === "expert") {
                 router.replace("/expert");
             } else {
                 router.replace("/");
             }
-            router.refresh();
         } else {
             showAlert(data?.message || "Login failed", "", "error");
         }

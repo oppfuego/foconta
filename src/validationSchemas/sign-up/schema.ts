@@ -2,7 +2,7 @@ import { AlertColor } from "@mui/material/Alert";
 import { RESTRICTED_COUNTRY_NAMES, isAllowedCountry } from "@/resources/countries";
 import type { SignUpValues } from "@/components/widgets/sign-up/SignUp";
 
-export const signUpInitialValues: Omit<SignUpValues, "role" | "specializations" | "expertBio" | "paymentDetails"> = {
+export const signUpInitialValues: Omit<SignUpValues, "role" | "specializations" | "expertBio"> = {
     firstName: "",
     lastName: "",
     dateOfBirth: "",
@@ -105,7 +105,6 @@ function buildPayload(values: SignUpValues) {
             ...base,
             specializations: values.specializations,
             expertBio: values.expertBio || "",
-            paymentDetails: values.paymentDetails || "",
         };
     }
 
@@ -116,7 +115,8 @@ export const signUpOnSubmit = async (
     values: SignUpValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
     showAlert: (msg: string, desc?: string, severity?: AlertColor) => void,
-    router: { replace: (url: string) => void; refresh: () => void }
+    router: { replace: (url: string) => void; refresh: () => void },
+    refreshUser?: () => Promise<void>
 ) => {
     try {
         const res = await fetch("/api/auth/register", {
@@ -128,12 +128,12 @@ export const signUpOnSubmit = async (
 
         if (res.ok && data?.user) {
             showAlert("Registration successful!", "", "success");
+            if (refreshUser) await refreshUser();
             if (data.user.role === "expert") {
                 router.replace("/expert");
             } else {
                 router.replace("/");
             }
-            router.refresh();
         } else {
             showAlert(data?.message || "Registration failed", "", "error");
         }
