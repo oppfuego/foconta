@@ -10,7 +10,14 @@ import mongoose from "mongoose";
 export const expertService = {
     async getOrders(expertId: string) {
         await connectDB();
-        const orders = await UniversalOrder.find({ expertId })
+        const orders = await UniversalOrder.find({
+            planType: "reviewed",
+            $or: [
+                { expertId: null, status: "pending" },
+                { expertId: { $exists: false }, status: "pending" },
+                { expertId: new mongoose.Types.ObjectId(expertId) },
+            ],
+        })
             .select("-pdfData")
             .sort({ createdAt: -1 })
             .lean();
@@ -22,12 +29,42 @@ export const expertService = {
 
     async takeOrder(orderId: string, expertId: string) {
         await connectDB();
-        const order = await UniversalOrder.findOne({ _id: orderId, expertId });
-        if (!order) throw new Error("Order not found or not assigned to you");
+        const order = await UniversalOrder.findOne({ _id: orderId, planType: "reviewed" });
+        if (!order) throw new Error("Order not found");
         if (order.status !== "pending") throw new Error("Order is not in pending status");
+        if (order.expertId && order.expertId.toString() !== expertId) {
+            throw new Error("Order already taken by another expert");
+        }
 
+        order.expertId = new mongoose.Types.ObjectId(expertId);
         order.status = "in_progress";
         await order.save();
+
+        const expert = await User.findById(expertId);
+        if (expert) {
+            mailService.sendExpertOrderAssignedEmail(expert.email, {
+                orderId: order._id.toString(),
+                category: order.category,
+                clientEmail: order.email,
+            }).catch((e: any) => console.error("[expert] Assignment email failed:", e));
+        }
+
+        if (ENV.SMTP_USER && expert) {
+            mailService.sendAdminNewExpertOrderEmail(
+                ENV.SMTP_USER,
+                {
+                    orderId: order._id.toString(),
+                    category: order.category,
+                    clientEmail: order.email,
+                },
+                {
+                    expertName: expert.name || "Unknown",
+                    expertEmail: expert.email || "Unknown",
+                    action: "taken",
+                }
+            ).catch((e: any) => console.error("[expert] Admin take email failed:", e));
+        }
+
         return order.toObject();
     },
 
@@ -169,33 +206,5 @@ export const expertService = {
         ).catch((e) => console.error("[expert] Withdrawal confirmation email failed:", e));
 
         return withdrawal.toObject();
-    },
-
-    async assignOrderToExpert(category: string): Promise<string | null> {
-        await connectDB();
-
-        let experts = await User.find({
-            role: "expert",
-            specializations: { $in: [category] },
-        }).lean();
-
-        if (experts.length === 0) {
-            experts = await User.find({ role: "expert" }).lean();
-        }
-
-        if (experts.length === 0) return null;
-
-        const counts = await Promise.all(
-            experts.map(async (expert) => {
-                const activeCount = await UniversalOrder.countDocuments({
-                    expertId: expert._id,
-                    status: { $in: ["pending", "in_progress"] },
-                });
-                return { expertId: expert._id.toString(), activeCount };
-            })
-        );
-
-        counts.sort((a, b) => a.activeCount - b.activeCount);
-        return counts[0].expertId;
     },
 };

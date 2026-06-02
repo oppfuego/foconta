@@ -80,18 +80,16 @@ const Header: React.FC = () => {
                     <div className={styles.actionsNav}>
                         <AuthButtons />
 
-                        {!isExpert && (
-                            <div className={styles.currencySwitch}>
-                                <select
-                                    value={currency}
-                                    onChange={(e) => setCurrency(e.target.value)}
-                                    className={styles.currencySelect}
-                                >
-                                    <option value="EUR">EUR</option>
-                                    <option value="USD">USD</option>
-                                </select>
-                            </div>
-                        )}
+                        <div className={styles.currencySwitch}>
+                            <select
+                                value={currency}
+                                onChange={(e) => setCurrency(e.target.value)}
+                                className={styles.currencySelect}
+                            >
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div className={styles.menuButton}>

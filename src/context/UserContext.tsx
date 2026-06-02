@@ -5,11 +5,13 @@ import {IUser, Nullable} from "@/types/user.types";
 interface UserContextType {
     user: Nullable<IUser>;
     refreshUser: () => Promise<void>;
+    clearUser: () => void;
 }
 
 const UserContext = createContext<UserContextType>({
     user: null,
     refreshUser: async () => {},
+    clearUser: () => {},
 });
 
 export function useUser(): Nullable<IUser> {
@@ -44,8 +46,12 @@ export function UserProvider({
         }
     }, []);
 
+    const clearUser = useCallback(() => {
+        setUser(null);
+    }, []);
+
     return (
-        <UserContext.Provider value={{ user, refreshUser }}>
+        <UserContext.Provider value={{ user, refreshUser, clearUser }}>
             {children}
         </UserContext.Provider>
     );

@@ -65,6 +65,7 @@ export default function WithdrawalForm({ maxAmount, onClose, onSuccess }: Withdr
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                 <h3>Request Withdrawal</h3>
+                <p className={styles.eurNote}>Withdrawals are processed in EUR</p>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.field}>
                         <label>Amount (max: €{maxAmount.toFixed(2)})</label>

@@ -1,10 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useUserContext } from "@/context/UserContext";
 import type { AuthError, LogoutResponse } from "@/backend/types/auth.types";
 
 export function useAuthActions() {
     const router = useRouter();
+    const { clearUser } = useUserContext();
 
     async function logout(): Promise<boolean> {
         try {
@@ -16,8 +18,8 @@ export function useAuthActions() {
             const data = (await res.json()) as LogoutResponse | AuthError;
 
             if (res.ok && "message" in data) {
+                clearUser();
                 router.replace("/");
-                router.refresh();
                 return true;
             }
         } catch (e) {
@@ -36,8 +38,8 @@ export function useAuthActions() {
             const data = (await res.json()) as LogoutResponse | AuthError;
 
             if (res.ok && "message" in data) {
+                clearUser();
                 router.replace("/");
-                router.refresh();
                 return true;
             }
         } catch (e) {

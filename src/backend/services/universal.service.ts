@@ -2,7 +2,7 @@ import { connectDB } from "../config/db";
 import { UniversalOrder, UniversalOrderDocument } from "../models/universalOrder.model";
 import { User } from "../models/user.model";
 import { transactionService } from "../services/transaction.service";
-import { expertService } from "../services/expert.service";
+
 import OpenAI from "openai";
 import { ENV } from "../config/env";
 import mongoose from "mongoose";
@@ -198,9 +198,6 @@ export const universalService = {
 
         // ========== EXPERT PATH (reviewed) ==========
         if (body.planType === "reviewed") {
-            const specialization = body.specialization || body.category || "general";
-            const expertId = await expertService.assignOrderToExpert(specialization);
-
             const orderDoc = {
                 userId: new mongoose.Types.ObjectId(userId),
                 email,
@@ -213,7 +210,7 @@ export const universalService = {
                 response: "",
                 extrasData: {},
                 status: "pending" as const,
-                expertId: expertId ? new mongoose.Types.ObjectId(expertId) : null,
+                expertId: null,
                 pdfUrl: null,
             };
 
@@ -222,35 +219,23 @@ export const universalService = {
                 userId,
                 email: user.email,
                 orderId: order._id?.toString?.(),
-                expertId,
                 category: orderDoc.category,
             });
 
-            if (expertId) {
-                User.findById(expertId).then((expert) => {
-                    if (expert) {
-                        mailService.sendExpertOrderAssignedEmail(expert.email, {
-                            orderId: order._id.toString(),
-                            category: body.category,
-                            clientEmail: email,
-                        }).catch((e) => console.error("[universal] Expert assign email failed:", e));
+            if (ENV.SMTP_USER) {
+                mailService.sendAdminNewExpertOrderEmail(
+                    ENV.SMTP_USER,
+                    {
+                        orderId: order._id.toString(),
+                        category: body.category,
+                        clientEmail: email,
+                    },
+                    {
+                        expertName: "Unassigned",
+                        expertEmail: "—",
+                        action: "created",
                     }
-                    if (ENV.SMTP_USER && expert) {
-                        mailService.sendAdminNewExpertOrderEmail(
-                            ENV.SMTP_USER,
-                            {
-                                orderId: order._id.toString(),
-                                category: body.category,
-                                clientEmail: email,
-                            },
-                            {
-                                expertName: expert.name || "Unknown",
-                                expertEmail: expert.email || "Unknown",
-                                action: "created",
-                            }
-                        ).catch((e) => console.error("[universal] Admin order email failed:", e));
-                    }
-                }).catch((e) => console.error("[universal] Expert lookup failed:", e));
+                ).catch((e) => console.error("[universal] Admin order email failed:", e));
             }
 
             mailService.sendOrderConfirmationEmail({

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { FaRegClock, FaUpload, FaPlay, FaCheck } from "react-icons/fa";
+import { useUser } from "@/context/UserContext";
 import ButtonUI from "@/components/ui/button/ButtonUI";
 import styles from "./ExpertOrdersList.module.scss";
 
@@ -14,6 +15,7 @@ interface ExpertOrder {
     planType: string;
     language?: string;
     status: string;
+    expertId?: string | null;
     pdfUrl?: string | null;
     createdAt: string;
 }
@@ -25,6 +27,7 @@ const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
 };
 
 export default function ExpertOrdersList() {
+    const user = useUser();
     const [orders, setOrders] = useState<ExpertOrder[]>([]);
     const [loading, setLoading] = useState(true);
     const [uploadingId, setUploadingId] = useState<string | null>(null);
@@ -116,15 +119,97 @@ export default function ExpertOrdersList() {
 
     if (loading) return <p className={styles.loading}>Loading orders...</p>;
 
+    const expertId = user?._id ? String(user._id) : null;
+    const availableOrders = orders.filter((o) => !o.expertId && o.status === "pending");
+    const myOrders = orders.filter((o) => o.expertId && String(o.expertId) === expertId);
+
     if (orders.length === 0) {
         return (
             <div className={styles.emptyState}>
                 <span className={styles.emptyIcon}>📋</span>
-                <p>No orders assigned to you yet.</p>
+                <p>No orders available yet.</p>
                 <p className={styles.emptySubtext}>New orders will appear here when clients request expert-written plans.</p>
             </div>
         );
     }
+
+    const renderOrderCard = (order: ExpertOrder) => {
+        const statusCfg = STATUS_CONFIG[order.status] || STATUS_CONFIG.pending;
+        const isAvailable = !order.expertId && order.status === "pending";
+
+        return (
+            <div key={order._id} className={`${styles.card} ${isAvailable ? styles.cardAvailable : ""}`}>
+                <div className={styles.cardHeader}>
+                    <div className={styles.idWrapper}>
+                        <span className={styles.orderId}>#{formatId(order._id)}</span>
+                        <span className={`${styles.badge} ${styles[statusCfg.className]}`}>
+                            {isAvailable ? "Available" : statusCfg.label}
+                        </span>
+                    </div>
+                </div>
+
+                <div className={styles.cardBody}>
+                    <p className={styles.clientEmail}>{order.email}</p>
+                    <p className={styles.category}>
+                        Category: <strong>{order.category}</strong>
+                    </p>
+                    {order.language && order.language !== "English" && (
+                        <p className={styles.language}>Language: {order.language}</p>
+                    )}
+                    <div className={styles.meta}>
+                        <span className={styles.date}>
+                            <FaRegClock /> {formatDate(order.createdAt)}
+                        </span>
+                        <span className={styles.tokens}>{order.totalTokens} tokens</span>
+                    </div>
+
+                    {order.fields && (
+                        <div className={styles.fieldsPreview}>
+                            {order.fields.businessName && (
+                                <p><strong>Business:</strong> {order.fields.businessName}</p>
+                            )}
+                            {order.fields.niche && (
+                                <p><strong>Niche:</strong> {order.fields.niche}</p>
+                            )}
+                            {order.fields.goal && (
+                                <p><strong>Goal:</strong> {order.fields.goal}</p>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                <div className={styles.cardActions}>
+                    {isAvailable && (
+                        <ButtonUI
+                            onClick={() => handleTakeOrder(order._id)}
+                            color="primary"
+                            size="sm"
+                            loading={takingId === order._id}
+                        >
+                            <FaPlay style={{ marginRight: 6 }} />
+                            Take Order
+                        </ButtonUI>
+                    )}
+                    {order.status === "in_progress" && (
+                        <ButtonUI
+                            onClick={() => handleUploadClick(order._id)}
+                            color="success"
+                            size="sm"
+                            loading={uploadingId === order._id}
+                        >
+                            <FaUpload style={{ marginRight: 6 }} />
+                            Upload PDF & Complete
+                        </ButtonUI>
+                    )}
+                    {order.status === "done" && (
+                        <div className={styles.completedBadge}>
+                            <FaCheck /> Completed
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    };
 
     return (
         <section className={styles.ordersSection}>
@@ -137,90 +222,30 @@ export default function ExpertOrdersList() {
             />
 
             <div className={styles.header}>
-                <h3>Your Assigned Orders</h3>
-                <p>Manage and complete client orders</p>
+                <h3>Orders</h3>
+                <p>Take available orders or manage your current work</p>
                 <ButtonUI onClick={fetchOrders} color="primary" size="sm">
                     Refresh
                 </ButtonUI>
             </div>
 
-            <div className={styles.ordersGrid}>
-                {orders.map((order) => {
-                    const statusCfg = STATUS_CONFIG[order.status] || STATUS_CONFIG.pending;
-                    return (
-                        <div key={order._id} className={styles.card}>
-                            <div className={styles.cardHeader}>
-                                <div className={styles.idWrapper}>
-                                    <span className={styles.orderId}>#{formatId(order._id)}</span>
-                                    <span className={`${styles.badge} ${styles[statusCfg.className]}`}>
-                                        {statusCfg.label}
-                                    </span>
-                                </div>
-                            </div>
+            {availableOrders.length > 0 && (
+                <>
+                    <h4 className={styles.sectionTitle}>Available Orders</h4>
+                    <div className={styles.ordersGrid}>
+                        {availableOrders.map(renderOrderCard)}
+                    </div>
+                </>
+            )}
 
-                            <div className={styles.cardBody}>
-                                <p className={styles.clientEmail}>{order.email}</p>
-                                <p className={styles.category}>
-                                    Category: <strong>{order.category}</strong>
-                                </p>
-                                {order.language && order.language !== "English" && (
-                                    <p className={styles.language}>Language: {order.language}</p>
-                                )}
-                                <div className={styles.meta}>
-                                    <span className={styles.date}>
-                                        <FaRegClock /> {formatDate(order.createdAt)}
-                                    </span>
-                                    <span className={styles.tokens}>{order.totalTokens} tokens</span>
-                                </div>
-
-                                {order.fields && (
-                                    <div className={styles.fieldsPreview}>
-                                        {order.fields.businessName && (
-                                            <p><strong>Business:</strong> {order.fields.businessName}</p>
-                                        )}
-                                        {order.fields.niche && (
-                                            <p><strong>Niche:</strong> {order.fields.niche}</p>
-                                        )}
-                                        {order.fields.goal && (
-                                            <p><strong>Goal:</strong> {order.fields.goal}</p>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className={styles.cardActions}>
-                                {order.status === "pending" && (
-                                    <ButtonUI
-                                        onClick={() => handleTakeOrder(order._id)}
-                                        color="primary"
-                                        size="sm"
-                                        loading={takingId === order._id}
-                                    >
-                                        <FaPlay style={{ marginRight: 6 }} />
-                                        Take Order
-                                    </ButtonUI>
-                                )}
-                                {order.status === "in_progress" && (
-                                    <ButtonUI
-                                        onClick={() => handleUploadClick(order._id)}
-                                        color="success"
-                                        size="sm"
-                                        loading={uploadingId === order._id}
-                                    >
-                                        <FaUpload style={{ marginRight: 6 }} />
-                                        Upload PDF & Complete
-                                    </ButtonUI>
-                                )}
-                                {order.status === "done" && (
-                                    <div className={styles.completedBadge}>
-                                        <FaCheck /> Completed
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
+            {myOrders.length > 0 && (
+                <>
+                    <h4 className={styles.sectionTitle}>My Orders</h4>
+                    <div className={styles.ordersGrid}>
+                        {myOrders.map(renderOrderCard)}
+                    </div>
+                </>
+            )}
         </section>
     );
 }

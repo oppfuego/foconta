@@ -27,6 +27,13 @@
   }
 }
 
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
 .ordersGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -48,6 +55,11 @@
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   }
+}
+
+.cardAvailable {
+  border-color: var(--primary-color);
+  border-width: 2px;
 }
 
 .cardHeader {
