@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useUser } from "@/context/UserContext";
 import { useAlert } from "@/context/AlertContext";
 import ButtonUI from "@/components/ui/button/ButtonUI";
@@ -18,6 +19,9 @@ export default function WithdrawalForm({ maxAmount, onClose, onSuccess }: Withdr
     const [amount, setAmount] = useState("");
     const [paymentDetails, setPaymentDetails] = useState(user?.paymentDetails || "");
     const [loading, setLoading] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => setMounted(true), []);
 
     const numAmount = parseFloat(amount) || 0;
     const commission = numAmount * 0.2;
@@ -61,7 +65,9 @@ export default function WithdrawalForm({ maxAmount, onClose, onSuccess }: Withdr
         }
     };
 
-    return (
+    if (!mounted) return null;
+
+    return createPortal(
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                 <h3>Request Withdrawal</h3>
@@ -119,6 +125,7 @@ export default function WithdrawalForm({ maxAmount, onClose, onSuccess }: Withdr
                     </div>
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }
