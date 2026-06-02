@@ -36,6 +36,12 @@
   margin-bottom: 1rem;
 }
 
+.convertedHint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
 .form {
   display: flex;
   flex-direction: column;

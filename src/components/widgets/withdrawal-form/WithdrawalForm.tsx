@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { useUser } from "@/context/UserContext";
 import { useAlert } from "@/context/AlertContext";
+import { useCurrency } from "@/context/CurrencyContext";
 import ButtonUI from "@/components/ui/button/ButtonUI";
 import styles from "./WithdrawalForm.module.scss";
 
@@ -16,12 +17,19 @@ interface WithdrawalFormProps {
 export default function WithdrawalForm({ maxAmount, onClose, onSuccess }: WithdrawalFormProps) {
     const user = useUser();
     const { showAlert } = useAlert();
+    const { sign, currency, convertFromGBP } = useCurrency();
     const [amount, setAmount] = useState("");
     const [paymentDetails, setPaymentDetails] = useState(user?.paymentDetails || "");
     const [loading, setLoading] = useState(false);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => setMounted(true), []);
+
+    const isEur = currency === "EUR";
+    const EUR_TO_GBP = 1 / 1.17;
+    const fmtConverted = useCallback((eur: number) => {
+        return `${sign}${convertFromGBP(eur * EUR_TO_GBP).toFixed(2)}`;
+    }, [sign, convertFromGBP]);
 
     const numAmount = parseFloat(amount) || 0;
     const commission = numAmount * 0.2;
@@ -74,7 +82,10 @@ export default function WithdrawalForm({ maxAmount, onClose, onSuccess }: Withdr
                 <p className={styles.eurNote}>Withdrawals are processed in EUR</p>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.field}>
-                        <label>Amount (max: €{maxAmount.toFixed(2)})</label>
+                        <label>
+                            Amount in EUR (max: €{maxAmount.toFixed(2)}
+                            {!isEur && ` ≈ ${fmtConverted(maxAmount)}`})
+                        </label>
                         <input
                             type="number"
                             step="0.01"
@@ -82,9 +93,12 @@ export default function WithdrawalForm({ maxAmount, onClose, onSuccess }: Withdr
                             max={maxAmount}
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
-                            placeholder="Enter amount"
+                            placeholder="Enter amount in EUR"
                             className={styles.input}
                         />
+                        {!isEur && numAmount > 0 && (
+                            <span className={styles.convertedHint}>≈ {fmtConverted(numAmount)} at current rate</span>
+                        )}
                     </div>
 
                     <div className={styles.field}>
@@ -102,15 +116,15 @@ export default function WithdrawalForm({ maxAmount, onClose, onSuccess }: Withdr
                         <div className={styles.summary}>
                             <div className={styles.summaryRow}>
                                 <span>Amount:</span>
-                                <span>€{numAmount.toFixed(2)}</span>
+                                <span>€{numAmount.toFixed(2)}{!isEur && ` (≈ ${fmtConverted(numAmount)})`}</span>
                             </div>
                             <div className={styles.summaryRow}>
                                 <span>Commission (20%):</span>
-                                <span className={styles.commission}>-€{commission.toFixed(2)}</span>
+                                <span className={styles.commission}>-€{commission.toFixed(2)}{!isEur && ` (≈ ${fmtConverted(commission)})`}</span>
                             </div>
                             <div className={`${styles.summaryRow} ${styles.summaryTotal}`}>
                                 <span>You receive:</span>
-                                <span>€{netAmount.toFixed(2)}</span>
+                                <span>€{netAmount.toFixed(2)}{!isEur && ` (≈ ${fmtConverted(netAmount)})`}</span>
                             </div>
                         </div>
                     )}

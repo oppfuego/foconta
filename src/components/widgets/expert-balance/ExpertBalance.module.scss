@@ -51,6 +51,19 @@
   color: var(--primary-color);
 }
 
+.converted {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+.convertedInline {
+  font-size: 0.8em;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
 .withdrawBtn {
   padding: 0.8rem 1.5rem;
   border: none;

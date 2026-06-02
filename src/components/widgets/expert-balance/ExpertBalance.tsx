@@ -21,14 +21,17 @@ const EUR_TO_GBP = 1 / 1.17;
 
 export default function ExpertBalance() {
     const user = useUser();
-    const { sign, convertFromGBP } = useCurrency();
+    const { sign, currency, convertFromGBP } = useCurrency();
+    const isEur = currency === "EUR";
     const [showWithdrawalForm, setShowWithdrawalForm] = useState(false);
     const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
     const [loadingHistory, setLoadingHistory] = useState(true);
 
-    const fmt = useCallback((eur: number) => {
+    const fmtConverted = useCallback((eur: number) => {
         return `${sign}${convertFromGBP(eur * EUR_TO_GBP).toFixed(2)}`;
     }, [sign, convertFromGBP]);
+
+    const fmtEur = (eur: number) => `€${eur.toFixed(2)}`;
 
     const fetchWithdrawals = async () => {
         try {
@@ -74,7 +77,10 @@ export default function ExpertBalance() {
                         <GiTwoCoins className={styles.icon} />
                         <div>
                             <h3>Current Balance</h3>
-                            <p className={styles.amount}>{fmt(balance)}</p>
+                            <p className={styles.amount}>{fmtEur(balance)}</p>
+                            {!isEur && (
+                                <p className={styles.converted}>≈ {fmtConverted(balance)}</p>
+                            )}
                         </div>
                     </div>
                     <button
@@ -88,7 +94,10 @@ export default function ExpertBalance() {
 
                 <div className={styles.statCard}>
                     <h4>Total Earned</h4>
-                    <p className={styles.statAmount}>{fmt(totalEarned)}</p>
+                    <p className={styles.statAmount}>{fmtEur(totalEarned)}</p>
+                    {!isEur && (
+                        <p className={styles.converted}>≈ {fmtConverted(totalEarned)}</p>
+                    )}
                     <span className={styles.statNote}>Commission: 20% per withdrawal</span>
                 </div>
             </div>
@@ -115,9 +124,13 @@ export default function ExpertBalance() {
                         {withdrawals.map((w) => (
                             <div key={w._id} className={styles.historyItem}>
                                 <div className={styles.historyMain}>
-                                    <span className={styles.historyAmount}>{fmt(w.amount)}</span>
+                                    <span className={styles.historyAmount}>
+                                        {fmtEur(w.amount)}
+                                        {!isEur && <span className={styles.convertedInline}> (≈ {fmtConverted(w.amount)})</span>}
+                                    </span>
                                     <span className={styles.historyNet}>
-                                        Net: {fmt(w.netAmount)}
+                                        Net: {fmtEur(w.netAmount)}
+                                        {!isEur && <span className={styles.convertedInline}> (≈ {fmtConverted(w.netAmount)})</span>}
                                     </span>
                                 </div>
                                 <div className={styles.historyMeta}>
