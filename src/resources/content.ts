@@ -46,6 +46,8 @@ export const footerContent = {
                 {label: "Cookie Policy", href: "/cookie-policy"},
                 {label: "Refund Policy", href: "/refund-policy"},
                 {label: "Privacy Policy", href: "/privacy-policy"},
+                {label: "Payment Policy", href: "/payment-policy"},
+                {label: "Expert Terms", href: "/expert-terms"},
             ],
         },
     ],
