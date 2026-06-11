@@ -37,9 +37,18 @@ const Text: React.FC<TextProps> = ({
                 )}
 
             {description && (
-                <p className={clsx(styles.description, centerDescription && styles.center)}>
-                    {description}
-                </p>
+                <div className={clsx(styles.description, centerDescription && styles.center)}>
+                    {description.split("\n\n").map((paragraph, idx) => (
+                        <p key={idx}>
+                            {paragraph.split("\n").map((line, li) => (
+                                <React.Fragment key={li}>
+                                    {li > 0 && <br />}
+                                    {line}
+                                </React.Fragment>
+                            ))}
+                        </p>
+                    ))}
+                </div>
             )}
 
             {Array.isArray(bullets) && bullets.length > 0 && (

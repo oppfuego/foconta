@@ -30,7 +30,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({ children }) => {
             return;
         }
 
-        if (user && user.role !== "expert" && pathname.startsWith(expertOnlyPrefix)) {
+        if (user && user.role !== "expert" && (pathname === expertOnlyPrefix || pathname.startsWith(expertOnlyPrefix + "/"))) {
             router.replace("/");
             return;
         }
@@ -39,7 +39,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({ children }) => {
     if (authRoutes.some((r) => pathname === r || pathname.startsWith(r + "/")) && !user) return null;
     if (disallowedRoutes.includes(pathname) && user) return null;
     if (user && user.role === "expert" && userOnlyRoutes.includes(pathname)) return null;
-    if (user && user.role !== "expert" && pathname.startsWith(expertOnlyPrefix)) return null;
+    if (user && user.role !== "expert" && (pathname === expertOnlyPrefix || pathname.startsWith(expertOnlyPrefix + "/"))) return null;
 
     return <>{children}</>;
 };

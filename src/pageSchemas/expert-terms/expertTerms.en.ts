@@ -2,12 +2,12 @@ import { PageSchema } from "@/components/constructor/page-render/types";
 
 const expertTermsSchema: PageSchema = {
     meta: {
-        title: "Expert Terms / Expert Service Agreement – Foconta",
+        title: "Expert Terms / Expert Service Agreement - Foconta",
         description: "Expert Terms and Service Agreement for Foconta: terms for expert reviewers including orders, payouts, commissions, and responsibilities.",
         keywords: ["expert terms", "expert service agreement", "foconta", "expert reviewer", "payouts", "commissions"],
         canonical: "/expert-terms",
         ogImage: {
-            title: "Foconta – Expert Terms",
+            title: "Foconta - Expert Terms",
             description: "Expert Service Agreement for Foconta AI business planning platform.",
             bg: "#ffffff",
             color: "#000000",
@@ -24,9 +24,9 @@ const expertTermsSchema: PageSchema = {
             type: "text",
             title: `1. Introduction`,
             description:
-                `1.1. These Expert Terms / Expert Service Agreement (“Expert Terms”) govern the relationship between THE COMPANY YOU NEED LTD (company number 15967968, registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF) trading as Foconta (“Foconta”, “we”, “us”, “our”) and any person or business registering, applying, onboarding, accepting assignments, preparing work, requesting payout, or otherwise providing services as an expert through foconta.co.uk and related services (the “Service”).
+                `1.1. These Expert Terms / Expert Service Agreement ("Expert Terms") govern the relationship between THE COMPANY YOU NEED LTD (company number 15967968, registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF) trading as Foconta ("Foconta", "we", "us", "our") and any person or business registering, applying, onboarding, accepting assignments, preparing work, requesting payout, or otherwise providing services as an expert through foconta.co.uk and related services (the "Service").
 
-1.2. These Expert Terms apply in addition to Foconta’s Terms and Conditions, Privacy Policy, Payment Policy, Refund / Return Policy and any specific instructions, briefs, quality standards, platform rules or written agreements provided by Foconta.
+1.2. These Expert Terms apply in addition to Foconta's Terms and Conditions, Privacy Policy, Payment Policy, Refund / Return Policy and any specific instructions, briefs, quality standards, platform rules or written agreements provided by Foconta.
 
 1.3. By registering as an Expert, submitting an Expert profile, selecting Specialisations, accepting an assignment, preparing a Deliverable, communicating with Foconta or a Customer through Foconta channels, or requesting payout, you agree to these Expert Terms.
 
@@ -54,13 +54,13 @@ Expert means an independent specialist, freelancer, contractor or business user 
 
 Expert Services means services performed by an Expert, including business plan writing, review, editing, research support, financial planning support, pitch deck support, revision work, quality improvement or other business planning assistance.
 
-Order means a Customer’s confirmed purchase, Token redemption or request for Services through Foconta.
+Order means a Customer's confirmed purchase, Token redemption or request for Services through Foconta.
 
-Payout Balance means the internal amount that may become payable to an Expert for completed Assignments, subject to these Expert Terms, Foconta’s commission, dispute status, chargebacks, fraud review and internal approval.
+Payout Balance means the internal amount that may become payable to an Expert for completed Assignments, subject to these Expert Terms, Foconta's commission, dispute status, chargebacks, fraud review and internal approval.
 
 Specialisation means an area of expertise selected by a Customer or Expert for matching and workflow purposes.
 
-Tokens means Foconta’s internal prepaid digital credits used by Customers to access or pay for Services. Tokens are not cash, e-money, cryptocurrency, securities, bank deposits or financial instruments.
+Tokens means Foconta's internal prepaid digital credits used by Customers to access or pay for Services. Tokens are not cash, e-money, cryptocurrency, securities, bank deposits or financial instruments.
 
 Work Product means all materials, drafts, notes, research, text, files, plans, decks, models, revisions and deliverables created or contributed by an Expert in connection with an Assignment.`,
         },
@@ -80,7 +80,7 @@ Work Product means all materials, drafts, notes, research, text, files, plans, d
 
 3.6. Nothing in these Expert Terms prevents Foconta from deciding whether to make Assignments available, whether to approve an Expert for specific Specialisations, whether to accept a Deliverable, or whether to continue allowing an Expert to use the Service.
 
-3.7. Nothing in these Expert Terms prevents an Expert from offering services outside Foconta, provided that the Expert does not misuse Foconta’s Customer Data, confidential information, platform workflows, introductions, materials, branding or commercial opportunities.`,
+3.7. Nothing in these Expert Terms prevents an Expert from offering services outside Foconta, provided that the Expert does not misuse Foconta's Customer Data, confidential information, platform workflows, introductions, materials, branding or commercial opportunities.`,
         },
         {
             type: "text",
@@ -126,7 +126,7 @@ tax or invoicing information;
 
 identity, compliance or verification details where required.
 
-4.5. Foconta may refuse, delay, suspend or terminate Expert registration if information is incomplete, inaccurate, unverifiable, misleading, fraudulent, unlawful or inconsistent with Foconta’s standards.`,
+4.5. Foconta may refuse, delay, suspend or terminate Expert registration if information is incomplete, inaccurate, unverifiable, misleading, fraudulent, unlawful or inconsistent with Foconta's standards.`,
         },
         {
             type: "text",
@@ -134,7 +134,7 @@ identity, compliance or verification details where required.
             description:
                 `5.1. Expert verification may take place after registration and may include profile review, experience review, portfolio review, quality review, communication review, identity checks or other internal checks.
 
-5.2. A “verified” or similar status means that Foconta has completed its internal review process for that Expert at the relevant time.
+5.2. A "verified" or similar status means that Foconta has completed its internal review process for that Expert at the relevant time.
 
 5.3. Verification does not guarantee that an Expert holds any specific professional licence, regulated status, academic qualification, government approval, financial authorisation, medical authorisation or legal certification unless expressly stated and verified by Foconta in writing.
 
@@ -180,11 +180,11 @@ Healthcare Business Plan.
 
 6.5. Selecting a Specialisation does not authorise the Expert to provide regulated legal, tax, accounting, medical, investment, financial advisory or other licensed professional services.
 
-6.6. The “Financial & Investment Plan” Specialisation is limited to business planning, financial modelling, commercial assumptions and investment-readiness documentation. Experts must not provide regulated investment advice, securities advice, financial promotions approval, portfolio advice or investment recommendations.
+6.6. The "Financial & Investment Plan" Specialisation is limited to business planning, financial modelling, commercial assumptions and investment-readiness documentation. Experts must not provide regulated investment advice, securities advice, financial promotions approval, portfolio advice or investment recommendations.
 
-6.7. The “Healthcare Business Plan” Specialisation is limited to business planning for healthcare-related business models. Experts must not provide medical advice, clinical advice, patient-specific advice, healthcare compliance certification or regulated healthcare services.
+6.7. The "Healthcare Business Plan" Specialisation is limited to business planning for healthcare-related business models. Experts must not provide medical advice, clinical advice, patient-specific advice, healthcare compliance certification or regulated healthcare services.
 
-6.8. The “Non-Profit Organization Plan” Specialisation is limited to business planning for non-profit or mission-led organisations. Experts must not provide legal advice on charity registration, tax exemption or legal structuring unless specifically authorised by Foconta in writing and appropriately qualified.`,
+6.8. The "Non-Profit Organization Plan" Specialisation is limited to business planning for non-profit or mission-led organisations. Experts must not provide legal advice on charity registration, tax exemption or legal structuring unless specifically authorised by Foconta in writing and appropriately qualified.`,
         },
         {
             type: "text",
@@ -200,7 +200,7 @@ Healthcare Business Plan.
 
 7.5. If an Expert is unable to perform an Assignment competently, on time, or within the stated scope, the Expert must promptly notify Foconta.
 
-7.6. Once an Expert accepts or begins work on an Assignment, the Expert must use reasonable skill, care and diligence to complete it according to the Customer brief, Foconta’s instructions and these Expert Terms.
+7.6. Once an Expert accepts or begins work on an Assignment, the Expert must use reasonable skill, care and diligence to complete it according to the Customer brief, Foconta's instructions and these Expert Terms.
 
 7.7. Experts must not accept Assignments where they have a conflict of interest, lack relevant competence, cannot meet timing expectations, or cannot comply with confidentiality and data protection obligations.`,
         },
@@ -208,13 +208,13 @@ Healthcare Business Plan.
             type: "text",
             title: `8. Service Standards`,
             description:
-                `8.1. Experts must provide work that is professional, original, clear, relevant, commercially realistic and aligned with the Customer’s brief.
+                `8.1. Experts must provide work that is professional, original, clear, relevant, commercially realistic and aligned with the Customer's brief.
 
 8.2. Experts must use reasonable skill and care when preparing Deliverables.
 
 8.3. Deliverables must:
 
-respond to the Customer’s brief;
+respond to the Customer's brief;
 
 match the selected Specialisation and package scope;
 
@@ -268,7 +268,7 @@ be suitable for digital delivery in the required format.
             description:
                 `10.1. Unless otherwise stated, Expert Orders include one free revision round for the Customer.
 
-10.2. Experts may be required to complete reasonable revisions or rework where the Customer’s request is within the original brief, selected Specialisation, package scope and information originally provided.
+10.2. Experts may be required to complete reasonable revisions or rework where the Customer's request is within the original brief, selected Specialisation, package scope and information originally provided.
 
 10.3. A reasonable revision may include correction, clarification, formatting adjustment, minor content improvement, or better alignment with the original Customer brief.
 
@@ -308,7 +308,7 @@ be suitable for digital delivery in the required format.
 
 12.3. Experts must not submit raw, unreviewed, generic or obviously AI-generated work where expert-prepared work is required.
 
-12.4. Experts must not enter Customer Data into external AI tools, public AI systems or third-party platforms unless authorised by Foconta and consistent with Foconta’s privacy, confidentiality and data protection requirements.
+12.4. Experts must not enter Customer Data into external AI tools, public AI systems or third-party platforms unless authorised by Foconta and consistent with Foconta's privacy, confidentiality and data protection requirements.
 
 12.5. Experts must not use tools that expose Customer Data to unauthorised third parties, public datasets, model training, data scraping, publication, resale or uncontrolled storage.
 
@@ -362,7 +362,7 @@ retain Customer Data after it is no longer needed.
 
 14.6. Experts must cooperate with Foconta in responding to data subject requests, deletion requests, access requests, complaints, investigations, audits or legal obligations.
 
-14.7. Experts must not appoint subcontractors, assistants or other persons to process Customer Data or perform Assignments without Foconta’s prior written approval.`,
+14.7. Experts must not appoint subcontractors, assistants or other persons to process Customer Data or perform Assignments without Foconta's prior written approval.`,
         },
         {
             type: "text",
@@ -374,11 +374,11 @@ retain Customer Data after it is no longer needed.
 
 15.3. To the extent any rights cannot be assigned, the Expert grants Foconta a worldwide, perpetual, irrevocable, transferable, sublicensable, royalty-free licence to use, reproduce, modify, adapt, publish, distribute, display, export, deliver, commercialise and otherwise exploit the Work Product for the purpose of operating the Service and supplying Deliverables to Customers.
 
-15.4. Foconta may grant Customers rights to use Deliverables in accordance with Foconta’s Terms and Conditions.
+15.4. Foconta may grant Customers rights to use Deliverables in accordance with Foconta's Terms and Conditions.
 
 15.5. The Expert waives, to the fullest extent permitted by law, any moral rights or similar rights that may prevent Foconta or Customers from using, editing, formatting, adapting, combining or delivering the Work Product.
 
-15.6. Experts must not reuse Customer-specific Work Product for other Customers, public examples, portfolio pieces, templates, datasets or competing services without Foconta’s written approval and removal of Customer confidential information.
+15.6. Experts must not reuse Customer-specific Work Product for other Customers, public examples, portfolio pieces, templates, datasets or competing services without Foconta's written approval and removal of Customer confidential information.
 
 15.7. Experts must not include third-party copyrighted material, trademarks, images, data, templates or other protected materials in Deliverables unless lawful and properly authorised.`,
         },
@@ -412,7 +412,7 @@ Foconta has approved payout internally.
 
 16.5. Experts may request payout through the process made available by Foconta. Foconta may contact the Expert by email to provide instructions, request payout information or verify details.
 
-16.6. Payouts may be made in EUR or USD to a bank account or card, subject to availability, verification, payment-provider rules, compliance checks and Foconta’s internal process.
+16.6. Payouts may be made in EUR or USD to a bank account or card, subject to availability, verification, payment-provider rules, compliance checks and Foconta's internal process.
 
 16.7. Foconta may withhold, delay, reduce, offset or cancel payout where:
 
@@ -472,7 +472,7 @@ legal or payment-provider rules require delay or refusal.
 
 18.5. If Foconta determines that a dispute, refund or chargeback was caused by Expert fault, misconduct, delay, poor quality, breach of scope, plagiarism, confidentiality breach, data misuse or failure to follow instructions, Foconta may reduce, withhold or cancel payout.
 
-18.6. Foconta’s decision on Customer remedy and Expert payout consequence is final within the platform process, without limiting any mandatory legal rights either party may have.`,
+18.6. Foconta's decision on Customer remedy and Expert payout consequence is final within the platform process, without limiting any mandatory legal rights either party may have.`,
         },
         {
             type: "text",
@@ -496,7 +496,7 @@ contact Customers outside Foconta-approved channels;
 
 request or accept direct payment from Customers;
 
-bypass Foconta’s platform, commission or workflow;
+bypass Foconta's platform, commission or workflow;
 
 use Customer Data for marketing, resale, portfolio use or unrelated purposes;
 
@@ -506,7 +506,7 @@ upload Customer Data to unauthorised third-party tools;
 
 harass, threaten, discriminate against or abuse Customers or Foconta personnel;
 
-interfere with the Service’s security or operation;
+interfere with the Service's security or operation;
 
 create fake accounts, manipulate reviews or abuse payout systems;
 
@@ -532,7 +532,7 @@ engage in fraud, sanctions evasion, money laundering, bribery or unlawful conduc
 
 breached these Expert Terms;
 
-breached Foconta’s Terms or policies;
+breached Foconta's Terms or policies;
 
 submitted low-quality, defective or plagiarised work;
 
@@ -580,7 +580,7 @@ engaged in fraud, abuse or unlawful conduct.
 
 23.2. Subject to Section 23.1, Foconta is not liable to an Expert for indirect, consequential, special, incidental or punitive losses, including loss of profit, loss of business, loss of opportunity, loss of reputation, loss of data or loss of expected earnings.
 
-23.3. Subject to Section 23.1, Foconta’s total liability to an Expert in connection with these Expert Terms shall not exceed the unpaid amount properly due to that Expert for completed and approved Assignments during the three months before the event giving rise to the claim.
+23.3. Subject to Section 23.1, Foconta's total liability to an Expert in connection with these Expert Terms shall not exceed the unpaid amount properly due to that Expert for completed and approved Assignments during the three months before the event giving rise to the claim.
 
 23.4. Foconta is not liable for lack of Assignments, Customer disputes, Customer non-payment, chargebacks, payment-provider delays, payout-provider errors, bank fees, exchange-rate changes, tax consequences, Expert account suspension or termination carried out in accordance with these Expert Terms.`,
         },
@@ -622,7 +622,7 @@ tax, employment, contractor or business registration issues relating to the Expe
 
 25.2. Records may be retained for at least 24 months and up to 6 years where required for tax, accounting, payment, dispute, legal, fraud prevention, audit or compliance purposes.
 
-25.3. Record retention is handled in accordance with Foconta’s Privacy Policy and applicable data protection law.`,
+25.3. Record retention is handled in accordance with Foconta's Privacy Policy and applicable data protection law.`,
         },
         {
             type: "text",

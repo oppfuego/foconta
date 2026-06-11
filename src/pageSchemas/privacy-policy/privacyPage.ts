@@ -2,12 +2,12 @@ import { PageSchema } from "@/components/constructor/page-render/types";
 
 const privacyPolicySchema: PageSchema = {
     meta: {
-        title: "Privacy Policy – Foconta",
+        title: "Privacy Policy - Foconta",
         description: "Foconta Privacy Policy: details on what data we collect, how we use it, how long we retain it, and your rights under UK GDPR.",
         keywords: ["privacy policy", "GDPR", "data protection", "foconta", "AI business", "personal data", "uk gdpr"],
         canonical: "/privacy-policy",
         ogImage: {
-            title: "Foconta – Privacy Policy",
+            title: "Foconta - Privacy Policy",
             description: "Transparent privacy practices for Foconta AI business planning platform under UK GDPR.",
             bg: "#ffffff",
             color: "#000000",
@@ -23,7 +23,7 @@ const privacyPolicySchema: PageSchema = {
             type: "text",
             title: `1. Introduction`,
             description:
-                `We respect your privacy. This Privacy Policy explains what personal data we collect, why we use it, how we share it, how long we keep it, and how you can exercise your rights when using foconta.co.uk and related services (the “Service”).
+                `We respect your privacy. This Privacy Policy explains what personal data we collect, why we use it, how we share it, how long we keep it, and how you can exercise your rights when using foconta.co.uk and related services (the "Service").
 
 Controller: THE COMPANY YOU NEED LTD
 Company number: 15967968
@@ -31,7 +31,7 @@ Registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF
 Trading name: Foconta
 Contact: info@foconta.co.uk
 
-In this Privacy Policy, “Foconta”, “we”, “us” and “our” refer to THE COMPANY YOU NEED LTD.
+In this Privacy Policy, "Foconta", "we", "us" and "our" refer to THE COMPANY YOU NEED LTD.
 
 This Policy applies to Customers, registered users, website visitors, Experts, applicants, contractors and other individuals who interact with the Service. The Service is intended for individuals aged 18 or over.`,
         },
@@ -221,7 +221,7 @@ dispute and chargeback status;
 
 tax or invoicing information, where needed.
 
-Expert payouts may be made in EUR or USD to a bank account or card, subject to verification, payment provider rules and Foconta’s internal process.
+Expert payouts may be made in EUR or USD to a bank account or card, subject to verification, payment provider rules and Foconta's internal process.
 
 3.6 Communications and support data
 
@@ -583,7 +583,7 @@ Expert payout and commission records: up to 6 years where needed for tax, accoun
 
 Support, refund and dispute records: typically up to 6 years where needed for legal, payment, chargeback or dispute purposes.
 
-Security logs and technical telemetry: typically 6–24 months, depending on risk, security and operational needs.
+Security logs and technical telemetry: typically 6-24 months, depending on risk, security and operational needs.
 
 Cookie consent records: typically at least 24 months, and longer where needed to demonstrate compliance.
 
@@ -679,7 +679,7 @@ Where deletion is not possible immediately, we will restrict or minimise data wh
         },
         {
             type: "text",
-            title: `17. Children’s Data`,
+            title: `17. Children's Data`,
             description:
                 `The Service is intended for users aged 18 or over. We do not knowingly collect personal data from children.
 
@@ -722,7 +722,7 @@ Registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF
 Email: info@foconta.co.uk
 Tel: +44 7537 166412
 
-If you are not satisfied with our response, you may lodge a complaint with the UK Information Commissioner’s Office (ICO).
+If you are not satisfied with our response, you may lodge a complaint with the UK Information Commissioner's Office (ICO).
 
 If you are resident in the European Union or European Economic Area, you may also have the right to lodge a complaint with your local data protection supervisory authority.`,
         },

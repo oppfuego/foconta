@@ -2,12 +2,12 @@ import { PageSchema } from "@/components/constructor/page-render/types";
 
 const refundPolicySchema: PageSchema = {
     meta: {
-        title: "Refund / Return Policy – Foconta",
+        title: "Refund / Return Policy - Foconta",
         description: "Official Refund / Return Policy for Foconta: refunds for tokens, digital outputs, services, and consumer rights.",
         keywords: ["refund policy", "return policy", "foconta", "tokens", "AI business", "digital content", "consumer rights"],
         canonical: "/refund-policy",
         ogImage: {
-            title: "Foconta – Refund / Return Policy",
+            title: "Foconta - Refund / Return Policy",
             description: "Transparent refund and return policy for Foconta AI business planning platform.",
             bg: "#ffffff",
             color: "#000000",
@@ -29,7 +29,7 @@ Foconta provides digital services only. We do not sell or ship physical goods, s
 
 Refunds are assessed under this Policy, our Terms and Conditions, and applicable consumer law.
 
-Typical refund processing time after approval is 5–10 business days, although bank and payment-provider timelines may vary.
+Typical refund processing time after approval is 5-10 business days, although bank and payment-provider timelines may vary.
 
 A refund will not exceed the amount originally paid for the relevant Token top-up, package, Order or transaction.
 
@@ -49,7 +49,7 @@ Accepted payment methods: Visa and Mastercard.`,
             type: "text",
             title: `2. Scope and Legal Note`,
             description:
-                `This Refund / Return Policy (“Policy”) applies to Tokens, AI-generated digital outputs, Expert Services, Investor Packs, Custom Plans, Add-ons, downloadable files and other digital services supplied by THE COMPANY YOU NEED LTD via foconta.co.uk (“Foconta”, “we”, “us”, “our”).
+                `This Refund / Return Policy ("Policy") applies to Tokens, AI-generated digital outputs, Expert Services, Investor Packs, Custom Plans, Add-ons, downloadable files and other digital services supplied by THE COMPANY YOU NEED LTD via foconta.co.uk ("Foconta", "we", "us", "our").
 
 Nothing in this Policy limits or excludes any mandatory consumer rights you may have under applicable law, including the Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013 and the Consumer Rights Act 2015, where applicable.
 
@@ -63,7 +63,7 @@ Because Foconta supplies digital content and digital services, cancellation righ
 
 Account means your registered user profile on Foconta.
 
-AI Instant Plan means a business plan or related output generated primarily through Foconta’s AI-powered tools based on your inputs.
+AI Instant Plan means a business plan or related output generated primarily through Foconta's AI-powered tools based on your inputs.
 
 Business Hours means Monday to Friday, excluding UK public holidays, unless otherwise stated or agreed in writing.
 
@@ -85,7 +85,7 @@ Order means a confirmed purchase, Token top-up, Token redemption, AI generation 
 
 Redeemed / Spent Tokens means Tokens used to access, generate, order or receive a Service or Deliverable.
 
-Tokens / Credits means Foconta’s internal prepaid digital credits used to access or pay for Services. Tokens are not cash, e-money, cryptocurrency, securities, bank deposits or financial instruments.
+Tokens / Credits means Foconta's internal prepaid digital credits used to access or pay for Services. Tokens are not cash, e-money, cryptocurrency, securities, bank deposits or financial instruments.
 
 Unused Tokens means Tokens credited to your Account but not yet redeemed.
 
@@ -195,7 +195,7 @@ rejection of the cancellation request with reasons.
 
 8.6. Expert Orders are customised digital services prepared based on your selected Specialisation, brief, business information, instructions and uploaded files. Once work has substantially begun, refunds may be limited.
 
-8.7. If you fail to provide required information, do not respond to clarification requests, provide contradictory instructions, change the scope, or delay the Expert’s work, this may pause or extend delivery timing and may reduce or remove refund eligibility.
+8.7. If you fail to provide required information, do not respond to clarification requests, provide contradictory instructions, change the scope, or delay the Expert's work, this may pause or extend delivery timing and may reduce or remove refund eligibility.
 
 8.8. If Foconta fails to supply the Expert Service as contracted and the failure is attributable to Foconta, we may provide rework, replacement Expert support, Token credit, partial refund, full refund or another appropriate remedy.`,
         },
@@ -399,9 +399,9 @@ provide a full refund where appropriate or required by law.
             type: "text",
             title: `14. Expert Payouts and Customer Refunds`,
             description:
-                `14.1. Where an Expert Order is completed, the internal value of the Order may be converted by Foconta into an Expert payout balance after deduction of Foconta’s applicable platform commission.
+                `14.1. Where an Expert Order is completed, the internal value of the Order may be converted by Foconta into an Expert payout balance after deduction of Foconta's applicable platform commission.
 
-14.2. Foconta’s standard platform commission for Expert Orders is 20%, unless otherwise agreed in writing.
+14.2. Foconta's standard platform commission for Expert Orders is 20%, unless otherwise agreed in writing.
 
 14.3. Expert payout eligibility may be delayed, reduced or cancelled if the relevant Order is disputed, refunded, charged back, reversed, fraudulent, incomplete, defective or affected by Expert misconduct.
 
@@ -463,7 +463,7 @@ investigate and request additional information if needed;
 
 provide a decision or proposed remedy;
 
-process any approved refund within 5–10 business days, subject to bank and payment-provider timelines.`,
+process any approved refund within 5-10 business days, subject to bank and payment-provider timelines.`,
         },
         {
             type: "text",

@@ -2,12 +2,12 @@ import { PageSchema } from "@/components/constructor/page-render/types";
 
 const cookiePolicyEn: PageSchema = {
     meta: {
-        title: "Cookies Policy – Foconta",
+        title: "Cookies Policy - Foconta",
         description: "Foconta Cookies Policy: how we use cookies, storage, pixels, and SDKs, including consent options and your control preferences.",
         keywords: ["cookies policy", "cookies", "GDPR", "tracking", "privacy", "consent", "foconta"],
         canonical: "/cookie-policy",
         ogImage: {
-            title: "Foconta – Cookies Policy",
+            title: "Foconta - Cookies Policy",
             description: "Transparent cookies and consent policy for Foconta AI business planning platform.",
             bg: "#ffffff",
             color: "#000000",
@@ -23,7 +23,7 @@ const cookiePolicyEn: PageSchema = {
             type: "text",
             title: `1. Overview`,
             description:
-                `This Cookies Policy explains how Foconta (“we”, “us”, “our”) uses cookies and similar technologies on foconta.co.uk and related services (the “Service”).
+                `This Cookies Policy explains how Foconta ("we", "us", "our") uses cookies and similar technologies on foconta.co.uk and related services (the "Service").
 
 This Policy should be read together with our Privacy Policy. It applies to our website, user dashboard, AI business plan tools, Expert Order flows, Token purchase flows, Expert registration flows and related digital services.
 
@@ -61,7 +61,7 @@ server-side event tags;
 
 security and fraud-prevention identifiers.
 
-For the purposes of this Policy, we refer to these technologies collectively as “cookies” unless stated otherwise.`,
+For the purposes of this Policy, we refer to these technologies collectively as "cookies" unless stated otherwise.`,
         },
         {
             type: "text",
@@ -349,7 +349,7 @@ If you disable or reject certain cookies, some features may not work properly. F
             description:
                 `If your browser sends a Global Privacy Control (GPC) or similar signal, we will treat it as an opt-out from non-essential cookies where technically feasible and consistent with applicable law.
 
-Some browsers also provide “Do Not Track” signals. There is no consistent industry standard for responding to all such signals, but we will apply available privacy choices through our Cookie Settings and supported technical controls.`,
+Some browsers also provide "Do Not Track" signals. There is no consistent industry standard for responding to all such signals, but we will apply available privacy choices through our Cookie Settings and supported technical controls.`,
         },
         {
             type: "text",

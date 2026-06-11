@@ -2,12 +2,12 @@ import { PageSchema } from "@/components/constructor/page-render/types";
 
 const termsSchema: PageSchema = {
     meta: {
-        title: "Terms and Conditions – Foconta",
-        description: "Official Terms and Conditions for using Foconta.co.uk – tokens, refunds, payments, AI services, expert system, and user rights.",
+        title: "Terms and Conditions - Foconta",
+        description: "Official Terms and Conditions for using Foconta.co.uk - tokens, refunds, payments, AI services, expert system, and user rights.",
         keywords: ["terms and conditions", "foconta", "tokens", "refunds", "business plan generator", "AI co-pilot", "digital content", "expert"],
         canonical: "/terms-and-conditions",
         ogImage: {
-            title: "Foconta – Terms and Conditions",
+            title: "Foconta - Terms and Conditions",
             description: "Full Terms and Conditions for Foconta AI Business Platform.",
             bg: "#ffffff",
             color: "#000000",
@@ -23,9 +23,9 @@ const termsSchema: PageSchema = {
             type: "text",
             title: `1. Introduction`,
             description:
-                `1.1. These Terms and Conditions (“Terms”) govern your access to and use of foconta.co.uk, our related pages, applications, dashboards, forms, downloadable content and digital services (together, the “Service”), operated by THE COMPANY YOU NEED LTD (company number 15967968, registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF) (“Foconta”, “we”, “us”, “our”).
+                `1.1. These Terms and Conditions ("Terms") govern your access to and use of foconta.co.uk, our related pages, applications, dashboards, forms, downloadable content and digital services (together, the "Service"), operated by THE COMPANY YOU NEED LTD (company number 15967968, registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF) ("Foconta", "we", "us", "our").
 
-1.2. These Terms form a legally binding agreement between Foconta and each person or entity using the Service (“you”, “User”, “Customer”). If you use the Service on behalf of a company, organisation, client or other legal entity, you confirm that you have authority to bind that entity to these Terms.
+1.2. These Terms form a legally binding agreement between Foconta and each person or entity using the Service ("you", "User", "Customer"). If you use the Service on behalf of a company, organisation, client or other legal entity, you confirm that you have authority to bind that entity to these Terms.
 
 1.3. By creating an account, purchasing Tokens, redeeming Tokens, ordering an AI-generated plan, ordering an expert-prepared plan, registering as an Expert, requesting a payout, downloading any deliverable, or otherwise using the Service, you agree to these Terms.
 
@@ -39,7 +39,7 @@ const termsSchema: PageSchema = {
 
 Account means your registered user profile on the Service.
 
-AI Instant Plan means a business plan or related output generated primarily through Foconta’s AI-powered tools based on the information you provide.
+AI Instant Plan means a business plan or related output generated primarily through Foconta's AI-powered tools based on the information you provide.
 
 Business Hours means Monday to Friday, excluding UK public holidays, unless otherwise stated on the Service or agreed in writing.
 
@@ -59,13 +59,13 @@ Custom Plan means a tailored package with flexible scope and dynamic pricing agr
 
 Order means a confirmed transaction to purchase Tokens, redeem Tokens, or request Services.
 
-Platform Materials means Foconta’s software, tools, workflows, templates, prompts, designs, website content, documentation, branding, know-how and other proprietary materials.
+Platform Materials means Foconta's software, tools, workflows, templates, prompts, designs, website content, documentation, branding, know-how and other proprietary materials.
 
 Service means the Foconta platform and related services, including AI tools, expert matching, brief forms, dashboards, payment flows, Token management, order management, document generation, expert support and digital delivery.
 
 Specialisation means the business plan category selected by a Customer or Expert, including the categories listed in Section 8.
 
-Tokens means Foconta’s internal prepaid digital credits used to access or pay for specific Services. Tokens are not cash, e-money, cryptocurrency, securities, stored-value money, bank deposits or financial instruments.
+Tokens means Foconta's internal prepaid digital credits used to access or pay for specific Services. Tokens are not cash, e-money, cryptocurrency, securities, stored-value money, bank deposits or financial instruments.
 
 Wallet / Token Balance means the internal balance of Tokens credited to your Account.
 
@@ -103,7 +103,7 @@ Checkout Currency means EUR (€) or USD ($), as selected at checkout.`,
             type: "text",
             title: `5. Tokens`,
             description:
-                `5.1. Nature of Tokens. Tokens are internal prepaid digital credits used to access and pay for features of the Service. Tokens have no cash value outside the Service and may not be exchanged, traded, assigned, resold or transferred, except where these Terms expressly allow Expert payout conversion through Foconta’s internal Expert process.
+                `5.1. Nature of Tokens. Tokens are internal prepaid digital credits used to access and pay for features of the Service. Tokens have no cash value outside the Service and may not be exchanged, traded, assigned, resold or transferred, except where these Terms expressly allow Expert payout conversion through Foconta's internal Expert process.
 
 5.2. Token Rate. The current target rate is:
 
@@ -117,13 +117,13 @@ The exact number of Tokens credited or redeemed is displayed before purchase or 
 
 5.4. Token Packages. The available packages may include, for example:
 
-AI Instant Plan — 900 Tokens;
+AI Instant Plan - 900 Tokens;
 
-Expert 24h Plan — 2,000 Tokens;
+Expert 24h Plan - 2,000 Tokens;
 
-Investor Pack — 5,000 Tokens;
+Investor Pack - 5,000 Tokens;
 
-Custom Plan — dynamic pricing, as displayed or agreed before confirmation.
+Custom Plan - dynamic pricing, as displayed or agreed before confirmation.
 
 5.5. Pricing in Tokens. Services and packages are priced in Tokens. Any EUR or USD amount shown is an informational conversion based on the then-current Token rate and applicable checkout settings.
 
@@ -169,7 +169,9 @@ Custom Plan — dynamic pricing, as displayed or agreed before confirmation.
 
 7.4. AI-generated Deliverables do not constitute legal advice, tax advice, accounting advice, investment advice, regulated financial advice, medical advice or professional certification of your business model.
 
-7.5. Where the Service offers “revisions” or editing options for AI-generated Deliverables, these may be provided through regeneration, user editing, AI-assisted modification or support review, depending on the feature available.`,
+7.5. Where the Service offers "revisions" or editing options for AI-generated Deliverables, these may be provided through regeneration, user editing, AI-assisted modification or support review, depending on the feature available.
+
+7.6. Delivery: AI Instant Plan Deliverables are generated immediately and become available for download in your Account dashboard. A confirmation email with order details is also sent to your registered email address.`,
         },
         {
             type: "text",
@@ -177,7 +179,7 @@ Custom Plan — dynamic pricing, as displayed or agreed before confirmation.
             description:
                 `8.1. Foconta may offer Expert Services through independent specialists, freelancers or contractors. Experts are not employees, agents, partners or legal representatives of Foconta.
 
-8.2. Foconta automatically assigns an Expert based on the Customer’s selected package, selected Specialisation, brief, language, scope, complexity and Expert availability.
+8.2. Foconta automatically assigns an Expert based on the Customer's selected package, selected Specialisation, brief, language, scope, complexity and Expert availability.
 
 8.3. Customers do not have a guaranteed right to select a specific Expert unless this is expressly offered through the Service or agreed in writing.
 
@@ -215,11 +217,11 @@ Healthcare Business Plan.
 
 8.8. A Specialisation is used for matching and workflow purposes only. It does not mean that Foconta or any Expert provides regulated advice, licensed professional services, medical advice, legal advice, tax advice, accounting advice or investment advice.
 
-8.9. “Financial & Investment Plan” refers to business planning, financial modelling and investment-readiness documentation only. It does not constitute investment advice, financial promotion approval, securities advice, portfolio advice or regulated financial activity.
+8.9. "Financial & Investment Plan" refers to business planning, financial modelling and investment-readiness documentation only. It does not constitute investment advice, financial promotion approval, securities advice, portfolio advice or regulated financial activity.
 
-8.10. “Healthcare Business Plan” refers to planning for healthcare-related business models only. Customers must not upload patient records, medical records or sensitive healthcare data unless expressly necessary and lawful. Foconta does not provide medical advice or healthcare compliance certification.
+8.10. "Healthcare Business Plan" refers to planning for healthcare-related business models only. Customers must not upload patient records, medical records or sensitive healthcare data unless expressly necessary and lawful. Foconta does not provide medical advice or healthcare compliance certification.
 
-8.11. “Non-Profit Organization Plan” refers to business planning for non-profit or mission-led organisations only. Foconta does not provide charity registration, legal structuring or tax-exemption advice.`,
+8.11. "Non-Profit Organization Plan" refers to business planning for non-profit or mission-led organisations only. Foconta does not provide charity registration, legal structuring or tax-exemption advice.`,
         },
         {
             type: "text",
@@ -269,7 +271,9 @@ the Deliverable is supplied electronically through the Service or by email.
 
 10.7. Delivery times are estimates unless expressly described as guaranteed in writing. Foconta will use reasonable efforts to meet advertised delivery times but will not be liable for delay caused by Customer inactivity, missing information, payment issues, force majeure, third-party outages, fraud review, technical issues or scope changes.
 
-10.8. Deliverables are supplied digitally. Depending on the package, delivery may include PDF, DOCX, spreadsheet, presentation or other available digital formats. Exact formats are displayed or agreed before purchase where applicable.`,
+10.8. Deliverables are supplied digitally. Depending on the package, delivery may include PDF, DOCX, spreadsheet, presentation or other available digital formats. Exact formats are displayed or agreed before purchase where applicable.
+
+10.9. Delivery method: Expert-prepared Deliverables are uploaded to your Account dashboard, where you can download them at any time. You will also receive an email notification when your Deliverable is ready. All Deliverables remain accessible in your Account dashboard for the duration of your Account.`,
         },
         {
             type: "text",
@@ -329,7 +333,7 @@ reject the dispute with reasons.
 
 12.10. If a delay occurs in an Expert Order, Foconta may agree with the Customer on an appropriate remedy, such as revised delivery time, priority handling, additional support, Token credit, partial refund or another reasonable solution.
 
-12.11. Filing a chargeback before completing Foconta’s support and dispute process may result in temporary Account suspension, removal of Tokens, restriction of access to Deliverables, and submission of transaction evidence to the payment provider.
+12.11. Filing a chargeback before completing Foconta's support and dispute process may result in temporary Account suspension, removal of Tokens, restriction of access to Deliverables, and submission of transaction evidence to the payment provider.
 
 12.12. Nothing in these Terms limits any mandatory consumer rights that cannot be excluded under applicable law.`,
         },
@@ -353,7 +357,7 @@ reject the dispute with reasons.
 
 14.2. Experts act as independent contractors/freelancers and are not employees, workers, agents, partners, franchisees or representatives of Foconta.
 
-14.3. Customers may redeem Tokens to purchase Expert Services. After an Expert Order is completed, the relevant internal value of the Order may be converted by Foconta into an Expert payout balance, subject to these Terms, the applicable Expert terms, Foconta’s commission, dispute status, chargeback risk, fraud checks and internal approval.
+14.3. Customers may redeem Tokens to purchase Expert Services. After an Expert Order is completed, the relevant internal value of the Order may be converted by Foconta into an Expert payout balance, subject to these Terms, the applicable Expert terms, Foconta's commission, dispute status, chargeback risk, fraud checks and internal approval.
 
 14.4. Foconta applies a platform commission of 20% to Expert Orders, unless a different rate is agreed in writing.
 
@@ -403,7 +407,7 @@ interfering with the stability, performance or security of the Service;
 
 uploading malware, malicious code or harmful files;
 
-attempting to access another user’s Account or data;
+attempting to access another user's Account or data;
 
 using the Service for illegal, fraudulent, deceptive or harmful purposes;
 
@@ -427,7 +431,7 @@ attempting to contact Experts directly to avoid Foconta fees or controls.
 
 17.5. Restrictions. You must not resell, redistribute, publish or commercialise Foconta templates, Platform Materials or Deliverables as standalone competing products, template packs, AI training datasets, prompt libraries or document-generation services without our written permission.
 
-17.6. No Transfer of Platform IP. Nothing in these Terms transfers ownership of Foconta’s Platform Materials, software, workflows, models, templates, know-how or brand assets to you.
+17.6. No Transfer of Platform IP. Nothing in these Terms transfers ownership of Foconta's Platform Materials, software, workflows, models, templates, know-how or brand assets to you.
 
 17.7. Feedback. If you provide feedback, suggestions or ideas, we may use them without restriction or compensation, provided we do not disclose your confidential information in doing so.`,
         },
@@ -471,7 +475,7 @@ attempting to contact Experts directly to avoid Foconta fees or controls.
             description:
                 `21.1. We warrant that we will provide the Service with reasonable care and skill.
 
-21.2. Except as expressly stated in these Terms, the Service and Deliverables are provided on an “as is” and “as available” basis.
+21.2. Except as expressly stated in these Terms, the Service and Deliverables are provided on an "as is" and "as available" basis.
 
 21.3. We do not warrant that:
 
@@ -517,7 +521,7 @@ your infringement of third-party rights;
 
 your submission of unlawful, misleading or unauthorised content;
 
-your attempt to circumvent Foconta’s platform, payment or communication rules.
+your attempt to circumvent Foconta's platform, payment or communication rules.
 
 23.2. This indemnity does not limit any mandatory rights you may have as a consumer.`,
         },
