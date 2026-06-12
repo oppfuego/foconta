@@ -59,10 +59,10 @@ All plans include editing rights, access to our dashboard, and optional expert c
                     tokens: 900,
                     badgeTop: "Instant",
                     description:
-                        "Generate your business plan in seconds with our AI-powered generator. Perfect for early-stage ideas or quick drafts.",
+                        "Generate your business plan in seconds with our AI-powered generator. Perfect for quick ideas or early drafts.",
                     features: [
-                        "Instant AI-generated plan",
-                        "Editable PDF & DOCX",
+                        "Instant generation",
+                        "Editable format",
                         "Multiple languages",
                         "Unlimited revisions",
                     ],
@@ -95,11 +95,11 @@ All plans include editing rights, access to our dashboard, and optional expert c
                     tokens: 5000,
                     badgeTop: "Complete Package",
                     description:
-                        "All-in-one: full business plan + investor pitch deck + design layout. Ideal for fundraising and professional presentations.",
+                        "All-in-one: full business plan + investor pitch deck + design layout. Ideal for fundraising and presentations.",
                     features: [
                         "Business plan + Pitch deck",
                         "Branded design templates",
-                        "Investor-ready formatting",
+                        "Investor-ready presentation",
                         "Expert revisions included",
                     ],
                     buttonText: "Get Full Pack",
@@ -108,29 +108,27 @@ All plans include editing rights, access to our dashboard, and optional expert c
             ],
         },
 
-        // 🧩 CUSTOM PLAN SECTION
+        // 🧩 Custom Plan section
         {
             type: "section",
-            title: "Need Something Custom?",
-            description:
-                "We can tailor a package to your goals — from detailed market research to visual presentation design.",
+            title: "Need something custom?",
+            description: "We can tailor a package for your exact goals.",
             left: {
                 type: "custom",
                 component: "InfoBlock",
                 title: "Custom Plan for You",
                 description:
-                    "Mix and match AI generation, expert writing, and presentation design for a fully personalized experience.",
-                bullets: ["Flexible scope", "Dedicated project manager", "Dynamic pricing"],
+                    "Mix and match AI writing, expert review, and design assistance for a bespoke experience.",
+                bullets: ["Flexible scope", "Personal contact", "Dynamic pricing"],
             },
             right: {
                 type: "pricing",
                 variant: "custom",
                 title: "Custom Plan",
-                price: "Dynamic",
+                price: "dynamic",
                 tokens: 0,
                 badgeTop: "Flexible",
-                description:
-                    "Tell us your needs and budget — we’ll build the perfect package for your business goals.",
+                description: "Enter your budget, and we’ll match the right solution.",
                 features: ["Flexible pricing", "Mix AI & Expert", "Fast setup"],
                 buttonText: "Create Your Plan",
                 buttonLink: "/checkout?plan=custom",
