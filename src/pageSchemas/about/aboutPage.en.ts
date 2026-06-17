@@ -241,25 +241,26 @@ We collaborate with universities, incubators, and innovation hubs to make profes
         {
             type: "custom",
             component: "TeamGrid",
-            title: "The Team Behind the Platform",
-            description: `We’re a multidisciplinary team of business analysts, designers, and developers united by one purpose — to simplify the path from idea to execution.`,
+            title: "Meet the Experts Behind the Plans",
+            description:
+                "Our core team includes business analysts, market researchers, and editors — each bringing years of consulting experience and startup knowledge.",
             members: [
                 {
-                    name: "Anna Müller",
-                    role: "Head of Strategy",
-                    bio: "Former startup consultant who led over 200 business plan projects before co-founding the AI-planning system.",
+                    name: "Sophie Turner",
+                    role: "Senior Business Analyst",
+                    bio: "10+ years in strategy consulting. Specializes in startup scalability and investor communications.",
                     image: "team1",
                 },
                 {
-                    name: "David Chen",
-                    role: "Lead AI Engineer",
-                    bio: "Machine learning specialist focusing on natural language automation and contextual data generation.",
+                    name: "Luca Moretti",
+                    role: "Financial Model Specialist",
+                    bio: "Former Deloitte analyst building financial forecasts and performance simulations.",
                     image: "team2",
                 },
                 {
-                    name: "Maria Rossi",
-                    role: "Design Director",
-                    bio: `Leads the UI/UX design system for ${COMPANY_NAME}, ensuring clarity and focus for all users.`,
+                    name: "Isabelle Dubois",
+                    role: "Market Research Lead",
+                    bio: "Expert in global trends and competitor benchmarking across 20+ industries.",
                     image: "team3",
                 },
             ],

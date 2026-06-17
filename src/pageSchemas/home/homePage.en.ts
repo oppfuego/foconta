@@ -330,27 +330,7 @@ const schema: PageSchema = {
             description: `Thousands of entrepreneurs, students, and consultants use ${COMPANY_NAME} to save time and impress investors. Here’s what they think:`,
             testimonials: [
                 {
-                    name: "Marta Lopez",
-                    role: "Startup Founder",
-                    image: "review1",
-                    text: "I got my expert plan in 24 hours — complete, professional, and ready to pitch. It helped me secure my first investment!",
-                    rating: 5,
-                },
-                {
-                    name: "Jonas Richter",
-                    role: "MBA Student",
-                    image: "review2",
-                    text: "The AI generator was surprisingly good. It gave me a solid structure that made my business plan presentation a breeze.",
-                    rating: 5,
-                },
-                {
-                    name: "Claire Wang",
-                    role: "Investor Relations Manager",
-                    image: "review3",
-                    text: "I’ve seen many startup plans — but these are truly investor-ready. The visuals and structure are top-notch.",
-                    rating: 5,
-                },{
-                    name: "Marta Lopez",
+                    name: "Martin Keller",
                     role: "Startup Founder",
                     image: "review1",
                     text: "I got my expert plan in 24 hours — complete, professional, and ready to pitch. It helped me secure my first investment!",
