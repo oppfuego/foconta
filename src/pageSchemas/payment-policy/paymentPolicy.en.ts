@@ -4,7 +4,7 @@ const paymentPolicySchema: PageSchema = {
     meta: {
         title: "Payment Policy – Foconta",
         description: "Foconta Payment Policy: how payments, tokens, purchases, expert orders, payouts, and payment security are handled.",
-        keywords: ["payment policy", "foconta", "tokens", "payments", "expert payouts", "Visa", "Mastercard", "EUR", "USD"],
+        keywords: ["payment policy", "foconta", "tokens", "payments", "expert payouts", "Visa", "Mastercard", "GBP", "EUR", "USD"],
         canonical: "/payment-policy",
         ogImage: {
             title: "Foconta – Payment Policy",
@@ -68,11 +68,11 @@ This Policy applies to Customers, Experts and any other users who make or receiv
             description:
                 `Foconta currently supports the following checkout currencies:
 
+GBP (£)
+
 EUR (€)
 
 USD ($)
-
-Foconta does not currently support GBP as a checkout currency. Any previous reference to GBP in older materials, screenshots or archived documents is superseded by this Policy.
 
 If your bank account, card or payment account is denominated in another currency, your card issuer, bank or payment provider may apply its own exchange rate, conversion fee or other charges. Foconta is not responsible for fees, exchange rates or charges applied by your bank, card issuer or payment provider.`,
         },
@@ -107,6 +107,8 @@ You are responsible for ensuring that your billing information is accurate and c
                 `6.1. Nature of Tokens. Tokens are Foconta’s internal prepaid digital credits used to access or pay for Services. Tokens are not cash, e-money, cryptocurrency, securities, bank deposits, financial instruments or stored-value money.
 
 6.2. Token Rate. The current target Token rate is:
+
+100 Tokens = 1 GBP
 
 100 Tokens = 1.17 EUR
 
@@ -358,7 +360,7 @@ Company number: 15967968
 Email: info@foconta.co.uk
 Tel: +44 7537 166412
 
-Accepted currencies: EUR (€), USD ($)
+Accepted currencies: GBP (£), EUR (€), USD ($)
 Accepted payment methods: Visa, Mastercard`,
         },
     ],

@@ -7,7 +7,7 @@ import { appendPaymentLog } from "@/backend/utils/logger";
 import crypto from "crypto";
 
 const TOKENS_PER_GBP = 100;
-const RATES_TO_GBP: Record<string, number> = { EUR: 1.17, USD: 1.29 };
+const RATES_TO_GBP: Record<string, number> = { GBP: 1, EUR: 1.17, USD: 1.29 };
 const ISO_CURRENCY_PREFIX = "iso4217:";
 
 function roundMoney(value: number): number {
@@ -79,11 +79,14 @@ export async function POST(req: NextRequest) {
         });
 
         // Determine provider currency & method GUID
-        let providerCurrency: "USD" | "EUR";
+        let providerCurrency: "USD" | "EUR" | "GBP";
         let methodGuid: string;
         let currencyFallback = false;
 
-        if (normalizedCurrency === "EUR" && ENV.APS_METHOD_GUID_EUR) {
+        if (normalizedCurrency === "GBP" && ENV.APS_METHOD_GUID_GBP) {
+            providerCurrency = "GBP";
+            methodGuid = ENV.APS_METHOD_GUID_GBP;
+        } else if (normalizedCurrency === "EUR" && ENV.APS_METHOD_GUID_EUR) {
             providerCurrency = "EUR";
             methodGuid = ENV.APS_METHOD_GUID_EUR;
         } else if (normalizedCurrency === "USD" && ENV.APS_METHOD_GUID_USD) {

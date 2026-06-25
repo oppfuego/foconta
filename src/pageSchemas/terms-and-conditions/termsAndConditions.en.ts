@@ -69,7 +69,7 @@ Tokens means Foconta's internal prepaid digital credits used to access or pay fo
 
 Wallet / Token Balance means the internal balance of Tokens credited to your Account.
 
-Checkout Currency means EUR (€) or USD ($), as selected at checkout.`,
+Checkout Currency means GBP (£), EUR (€) or USD ($), as selected at checkout.`,
         },
         {
             type: "text",
@@ -107,15 +107,15 @@ Checkout Currency means EUR (€) or USD ($), as selected at checkout.`,
 
 5.2. Token Rate. The current target rate is:
 
+100 Tokens = 1 GBP
+
 100 Tokens = 1.17 EUR
 
 100 Tokens = 1.29 USD
 
 The exact number of Tokens credited or redeemed is displayed before purchase or confirmation.
 
-5.3. No GBP. Foconta does not currently support GBP as a Checkout Currency. Any previous references to GBP are superseded by these Terms and should not be relied upon.
-
-5.4. Token Packages. The available packages may include, for example:
+5.3. Token Packages. The available packages may include, for example:
 
 AI Instant Plan - 900 Tokens;
 
@@ -125,19 +125,19 @@ Investor Pack - 5,000 Tokens;
 
 Custom Plan - dynamic pricing, as displayed or agreed before confirmation.
 
-5.5. Pricing in Tokens. Services and packages are priced in Tokens. Any EUR or USD amount shown is an informational conversion based on the then-current Token rate and applicable checkout settings.
+5.4. Pricing in Tokens. Services and packages are priced in Tokens. Any GBP, EUR or USD amount shown is an informational conversion based on the then-current Token rate and applicable checkout settings.
 
-5.6. Issuance. Tokens are issued to your Account after successful payment, subject to fraud checks, payment confirmation and technical processing.
+5.5. Issuance. Tokens are issued to your Account after successful payment, subject to fraud checks, payment confirmation and technical processing.
 
-5.7. Redemption. When you confirm an Order, generation, expert request, add-on or package, the displayed number of Tokens is deducted from your Token Balance.
+5.6. Redemption. When you confirm an Order, generation, expert request, add-on or package, the displayed number of Tokens is deducted from your Token Balance.
 
-5.8. Failed Delivery. If a generation or Order fails due to a technical issue attributable to Foconta and no usable Deliverable is supplied, we may restore the relevant Tokens, re-run the generation, arrange rework, or provide another appropriate remedy.
+5.7. Failed Delivery. If a generation or Order fails due to a technical issue attributable to Foconta and no usable Deliverable is supplied, we may restore the relevant Tokens, re-run the generation, arrange rework, or provide another appropriate remedy.
 
-5.9. No Cash-Out for Customers. Customers may not cash out Tokens, request withdrawal of Tokens as fiat currency, or transfer Tokens to another user, except where a refund is approved under our Refund / Return Policy or required by law.
+5.8. No Cash-Out for Customers. Customers may not cash out Tokens, request withdrawal of Tokens as fiat currency, or transfer Tokens to another user, except where a refund is approved under our Refund / Return Policy or required by law.
 
-5.10. Promotional Tokens. Bonus, promotional or complimentary Tokens may be non-refundable, non-transferable, time-limited or subject to additional conditions shown at the point of issue.
+5.9. Promotional Tokens. Bonus, promotional or complimentary Tokens may be non-refundable, non-transferable, time-limited or subject to additional conditions shown at the point of issue.
 
-5.11. Dormant Accounts. Accounts with no login, purchase, redemption or other activity for 24 months may be archived. Reactivation may require identity, account ownership or security verification.`,
+5.10. Dormant Accounts. Accounts with no login, purchase, redemption or other activity for 24 months may be archived. Reactivation may require identity, account ownership or security verification.`,
         },
         {
             type: "text",
@@ -145,7 +145,7 @@ Custom Plan - dynamic pricing, as displayed or agreed before confirmation.
             description:
                 `6.1. Accepted Payment Methods. Foconta currently accepts payment by Visa and Mastercard.
 
-6.2. Accepted Currencies. Foconta currently supports EUR (€) and USD ($).
+6.2. Accepted Currencies. Foconta currently supports GBP (£), EUR (€) and USD ($).
 
 6.3. Taxes. Unless otherwise stated at checkout, applicable taxes are included in the displayed price. Where required, tax information may appear on your receipt, invoice or payment confirmation.
 
@@ -153,7 +153,7 @@ Custom Plan - dynamic pricing, as displayed or agreed before confirmation.
 
 6.5. Order Acceptance. All Orders are subject to acceptance. We may refuse, cancel, delay or review an Order where necessary to prevent fraud, correct obvious pricing or technical errors, comply with law, manage risk, address abuse, or protect the Service.
 
-6.6. Currency Conversion and Card Fees. If your card or account is denominated in a currency other than EUR or USD, your card issuer may apply exchange rates, conversion fees or other charges. Foconta is not responsible for fees charged by your bank, card issuer or payment provider.
+6.6. Currency Conversion and Card Fees. If your card or account is denominated in a currency other than GBP, EUR or USD, your card issuer may apply exchange rates, conversion fees or other charges. Foconta is not responsible for fees charged by your bank, card issuer or payment provider.
 
 6.7. Receipts and Invoices. We may provide electronic receipts or invoices through the Service or by email. You are responsible for ensuring that your billing details are correct.`,
         },

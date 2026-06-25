@@ -101,7 +101,7 @@ invoice and receipt information.
 
 We do not intentionally store full payment card numbers. Card payments are processed by third-party payment providers.
 
-Foconta currently supports payments in EUR (€) and USD ($) through Visa and Mastercard.
+Foconta currently supports payments in GBP (£), EUR (€) and USD ($) through Visa and Mastercard.
 
 3.3 Business plan inputs and Customer content
 

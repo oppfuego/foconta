@@ -131,7 +131,7 @@ Functional cookies help us remember choices and improve usability. They may be u
 
 language preferences;
 
-currency preference between EUR and USD;
+currency preference between GBP, EUR and USD;
 
 dashboard display preferences;
 

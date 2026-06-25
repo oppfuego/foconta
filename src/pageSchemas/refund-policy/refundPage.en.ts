@@ -41,7 +41,7 @@ Promotional, bonus or complimentary Tokens are non-refundable.
 
 Refund and cancellation requests must be sent to info@foconta.co.uk with your Order reference and supporting details.
 
-Accepted currencies: EUR (€) and USD ($).
+Accepted currencies: GBP (£), EUR (€) and USD ($).
 
 Accepted payment methods: Visa and Mastercard.`,
         },
@@ -97,17 +97,17 @@ Promotional / Bonus Tokens means Tokens issued free of charge, at a discount, as
             description:
                 `4.1. Foconta currently supports the following target Token rate:
 
+100 Tokens = 1 GBP
+
 100 Tokens = 1.17 EUR
 
 100 Tokens = 1.29 USD
 
-4.2. Foconta does not currently support GBP as a checkout currency. Any previous references to GBP are superseded by this Policy.
+4.2. Payments are accepted in GBP (£), EUR (€) and USD ($) using Visa and Mastercard.
 
-4.3. Payments are accepted in EUR (€) and USD ($) using Visa and Mastercard.
+4.3. Unless otherwise stated at checkout, applicable taxes are included in the displayed price.
 
-4.4. Unless otherwise stated at checkout, applicable taxes are included in the displayed price.
-
-4.5. If your card or bank account is denominated in another currency, your card issuer or payment provider may apply currency conversion rates, fees or charges. Foconta is not responsible for fees charged by your bank, card issuer or payment provider.`,
+4.4. If your card or bank account is denominated in another currency, your card issuer or payment provider may apply currency conversion rates, fees or charges. Foconta is not responsible for fees charged by your bank, card issuer or payment provider.`,
         },
         {
             type: "text",
@@ -543,7 +543,7 @@ You receive 100 bonus Tokens as part of a campaign. These Tokens are non-refunda
 Registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF
 Email: info@foconta.co.uk
 Tel: +44 7537 166412
-Accepted currencies: EUR (€), USD ($)
+Accepted currencies: GBP (£), EUR (€), USD ($)
 Payment methods: Visa, Mastercard`,
         },
     ],
