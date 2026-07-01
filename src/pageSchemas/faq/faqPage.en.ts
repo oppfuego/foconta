@@ -25,6 +25,38 @@ const faqSchema: PageSchema = {
 
     blocks: [
         {
+            type: "custom",
+            component: "HeroSection",
+            title: "Answers to Every Question",
+            highlight: "Everything About Working With Us",
+            description: `Everything you need to know about creating and receiving your business plan with ${COMPANY_NAME} — how our experts work, how the AI plan compares, delivery times, and how we keep your idea private.`,
+            primaryCta: { text: "Jump to Questions", link: "#faq" },
+            secondaryCta: { text: "Contact Support", link: "/contact-us" },
+            align: "right",
+            showTrustBadge: true,
+            eyebrowRotator: ["Help center", "10+ common questions"],
+            panel: {
+                docName: "answers.pdf",
+                section1: {
+                    label: "Popular Questions",
+                    rows: [88, 74, 92, 68, 80],
+                },
+                section2: {
+                    label: "Topics Covered",
+                    bars: [72, 60, 90, 55, 78, 66],
+                },
+                section3: {
+                    label: "Answer Match",
+                    points: [30, 45, 60, 72, 82, 88, 92, 95],
+                },
+                stats: [
+                    { value: "10+", label: "Verified answers" },
+                    { value: "< 12h", label: "Support reply" },
+                ],
+                chip: "Answer found",
+            },
+        },
+        {
             type: "faq",
             items: [
                 {

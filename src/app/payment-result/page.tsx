@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import PaymentResultClient from "./PaymentResultClient";
+import { COMPANY_NAME } from "@/resources/constants";
 
 export const metadata: Metadata = {
-    title: "Payment Result | Foconta",
+    title: `Payment Result | ${COMPANY_NAME}`,
     description: "Check the status of your payment.",
 };
 

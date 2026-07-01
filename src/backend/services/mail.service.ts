@@ -1,4 +1,5 @@
 import { sendEmail } from "@/backend/utils/sendEmail";
+import { COMPANY_NAME } from "@/resources/constants";
 
 type OrderConfirmationInput = {
     to: string;
@@ -230,16 +231,17 @@ export const mailService = {
     },
 
     async sendExpertWelcomeEmail(expertEmail: string, expertName: string) {
-        const subject = "Welcome to Foconta as an Expert!";
+        const subject = `Welcome to ${COMPANY_NAME} as an Expert!`;
         const greeting = `Hi ${expertName},`;
+        const welcomeLine = `Welcome! You have successfully registered as an expert on ${COMPANY_NAME}.`;
         const text = [
             greeting,
-            "Welcome! You have successfully registered as an expert on Foconta.",
+            welcomeLine,
             "Clients will be able to order expert-written business plans, and you will earn money for your expertise.",
             "Log in to your Expert Panel to set up your profile and start receiving orders.",
         ].join("\n");
         const html = buildSimpleHtml(subject, greeting, [
-            "Welcome! You have successfully registered as an expert on Foconta.",
+            welcomeLine,
             "Clients will be able to order expert-written business plans, and you will earn money for your expertise.",
             "Log in to your Expert Panel to set up your profile and start receiving orders.",
         ]);
@@ -257,7 +259,7 @@ export const mailService = {
     }) {
         const subject = `New Expert Registered: ${expertDetails.expertName}`;
         const text = [
-            `A new expert has registered on Foconta.`,
+            `A new expert has registered on ${COMPANY_NAME}.`,
             `Name: ${expertDetails.expertName}`,
             `Email: ${expertDetails.expertEmail}`,
             `Specializations: ${expertDetails.specializations.join(", ")}`,

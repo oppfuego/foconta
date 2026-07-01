@@ -24,6 +24,28 @@ const marketAnalysisSchema: PageSchema = {
 Learn how to find, analyze, and present your market in a way that investors understand.`,
             image: "image9",
             align: "left",
+            showTrustBadge: true,
+            eyebrowRotator: ["Guide · 7 min read", `${COMPANY_NAME} Academy`],
+            panel: {
+                docName: "market-analysis.pdf",
+                section1: {
+                    label: "Segments",
+                    rows: [78, 90, 66, 82],
+                },
+                section2: {
+                    label: "Market Share",
+                    bars: [92, 68, 52, 38, 22],
+                },
+                section3: {
+                    label: "TAM Growth",
+                    points: [30, 40, 48, 58, 66, 78, 88, 96],
+                },
+                stats: [
+                    { value: "5", label: "Research steps" },
+                    { value: "TAM", label: "First metric to size" },
+                ],
+                chip: "Market mapped",
+            },
         },
 
         {

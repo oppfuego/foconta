@@ -10,6 +10,247 @@ import { mailService } from "../services/mail.service";
 
 const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
+/* =============================================================================
+ * Business-plan generation prompt kit (senior-analyst voice).
+ * Storage/render contract is unchanged:
+ *   - main plan → response: string  (Markdown)
+ *   - each extra → extrasData[name]: string  (Markdown)
+ * Markdown vocabulary is LOCKED to what PdfCreator.parseBlocks supports:
+ *   headings: #, ##, ###
+ *   bullets:  -
+ *   ordered:  1.
+ *   inline:   **bold**
+ * (no tables, no code fences, no ---, no images, no links)
+ * ==========================================================================*/
+
+const BP_MARKDOWN_RULES = `
+OUTPUT FORMAT (STRICT):
+- Reply with Markdown only. No preamble, no closing remarks, no meta-comments.
+- Allowed Markdown: "# H1", "## H2", "### H3", "- bullet", "1. numbered", "**bold**".
+- Do NOT use: tables, code fences, horizontal rules (---), block quotes, images, links, HTML, emoji, or any other syntax.
+- Every section starts with a "## <Section Name>" heading. Use "###" for sub-sections. Do not use "#".
+- Prose paragraphs are short (2–5 sentences). Use bullet lists where enumerating.
+- Never emit placeholders like "TBD", "N/A", "[insert]"; either produce a concrete answer grounded in the inputs, or omit that line.
+`.trim();
+
+function buildBpAnalystSystemPrompt(languageNote: string): string {
+    return [
+        "You are a senior business analyst and strategy advisor with 15+ years of experience preparing investor-ready business plans for founders, VCs, and small-business owners.",
+        "You write in an analytical, precise, and confident voice — the way a partner at a boutique consulting firm would write for a paying client.",
+        "You reason from the inputs provided rather than inventing facts: numbers, ranges, and comparisons must be plausibly grounded in the client's stated business, industry, budget, team, and market. When you make an assumption to fill a gap, name it as an assumption in-line.",
+        "Every generated section must directly reference the client's specifics (business name, niche, product, target customer, budget, team, goal) — never generic placeholder content.",
+        "Depth over length: prefer specific, decision-useful analysis over verbose filler. Quantify wherever you can. If a number is uncertain, give a defensible range with the reasoning behind it.",
+        "",
+        languageNote,
+        "",
+        BP_MARKDOWN_RULES,
+    ].join("\n");
+}
+
+function summariseFieldsForPrompt(fields: Record<string, unknown>): string {
+    const pick = (k: string) => {
+        const v = (fields as Record<string, unknown>)[k];
+        return v == null || v === "" ? "(not provided)" : String(v);
+    };
+    return [
+        `- businessName: ${pick("businessName")}`,
+        `- niche: ${pick("niche")}`,
+        `- businessType: ${pick("businessType")}`,
+        `- teamSize: ${pick("teamSize")}`,
+        `- budget: ${pick("budget")}`,
+        `- marketDescription: ${pick("marketDescription")}`,
+        `- productDescription: ${pick("productDescription")}`,
+        `- uniqueValue: ${pick("uniqueValue")}`,
+        `- customerPain: ${pick("customerPain")}`,
+        `- goal: ${pick("goal")}`,
+        `- language: ${pick("language")}`,
+        `- specialization (expert path only): ${pick("specialization")}`,
+    ].join("\n");
+}
+
+function buildBpMainUserPrompt(fields: Record<string, unknown>): string {
+    return `
+You are producing a full **AI-generated business plan** for the following client. Use every input below. If any field is "(not provided)", say so explicitly in the relevant section and continue with a well-reasoned assumption.
+
+## CLIENT INPUTS
+${summariseFieldsForPrompt(fields)}
+
+## PER-FIELD USAGE (how each input MUST inform the plan)
+- **businessName**: use it verbatim in the Executive Summary, headings where natural, and closing "asks".
+- **niche** & **businessType**: shape the Market Overview, Competition, and Business Model sections; anchor comparables and unit economics against typical numbers for this niche.
+- **productDescription** & **uniqueValue**: drive the Product and Differentiation sections; the differentiation must be crisp and defensible.
+- **customerPain**: open the Problem section with this; every downstream section must trace back to it.
+- **marketDescription**: seed the Market Overview (TAM / SAM / SOM sizing) and the Ideal Customer Profile.
+- **teamSize**: shape Team & Operations, hiring priorities in the Roadmap.
+- **budget**: constrain the Go-To-Market plan and the 24-month Financial Overview; compare CAC and burn against it.
+- **goal**: framed as the plan's central thesis in the Executive Summary and the final "Asks / Next Steps".
+- **language**: entire plan in this language.
+
+## REQUIRED SECTIONS (produce all, in this exact order, using "## <Name>" headings)
+1. Executive Summary
+2. Problem
+3. Solution
+4. Product / Service
+5. Market Overview (include TAM / SAM / SOM as short sub-sections under "###", with defensible sizing anchored on marketDescription and budget)
+6. Ideal Customer Profile (ICP)
+7. Competitive Landscape & Differentiation
+8. Business Model & Unit Economics (name at least: revenue streams, pricing tier hypothesis, gross-margin estimate, CAC vs LTV directional take)
+9. Go-To-Market Plan (first 90 days, then 12 months; tie channels to the budget)
+10. Team & Operations
+11. 24-Month Roadmap & Milestones (as bullet list, one bullet per quarter)
+12. Risks & Mitigations (rank top 5 risks; each risk paired with a mitigation)
+13. Financial Overview (Year-1 and Year-3 revenue estimate, cost buckets, path to breakeven; use ranges with stated assumptions rather than fake precision)
+14. Asks & Next Steps (concrete, prioritised)
+
+## QUALITY BAR
+- No section may be one sentence; each section must be genuinely useful to a founder pitching this business.
+- Do not repeat the same idea in multiple sections.
+- Do not invent unrelated competitors — name plausible ones or describe archetypes ("mid-market SaaS incumbents like X-class tools").
+- Do not use tables. Use headings and bullets only.
+- Do not close with meta-commentary like "I hope this helps".
+
+Begin the plan now.
+`.trim();
+}
+
+const BP_EXTRA_SPEC: Record<string, { title: string; brief: string }> = {
+    marketingStrategy: {
+        title: "Marketing Strategy",
+        brief:
+            "Produce a full Marketing Strategy: ICP restated, positioning statement, 3 channel bets ranked by fit-to-budget, messaging framework (problem → promise → proof), content plan for first 90 days, and 4–6 KPIs with target ranges.",
+    },
+    financialProjection: {
+        title: "3-Year Financial Projection",
+        brief:
+            "Produce a 3-year financial projection narrative: revenue drivers, pricing/volume assumptions, gross-margin range, OpEx buckets (people, marketing, ops, tools), EBITDA path, breakeven month range. Use only headings and bullets — no tables. State every assumption inline.",
+    },
+    riskAnalysis: {
+        title: "Risk & Mitigation Plan",
+        brief:
+            "Enumerate the top 8 risks across Market, Product, Team, Finance, Legal/Regulatory. For each: 'Impact' (high/med/low), 'Likelihood' (high/med/low), and a concrete mitigation. Rank by combined severity.",
+    },
+    growthRoadmap: {
+        title: "Growth Roadmap (12–24 months)",
+        brief:
+            "Quarter-by-quarter roadmap for 24 months. Each quarter: one headline goal, 3 concrete milestones, the metric that proves it, the owner archetype (Founder / Head of X / hire).",
+    },
+    competitorReview: {
+        title: "Competitor Analysis",
+        brief:
+            "Identify 3–5 plausible competitors (or archetypes if names are not defensible). For each: positioning, pricing model, strengths, weaknesses, and our defensible edge. Then a short 'where we win' summary.",
+    },
+    pitchDeck: {
+        title: "Investor Pitch Deck Outline",
+        brief:
+            "12–15 slide outline. For each slide give a heading, one-sentence purpose, and 3–5 bullet points a founder would say on stage. Slides should tell the fundraising story end-to-end.",
+    },
+    brandingGuide: {
+        title: "Branding & Visual Identity Brief",
+        brief:
+            "Deliver a lightweight brand brief: brand promise, voice & tone (3 adjectives + do/don't), 3 value pillars, colour direction (moods, not hex codes), typography direction (mood + pairing type), logo usage principles, and 3 example taglines.",
+    },
+    teamStructure: {
+        title: "Organizational Structure",
+        brief:
+            "Propose current-day org chart, RACI hints for the top 5 processes, and the next 3 priority hires with rationale, seniority range, and expected cost band.",
+    },
+    customerJourney: {
+        title: "Customer Journey Map",
+        brief:
+            "Map Awareness → Consideration → Purchase → Onboarding → Retention → Advocacy. For each stage: user goal, our touchpoint, the friction to remove, the metric to watch.",
+    },
+    salesForecast: {
+        title: "Sales Forecast",
+        brief:
+            "Build a quarterly sales forecast narrative for the next 8 quarters: lead volume assumptions, conversion rate ranges, ACV/ARPU hypothesis, resulting bookings/revenue range. State every assumption and how the budget constrains it.",
+    },
+    fundingPlan: {
+        title: "Funding Strategy",
+        brief:
+            "Recommend the right first funding round (bootstrap / grant / angel / pre-seed / seed) with rationale. State target amount as a range, use-of-proceeds by bucket, the 12-month milestones this round should unlock, and the investor profile to target.",
+    },
+    // Generic/back-compat keys — kept so the older extras still generate.
+    progressTracking: {
+        title: "Weekly Progress Tracking",
+        brief:
+            "Design a weekly progress tracking system: which 5–7 metrics to watch, how to instrument them, a lightweight weekly-review agenda, and warning-sign thresholds.",
+    },
+    motivationTips: {
+        title: "Founder Motivation Notes",
+        brief:
+            "Write 10 short, specific motivational notes tuned to a founder working on this business — grounded in customerPain, niche, and goal. No generic platitudes.",
+    },
+    summaryReport: {
+        title: "Executive Summary Report",
+        brief:
+            "Write a one-page executive summary that would let a busy investor decide in 60 seconds whether to take a meeting.",
+    },
+};
+
+/**
+ * GPT-5 family + o-series reasoning models expose a different Chat Completions
+ * parameter surface than GPT-4 / GPT-4o:
+ *   - use `max_completion_tokens`, NOT `max_tokens`
+ *   - use top-level `reasoning_effort: "medium"`, NOT `reasoning: { effort }`
+ *   - `temperature` MUST be omitted (or left at the default 1) — a custom value
+ *     is rejected with a 400.
+ * GPT-4-family uses the classic surface (`max_tokens`, custom `temperature`,
+ * no reasoning knob).
+ * This helper produces the right request body for either family.
+ */
+function isReasoningFamily(model: string): boolean {
+    return /^(gpt-5|o[0-9])/i.test(model);
+}
+
+function buildChatRequest(opts: {
+    model: string;
+    maxTokens: number;
+    temperature: number;
+    messages: { role: "system" | "user" | "assistant"; content: string }[];
+}): Record<string, unknown> {
+    const reasoning = isReasoningFamily(opts.model);
+    const base: Record<string, unknown> = {
+        model: opts.model,
+        messages: opts.messages,
+    };
+    if (reasoning) {
+        base.max_completion_tokens = opts.maxTokens;
+        // "low" keeps quality high for a structured business plan while cutting
+        // wall-clock significantly. "medium"/"high" push latency past 90s+ per
+        // call which is unacceptable for a user-facing waited generation.
+        base.reasoning_effort = "low";
+        // temperature deliberately omitted — GPT-5 rejects non-default values.
+    } else {
+        base.max_tokens = opts.maxTokens;
+        base.temperature = opts.temperature;
+    }
+    return base;
+}
+
+function buildBpExtraUserPrompt(extraKey: string, fields: Record<string, unknown>): string {
+    const spec = BP_EXTRA_SPEC[extraKey] || {
+        title: extraKey,
+        brief: `Produce a well-structured section titled "${extraKey}" that a senior analyst would ship to a paying client.`,
+    };
+    return `
+You are producing the **${spec.title}** section of the same business plan for the SAME client. Keep names, numbers, positioning, and assumptions consistent with the main plan above (which you can see in the prior message).
+
+## CLIENT INPUTS (restated for grounding)
+${summariseFieldsForPrompt(fields)}
+
+## SECTION BRIEF
+${spec.brief}
+
+## RULES
+- Begin with "## ${spec.title}".
+- No preamble like "Here is..." — go straight into the section.
+- Cite specific values from the client inputs at least three times.
+- Do not restate the whole plan; extend it with new, actionable depth.
+- Follow the strict Markdown format rules from the system prompt (# / ## / ### / - / 1. / **bold** only).
+`.trim();
+}
+
+
 function buildPrompt(body: any): string {
     const { category, fields, planType } = body;
     const jsonData = JSON.stringify(fields, null, 2);
@@ -254,36 +495,184 @@ export const universalService = {
             return order.toObject({ flattenMaps: true });
         }
 
-        // ========== AI PATH (default) — unchanged ==========
-        const mainPrompt = buildPrompt(body);
+        // ========== AI PATH (default) ==========
+        const languageNote = body.language
+            ? `Write the entire output in ${body.language}.`
+            : "Write the entire output in English.";
+        const isBusiness = body.category === "business";
+        const bpModel = ENV.OPENAI_BP_MODEL;
+        // Bounded output caps — enough for real depth, but capped so a runaway
+        // generation can't hang the request.
+        //
+        // IMPORTANT gpt-5 gotcha: `max_completion_tokens` INCLUDES reasoning
+        // tokens, not just visible output. At `reasoning_effort: "low"` the
+        // model still typically spends 800–2000 tokens on internal reasoning
+        // before writing anything. Setting this too tight causes the model to
+        // exhaust the budget in reasoning and return EMPTY content with
+        // `finish_reason: "length"` — which is exactly the "PDF has only the
+        // title" symptom.
+        //
+        // Budget breakdown (main):  ~2000 reasoning + ~5000 output = 7000, +buffer.
+        // Budget breakdown (extra): ~1500 reasoning + ~1500 output = 3000, +buffer.
+        const BP_MAIN_MAX_TOKENS = 8000;
+        const BP_EXTRA_MAX_TOKENS = 3500;
+        const BP_TEMPERATURE = 0.4;
+        // Firm per-call timeouts. If OpenAI stalls or takes too long, we abort
+        // and surface a real error instead of leaving the user staring at a
+        // loader indefinitely.
+        const BP_MAIN_TIMEOUT_MS = 150_000;  // 150s ceiling for the main plan
+        const BP_EXTRA_TIMEOUT_MS = 90_000;  // 90s ceiling per extra
+        // Non-business paths keep the old thin generator on the cheaper model.
+        const LEGACY_MODEL = "gpt-4o-mini";
+
         let mainText = "";
+        // Cached across the main + all extra calls in this request so the OpenAI
+        // prompt-caching layer sees an identical stable prefix on every call.
+        const bpSystemPrompt = isBusiness ? buildBpAnalystSystemPrompt(languageNote) : "";
+
         try {
-            const mainRes = await openai.chat.completions.create({
-                model: "gpt-4o-mini",
-                messages: [
-                    {
-                        role: "system",
-                        content: "You are a structured professional generator. Always output final readable content.",
-                    },
-                    { role: "user", content: mainPrompt },
-                ],
-            });
-            mainText = mainRes.choices?.[0]?.message?.content?.trim() || "";
+            if (isBusiness) {
+                const req = buildChatRequest({
+                    model: bpModel,
+                    maxTokens: BP_MAIN_MAX_TOKENS,
+                    temperature: BP_TEMPERATURE,
+                    messages: [
+                        { role: "system", content: bpSystemPrompt },
+                        { role: "user", content: buildBpMainUserPrompt(body.fields || {}) },
+                    ],
+                });
+                console.log("[universalService.createOrder] AI main call starting", {
+                    userId, model: bpModel, timeoutMs: BP_MAIN_TIMEOUT_MS,
+                    maxTokens: BP_MAIN_MAX_TOKENS,
+                });
+                const t0 = Date.now();
+                const mainRes = await openai.chat.completions.create(
+                    req as any,
+                    { signal: AbortSignal.timeout(BP_MAIN_TIMEOUT_MS) }
+                );
+                mainText = mainRes.choices?.[0]?.message?.content?.trim() || "";
+                const choice0 = (mainRes.choices?.[0] || {}) as {
+                    finish_reason?: string;
+                    message?: { content?: string };
+                };
+                const usage = (mainRes as unknown as { usage?: Record<string, number> }).usage;
+                console.log("[universalService.createOrder] AI main call finished", {
+                    userId,
+                    model: bpModel,
+                    elapsedMs: Date.now() - t0,
+                    finishReason: choice0.finish_reason,
+                    contentChars: mainText.length,
+                    usage,
+                });
+                // If the model returned nothing (typically finish_reason === "length"
+                // because reasoning ate the whole budget), we must NOT silently
+                // save an empty plan — that's exactly the "empty PDF" symptom.
+                if (!mainText) {
+                    throw new Error(
+                        `AI generation produced empty content (finish_reason=${choice0.finish_reason || "unknown"}). ` +
+                        `This typically means max_completion_tokens is too small for the model's reasoning + output.`
+                    );
+                }
+            } else {
+                const mainPrompt = buildPrompt(body);
+                const mainRes = await openai.chat.completions.create({
+                    model: LEGACY_MODEL,
+                    messages: [
+                        {
+                            role: "system",
+                            content: "You are a structured professional generator. Always output final readable content.",
+                        },
+                        { role: "user", content: mainPrompt },
+                    ],
+                });
+                mainText = mainRes.choices?.[0]?.message?.content?.trim() || "";
+            }
         } catch (err: any) {
+            // Surface the real OpenAI error message to the server log — the
+            // "AI generation failed" string alone hides the actual reason.
+            const detail =
+                err?.response?.data?.error?.message ||
+                err?.error?.message ||
+                err?.message ||
+                "unknown";
+            console.error("[universalService.createOrder] AI main generation failed", {
+                userId,
+                model: isBusiness ? bpModel : LEGACY_MODEL,
+                detail,
+            });
             throw new Error("AI generation failed, please retry later");
         }
 
         const extrasData: Record<string, string> = {};
         if (Array.isArray(body.extras) && body.extras.length > 0) {
-            for (const extra of body.extras) {
-                try {
-                    const extraPrompt = buildExtraPrompt(extra, body.category, body.fields, body.language);
-                    const extraRes = await openai.chat.completions.create({
-                        model: "gpt-4o-mini",
-                        messages: [{ role: "user", content: extraPrompt }],
-                    });
-                    extrasData[extra] = extraRes.choices?.[0]?.message?.content?.trim() || "";
-                } catch {}
+            if (isBusiness) {
+                // Plan-aware extras: each extra call sees
+                //   [ SYSTEM: senior-analyst rules ]
+                //   [ ASSISTANT: the just-generated main plan (verbatim) ]
+                //   [ USER: the specific extra brief ]
+                // — so all extras stay consistent with the main plan, and the big
+                // system prompt + main plan act as a stable cacheable prefix that
+                // is identical across every extra call in this request.
+                const results = await Promise.all(
+                    body.extras.map(async (extra: string) => {
+                        try {
+                            const req = buildChatRequest({
+                                model: bpModel,
+                                maxTokens: BP_EXTRA_MAX_TOKENS,
+                                temperature: BP_TEMPERATURE,
+                                messages: [
+                                    { role: "system", content: bpSystemPrompt },
+                                    { role: "assistant", content: mainText },
+                                    { role: "user", content: buildBpExtraUserPrompt(extra, body.fields || {}) },
+                                ],
+                            });
+                            const t0 = Date.now();
+                            const res = await openai.chat.completions.create(
+                                req as any,
+                                { signal: AbortSignal.timeout(BP_EXTRA_TIMEOUT_MS) }
+                            );
+                            const content = res.choices?.[0]?.message?.content?.trim() || "";
+                            const choice0 = (res.choices?.[0] || {}) as { finish_reason?: string };
+                            const usage = (res as unknown as { usage?: Record<string, number> }).usage;
+                            console.log(
+                                "[universalService.createOrder] AI extra call finished",
+                                {
+                                    userId, model: bpModel, extra,
+                                    elapsedMs: Date.now() - t0,
+                                    finishReason: choice0.finish_reason,
+                                    contentChars: content.length,
+                                    usage,
+                                }
+                            );
+                            return [extra, content] as const;
+                        } catch (err: any) {
+                            const detail =
+                                err?.response?.data?.error?.message ||
+                                err?.error?.message ||
+                                err?.message ||
+                                "unknown";
+                            console.error(
+                                "[universalService.createOrder] AI extra generation failed",
+                                { userId, model: bpModel, extra, detail }
+                            );
+                            return [extra, ""] as const;
+                        }
+                    })
+                );
+                for (const [k, v] of results) {
+                    if (v) extrasData[k] = v;
+                }
+            } else {
+                for (const extra of body.extras) {
+                    try {
+                        const extraPrompt = buildExtraPrompt(extra, body.category, body.fields, body.language);
+                        const extraRes = await openai.chat.completions.create({
+                            model: LEGACY_MODEL,
+                            messages: [{ role: "user", content: extraPrompt }],
+                        });
+                        extrasData[extra] = extraRes.choices?.[0]?.message?.content?.trim() || "";
+                    } catch {}
+                }
             }
         }
 

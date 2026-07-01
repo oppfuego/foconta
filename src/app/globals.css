@@ -52,7 +52,56 @@ a {
     --border-color: #E5E7EB;        /* світлі бордери */
     --shadow-color: rgba(0, 0, 0, 0.08);
 
-    --font-family: 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    --font-body: var(--font-body), 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --font-display: var(--font-display), 'Fraunces', 'Georgia', serif;
+    --font-family: var(--font-body);
 
     --main-padding: 0 50px 0 50px;
+
+    /* Redesign tokens — derived from existing brand palette only */
+    --navy-900: #0a2540;
+    --navy-800: #1E293B;
+    --navy-700: #1E3A8A;
+    --navy-600: #1E40AF;
+    --accent-500: #2563EB;
+    --accent-400: #3B82F6;
+    --accent-300: #60A5FA;
+    --accent-100: #EFF6FF;
+    --surface-deep: #08192b;
+    --surface-dark: var(--navy-900);
+    --hairline: rgba(255, 255, 255, 0.08);
+    --hairline-dark: rgba(10, 37, 64, 0.08);
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --shadow-soft: 0 6px 24px -8px rgba(10, 37, 64, 0.15);
+    --shadow-lift: 0 20px 40px -20px rgba(10, 37, 64, 0.35);
+    --shadow-glow: 0 12px 40px -12px rgba(37, 99, 235, 0.45);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::selection {
+    background: rgba(37, 99, 235, 0.25);
+    color: var(--navy-900);
+}
+
+*:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+h1, h2, h3, .display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
 }

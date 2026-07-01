@@ -20,8 +20,39 @@ const contactPage: PageSchema = {
         },
     },
     blocks: [
-        // 🔹 Hero Intro
-
+        // 🏁 HERO
+        {
+            type: "custom",
+            component: "HeroSection",
+            title: "Let's Build Something Great Together",
+            highlight: "Talk to a Real Human, Not a Bot",
+            description: `Have a question about ${COMPANY_NAME}, need tailored advice, or want to collaborate? Reach out — our team typically replies within 24 hours on business days.`,
+            primaryCta: { text: "Send a Message", link: "#contact-form" },
+            secondaryCta: { text: `Email ${COMPANY_EMAIL}`, link: `mailto:${COMPANY_EMAIL}` },
+            align: "right",
+            showTrustBadge: true,
+            eyebrowRotator: ["We're here", "Reply in 24h"],
+            panel: {
+                docName: "your-message.md",
+                section1: {
+                    label: "Message Preview",
+                    rows: [72, 90, 66, 84],
+                },
+                section2: {
+                    label: "Team Availability",
+                    bars: [55, 90, 92, 88, 75],
+                },
+                section3: {
+                    label: "Response Time",
+                    points: [90, 82, 70, 60, 48, 40, 30, 22],
+                },
+                stats: [
+                    { value: "< 24h", label: "Typical reply" },
+                    { value: "Mon–Fri", label: "Human support" },
+                ],
+                chip: "We'll get back to you",
+            },
+        },
 
         // 🔹 Contact Form
         {

@@ -1,0 +1,58 @@
+[
+  {
+    "timestamp": "2026-06-11T15:21:15.729Z",
+    "event": "payment.create.received",
+    "userId": "6a1e929d6edacb1dfe7dc561",
+    "email": "zaharenkoila19@gmail.com",
+    "requestedCurrency": "USD",
+    "normalizedCurrency": "USD",
+    "requestedAmount": 11111
+  },
+  {
+    "timestamp": "2026-06-11T15:21:15.730Z",
+    "event": "payment.create.converted",
+    "referenceId": "topup-6a1e929d6edacb1dfe7dc561-1781191275729-f0b61cf3",
+    "requestedCurrency": "USD",
+    "providerCurrency": "USD",
+    "currencyFallback": false,
+    "requestedAmount": 11111,
+    "gbpEquivalent": 8613.178294573643,
+    "providerAmount": 11111,
+    "tokens": 861317
+  },
+  {
+    "timestamp": "2026-06-11T15:21:16.172Z",
+    "event": "payment.create.provider_non_json",
+    "referenceId": "topup-6a1e929d6edacb1dfe7dc561-1781191275729-f0b61cf3",
+    "status": 405,
+    "responsePreview": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>MethodNotAllowed</Code><Message>The specified method is not allowed against this resource.</Message><Method>POST</Method><ResourceType>OBJECT</ResourceType><RequestId>SQ1YGAN2DSEYQRFE</RequestId><HostId>y0GDxjf0MwEUksi1BrsS4UOT/xxtFeL2p+Co/iIQZIbv9Br8eu3dIEY3RtDA1ipEJp1hxK71+cBFjq06SHgYt3vd+OFwuhTS</HostId></Error>"
+  },
+  {
+    "timestamp": "2026-06-11T15:21:22.125Z",
+    "event": "payment.create.received",
+    "userId": "6a1e929d6edacb1dfe7dc561",
+    "email": "zaharenkoila19@gmail.com",
+    "requestedCurrency": "USD",
+    "normalizedCurrency": "USD",
+    "requestedAmount": 122
+  },
+  {
+    "timestamp": "2026-06-11T15:21:22.127Z",
+    "event": "payment.create.converted",
+    "referenceId": "topup-6a1e929d6edacb1dfe7dc561-1781191282125-c812fbdf",
+    "requestedCurrency": "USD",
+    "providerCurrency": "USD",
+    "currencyFallback": false,
+    "requestedAmount": 122,
+    "gbpEquivalent": 94.57364341085271,
+    "providerAmount": 122,
+    "tokens": 9457
+  },
+  {
+    "timestamp": "2026-06-11T15:21:22.329Z",
+    "event": "payment.create.provider_non_json",
+    "referenceId": "topup-6a1e929d6edacb1dfe7dc561-1781191282125-c812fbdf",
+    "status": 405,
+    "responsePreview": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>MethodNotAllowed</Code><Message>The specified method is not allowed against this resource.</Message><Method>POST</Method><ResourceType>OBJECT</ResourceType><RequestId>GM887ZD5QPFARTG7</RequestId><HostId>OIj4c39C+mPGjQzsCAq22um/uLk/wsrGTlr5Kpy4z9FRHPEBT0E71sft5b9ZmKqM6Ze/hKCMYXUuAGPplSaSVcQCyJXhuhRB</HostId></Error>"
+  }
+]

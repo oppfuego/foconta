@@ -1,111 +1,175 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
-import {headerContent} from "@/resources/content";
-import styles from "./Header.module.scss";
-import {IconButton} from "@mui/material";
-import {FaBars} from "react-icons/fa";
-import {useUser} from "@/context/UserContext";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { FaBars, FaTimes } from "react-icons/fa";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+
+import styles from "./Header.module.scss";
+import { headerContent } from "@/resources/content";
+import { useUser } from "@/context/UserContext";
+import { Currency, useCurrency } from "@/context/CurrencyContext";
 import AuthButtons from "@/components/widgets/auth-buttons/AuthButtons";
-import {headerStyles} from "@/resources/styles-config";
-import DrawerMenu from "@/components/ui/drawer/Drawer";
-import {Currency, useCurrency} from "@/context/CurrencyContext";
-import {motion} from "framer-motion";
+import SegmentedControl from "@/components/ui/segmented-control/SegmentedControl";
+import { easings } from "@/design/motion";
+
+const CURRENCY_OPTS = [
+    { value: "GBP", label: "£" },
+    { value: "EUR", label: "€" },
+    { value: "USD", label: "$" },
+];
 
 const Header: React.FC = () => {
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const [open, setOpen] = useState(false);
     const user = useUser();
-    const {currency, setCurrency} = useCurrency();
+    const { currency, setCurrency } = useCurrency();
+    const reduce = useReducedMotion();
 
     useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 10);
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+        const onScroll = () => setScrolled(window.scrollY > 12);
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    const scrolledStyle: React.CSSProperties = {};
-    if (isScrolled && headerStyles.type !== "default") {
-        switch (headerStyles.scrollMode) {
-            case "solid":
-                scrolledStyle.backgroundColor = headerStyles.scrollBackground;
-                break;
-            case "blur":
-                scrolledStyle.backdropFilter = `blur(${headerStyles.scrollBlur})`;
-                scrolledStyle.backgroundColor = "rgba(255,255,255,0.05)";
-                break;
-        }
-    }
+    useEffect(() => {
+        document.body.style.overflow = open ? "hidden" : "";
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [open]);
 
     const isExpert = user?.role === "expert";
 
     return (
         <>
             <motion.header
-                className={[
-                    headerStyles.type === "sticky" && styles.sticky,
-                    isScrolled ? styles.scrolled : "",
-                ]
-                    .filter(Boolean)
-                    .join(" ")}
-                style={scrolledStyle}
-                initial={{opacity: 0, y: -40}}
-                animate={{opacity: 1, y: 0}}
-                transition={{duration: 0.6, ease: "easeOut"}}
+                className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, ease: easings.out }}
             >
-                <div className={styles.headerInner}>
-                    <a href={headerContent.logo.href} className={styles.logo}>
+                <div className={styles.inner}>
+                    <Link href={headerContent.logo.href} className={styles.logo} aria-label={`${headerContent.logo.alt} home`}>
                         <Image
-                            width={190}
-                            height={60}
                             src={headerContent.logo.src}
+                            width={170}
+                            height={54}
                             alt={headerContent.logo.alt}
+                            priority
                         />
-                    </a>
+                    </Link>
 
-                    <nav className={styles.nav}>
+                    <nav className={styles.nav} aria-label="Primary">
                         {headerContent.links.map((link) => (
-                            <a key={link.label} href={link.href} className={styles.link}>
-                                {link.label}
-                            </a>
+                            <Link key={link.label} href={link.href} className={styles.navLink}>
+                                <span>{link.label}</span>
+                            </Link>
                         ))}
                         {isExpert && (
-                            <a href="/expert" className={styles.link}>
-                                Expert Panel
-                            </a>
+                            <Link href="/expert" className={styles.navLink}>
+                                <span>Expert Panel</span>
+                            </Link>
                         )}
                     </nav>
 
-                    <div className={styles.actionsNav}>
-                        <AuthButtons />
-
-                        <div className={styles.currencySwitch}>
-                            <select
-                                value={currency}
-                                onChange={(e) => setCurrency(e.target.value as Currency)}
-                                className={styles.currencySelect}
-                            >
-                                <option value="GBP">GBP</option>
-                                <option value="EUR">EUR</option>
-                                <option value="USD">USD</option>
-                            </select>
+                    <div className={styles.actions}>
+                        <SegmentedControl
+                            value={currency}
+                            onChange={(v) => setCurrency(v as Currency)}
+                            options={CURRENCY_OPTS}
+                            ariaLabel="Currency"
+                            tone={scrolled ? "light" : "light"}
+                        />
+                        <div className={styles.authWrap}>
+                            <AuthButtons />
                         </div>
                     </div>
 
-                    <div className={styles.menuButton}>
-                        <IconButton
-                            onClick={() => setDrawerOpen(true)}
-                            aria-label="Open navigation"
-                            className={styles.button}
-                        >
-                            <FaBars className={styles.button}/>
-                        </IconButton>
-                    </div>
+                    <button
+                        className={styles.menuBtn}
+                        aria-label={open ? "Close menu" : "Open menu"}
+                        aria-expanded={open}
+                        onClick={() => setOpen((v) => !v)}
+                    >
+                        {open ? <FaTimes /> : <FaBars />}
+                    </button>
                 </div>
             </motion.header>
 
-            <DrawerMenu open={drawerOpen} onClose={() => setDrawerOpen(false)}/>
+            <AnimatePresence>
+                {open && (
+                    <motion.div
+                        className={styles.overlay}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                    >
+                        <motion.nav
+                            className={styles.overlayNav}
+                            initial="hidden"
+                            animate="visible"
+                            exit="hidden"
+                            variants={{
+                                hidden: {},
+                                visible: { transition: { staggerChildren: reduce ? 0 : 0.06, delayChildren: 0.05 } },
+                            }}
+                            aria-label="Mobile primary"
+                        >
+                            {headerContent.links.map((link) => (
+                                <motion.div
+                                    key={link.label}
+                                    variants={{
+                                        hidden: { opacity: 0, y: 24 },
+                                        visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: easings.out } },
+                                    }}
+                                >
+                                    <Link
+                                        href={link.href}
+                                        className={styles.overlayLink}
+                                        onClick={() => setOpen(false)}
+                                    >
+                                        {link.label}
+                                    </Link>
+                                </motion.div>
+                            ))}
+                            {isExpert && (
+                                <motion.div
+                                    variants={{
+                                        hidden: { opacity: 0, y: 24 },
+                                        visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: easings.out } },
+                                    }}
+                                >
+                                    <Link href="/expert" className={styles.overlayLink} onClick={() => setOpen(false)}>
+                                        Expert Panel
+                                    </Link>
+                                </motion.div>
+                            )}
+                            <motion.div
+                                variants={{
+                                    hidden: { opacity: 0, y: 24 },
+                                    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: easings.out } },
+                                }}
+                                className={styles.overlayActions}
+                            >
+                                <SegmentedControl
+                                    value={currency}
+                                    onChange={(v) => setCurrency(v as Currency)}
+                                    options={CURRENCY_OPTS}
+                                    ariaLabel="Currency"
+                                    tone="dark"
+                                />
+                                <div className={styles.authWrap}>
+                                    <AuthButtons />
+                                </div>
+                            </motion.div>
+                        </motion.nav>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 };

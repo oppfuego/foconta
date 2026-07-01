@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import styles from "./Section.module.scss";
+import SectionHeading from "@/components/ui/section-heading/SectionHeading";
 
 interface SectionProps {
     title?: string;
@@ -15,30 +16,26 @@ interface SectionProps {
 }
 
 const Section: React.FC<SectionProps> = ({
-                                             title,
-                                             description,
-                                             left,
-                                             right,
-                                             reverse = false,
-                                             gap = "3rem",
-                                             align = "center",
-                                             justify = "center",
-                                         }) => {
+    title,
+    description,
+    left,
+    right,
+    reverse = false,
+    gap = "2.5rem",
+    align = "stretch" as never,
+    justify = "center",
+}) => {
     const isSingle = !left || !right;
+    const reduce = useReducedMotion();
+
+    const enter = reduce
+        ? {}
+        : { initial: { opacity: 0, y: 32 }, whileInView: { opacity: 1, y: 0 } };
 
     return (
         <section className={styles.wrapper}>
             {(title || description) && (
-                <motion.div
-                    className={styles.header}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                >
-                    {title && <h2 className={styles.title}>{title}</h2>}
-                    {description && <p className={styles.description}>{description}</p>}
-                </motion.div>
+                <SectionHeading title={title} description={description} align="center" />
             )}
 
             <motion.div
@@ -49,18 +46,18 @@ const Section: React.FC<SectionProps> = ({
                     alignItems: align,
                     justifyContent: isSingle ? "center" : justify,
                 }}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
+                {...enter}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
                 {left && (
                     <motion.div
                         className={styles.left}
-                        initial={{ opacity: 0, x: reverse ? 50 : -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
+                        data-diptych="left"
+                        initial={reduce ? undefined : { opacity: 0, x: reverse ? 40 : -40 }}
+                        whileInView={reduce ? undefined : { opacity: 1, x: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.7, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
                     >
                         {left}
                     </motion.div>
@@ -68,10 +65,11 @@ const Section: React.FC<SectionProps> = ({
                 {right && (
                     <motion.div
                         className={styles.right}
-                        initial={{ opacity: 0, x: reverse ? -50 : 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
+                        data-diptych="right"
+                        initial={reduce ? undefined : { opacity: 0, x: reverse ? -40 : 40 }}
+                        whileInView={reduce ? undefined : { opacity: 1, x: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
                     >
                         {right}
                     </motion.div>

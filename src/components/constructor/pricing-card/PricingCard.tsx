@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import Input from "@mui/joy/Input";
 import styles from "./PricingCard.module.scss";
-import ButtonUI from "@/components/ui/button/ButtonUI";
 import { useAlert } from "@/context/AlertContext";
 import { useUser } from "@/context/UserContext";
-import Input from "@mui/joy/Input";
 import { useCurrency } from "@/context/CurrencyContext";
 
 const TOKENS_PER_GBP = 100;
@@ -25,38 +24,63 @@ interface PricingCardProps {
     index?: number;
 }
 
+function useCountUp(target: number, active: boolean, duration = 900) {
+    const [value, setValue] = useState(0);
+    const reduce = useReducedMotion();
+
+    useEffect(() => {
+        if (!active) return;
+        if (reduce) {
+            setValue(target);
+            return;
+        }
+        let raf = 0;
+        const start = performance.now();
+        const from = 0;
+        const tick = (now: number) => {
+            const p = Math.min(1, (now - start) / duration);
+            const eased = 1 - Math.pow(1 - p, 3);
+            setValue(from + (target - from) * eased);
+            if (p < 1) raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(raf);
+    }, [target, active, duration, reduce]);
+
+    return value;
+}
+
 const PricingCard: React.FC<PricingCardProps> = ({
-                                                     variant = "starter",
-                                                     title,
-                                                     price,
-                                                     tokens,
-                                                     description,
-                                                     features,
-                                                     buttonText,
-                                                     badgeTop,
-                                                     badgeBottom,
-                                                     index = 0,
-                                                 }) => {
+    variant = "starter",
+    title,
+    price,
+    tokens,
+    buttonText,
+    index = 0,
+}) => {
     const { showAlert } = useAlert();
     const user = useUser();
     const { currency, sign, convertFromGBP, convertToGBP } = useCurrency();
-
     const [customAmount, setCustomAmount] = useState<number>(0.01);
     const [loading, setLoading] = useState(false);
     const isCustom = price === "dynamic";
+    const isFeatured = variant === "pro";
+    const cardRef = useRef<HTMLDivElement | null>(null);
+    const inView = useInView(cardRef, { once: true, amount: 0.3 });
+    const reduce = useReducedMotion();
 
-    // 💷 Базова ціна у GBP
     const basePriceGBP = useMemo(() => {
         if (isCustom) return 0;
         const num = parseFloat(price.replace(/[^0-9.]/g, ""));
         return isNaN(num) ? 0 : num;
     }, [price, isCustom]);
 
-    // 💰 Конвертація у поточну валюту
     const convertedPrice = useMemo(() => {
         if (isCustom) return 0;
         return convertFromGBP(basePriceGBP);
     }, [basePriceGBP, convertFromGBP, isCustom]);
+
+    const animatedPrice = useCountUp(convertedPrice, inView && !isCustom);
 
     const handleBuy = async () => {
         if (!user) {
@@ -109,13 +133,13 @@ const PricingCard: React.FC<PricingCardProps> = ({
             } else {
                 throw new Error("No payment URL received");
             }
-        } catch (err: any) {
-            showAlert("Error", err.message || "Something went wrong", "error");
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : "Something went wrong";
+            showAlert("Error", msg, "error");
             setLoading(false);
         }
     };
 
-    // 🔢 Реальний розрахунок токенів
     const tokensCalculated = useMemo(() => {
         const gbpEquivalent = convertToGBP(customAmount);
         return Math.floor(gbpEquivalent * TOKENS_PER_GBP);
@@ -123,13 +147,24 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
     return (
         <motion.div
-            className={`${styles.card} ${styles[variant]}`}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.15 }}
+            ref={cardRef}
+            className={`${styles.card} ${styles[variant]} ${isFeatured ? styles.featured : ""}`}
+            initial={reduce ? undefined : { opacity: 0, y: 32 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: index * 0.1 }}
         >
-            {badgeTop && <span className={styles.badgeTop}>{badgeTop}</span>}
+            {isFeatured && <span className={styles.gradientBorder} aria-hidden />}
+            {isFeatured && (
+                <motion.span
+                    className={styles.floatBadge}
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ delay: index * 0.1 + 0.3, duration: 0.4 }}
+                >
+                    Most popular
+                </motion.span>
+            )}
+
             <h3 className={styles.title}>{title}</h3>
 
             {isCustom ? (
@@ -138,8 +173,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
                         <Input
                             type="number"
                             value={customAmount}
-                            min={0.01}
-                            step={0.01}
+                            slotProps={{ input: { min: 0.01, step: 0.01 } }}
                             onChange={(e) =>
                                 setCustomAmount(
                                     e.target.value === "" ? 0.01 : Math.max(0.01, Number(e.target.value))
@@ -147,34 +181,35 @@ const PricingCard: React.FC<PricingCardProps> = ({
                             }
                             placeholder="Enter amount"
                             size="md"
-                            startDecorator={sign}
+                            startDecorator={<span className={styles.decorator}>{sign}</span>}
                         />
                     </div>
                     <p className={styles.dynamicPrice}>
                         {sign}
-                        {customAmount.toFixed(2)} {currency} ≈ {tokensCalculated} tokens
+                        {customAmount.toFixed(2)} {currency}{" "}
+                        <span className={styles.tokens}>≈ {tokensCalculated} tokens</span>
                     </p>
                 </>
             ) : (
                 <p className={styles.price}>
-                    {sign}
-                    {convertedPrice.toFixed(2)}{" "}
+                    <span className={styles.sign}>{sign}</span>
+                    <span className={styles.priceNumber}>{animatedPrice.toFixed(2)}</span>
                     <span className={styles.tokens}>/ {tokens} tokens</span>
                 </p>
             )}
 
-            <p className={styles.description}>{description}</p>
-            <ul className={styles.features}>
-                {features.map((f, i) => (
-                    <li key={i}>{f}</li>
-                ))}
-            </ul>
 
-            <ButtonUI fullWidth onClick={handleBuy} disabled={loading}>
-                {loading ? "Redirecting..." : user ? buttonText : "Sign Up to Buy"}
-            </ButtonUI>
-
-            {badgeBottom && <span className={styles.badgeBottom}>{badgeBottom}</span>}
+            <button
+                className={styles.cta}
+                onClick={handleBuy}
+                disabled={loading}
+                type="button"
+            >
+                <span className={styles.ctaText}>
+                    {loading ? "Redirecting..." : user ? buttonText : "Sign Up to Buy"}
+                </span>
+                <span className={styles.ctaArrow} aria-hidden>→</span>
+            </button>
         </motion.div>
     );
 };

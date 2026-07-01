@@ -8,6 +8,7 @@ import { Types } from "mongoose";
 import {sendEmail} from "@/backend/utils/sendEmail";
 import { mailService } from "@/backend/services/mail.service";
 import { isAllowedCountry, RESTRICTED_COUNTRY_NAMES } from "@/resources/countries";
+import { COMPANY_NAME } from "@/resources/constants";
 
 type RegisterInput = {
     firstName: string;
@@ -124,8 +125,8 @@ export const authService = {
         } else {
             sendEmail(
                 user.email,
-                "Welcome to Foconta 🎉",
-                `Hi ${user.firstName || user.name}, thanks for registering at Foconta.`
+                `Welcome to ${COMPANY_NAME} 🎉`,
+                `Hi ${user.firstName || user.name}, thanks for registering at ${COMPANY_NAME}.`
             ).catch((e) => console.error("[auth] Welcome email failed:", e));
         }
 

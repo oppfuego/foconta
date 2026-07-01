@@ -1,259 +1,183 @@
-.sticky {
+.header {
   position: sticky;
   top: 0;
   z-index: 100;
-
   width: 100%;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-  background: var(--background-light);
+  background: transparent;
+  transition:
+    background-color 320ms var(--ease-out, ease),
+    backdrop-filter 320ms var(--ease-out, ease),
+    box-shadow 320ms var(--ease-out, ease),
+    border-color 320ms var(--ease-out, ease);
+  border-bottom: 1px solid transparent;
 }
 
-.scrolled {
-  background: rgba(10, 37, 64, 0.9);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+.header.scrolled {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border-bottom-color: rgba(10, 37, 64, 0.08);
+  box-shadow: 0 8px 30px -20px rgba(10, 37, 64, 0.35);
 }
 
-.headerInner {
+.inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 auto;
-  padding: 15px 20px;
-  width: 100%;
-  gap: 20px;
+  gap: 24px;
   max-width: 1400px;
+  margin: 0 auto;
+  padding: 14px 32px;
+  transition: padding 320ms var(--ease-out, ease);
+}
+
+.header.scrolled .inner {
+  padding: 10px 32px;
 }
 
 .logo {
-  display: flex;
-  justify-content: flex-start;
+  display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
 
   img {
-    max-height: 60px;
+    max-height: 48px;
+    width: auto;
     object-fit: contain;
   }
 }
 
 .nav {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 15px;
-  font-size: 15px;
-}
-
-.actionsNav {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 18px;
-}
-
-/* Updated styles for the currency switcher */
-.currencySwitch {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px; /* Added spacing between elements */
-}
-
-.toggleTrack {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--surface-color, #f3f4f6);
-  border-radius: 9999px;
-  padding: 0.3rem;
-  width: 200px; /* Adjusted width for better alignment */
-  height: 44px; /* Slightly increased height */
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-}
-
-.option {
+  gap: 6px;
   flex: 1;
-  text-align: center;
-  font-size: 1rem; /* Increased font size */
-  font-weight: 600; /* Enhanced font weight */
-  color: var(--text-secondary, #6b7280);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  z-index: 2;
-  transition: color 0.3s ease, transform 0.3s ease;
+  justify-content: center;
+}
+
+.navLink {
+  position: relative;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--navy-800, #1E293B);
+  border-radius: 8px;
+  transition: color 200ms var(--ease-out, ease);
+
+  span {
+    position: relative;
+    display: inline-block;
+  }
+
+  span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-500, #2563EB), var(--accent-300, #60A5FA));
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 380ms var(--ease-out, ease);
+    border-radius: 2px;
+  }
 
   &:hover {
-    color: var(--primary-color, #2563eb);
+    color: var(--accent-500, #2563EB);
   }
 
-  &.active {
-    color: #fff;
-    font-weight: 700;
-  }
-}
-
-.thumb {
-  position: absolute;
-  top: 4px; /* Adjusted for better centering */
-  left: 4px;
-  width: 60px; /* Adjusted width */
-  height: 36px; /* Adjusted height */
-  border-radius: 9999px;
-  background: var(--primary-color, #2563eb);
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1;
-
-  &[data-currency="EUR"] {
-    transform: translateX(0);
-  }
-  &[data-currency="USD"] {
-    transform: translateX(100px); /* Adjusted for new width */
+  &:hover span::after {
+    transform: scaleX(1);
+    transform-origin: left;
   }
 }
 
-/* 🌙 Темна тема */
-@media (prefers-color-scheme: dark) {
-  .toggleTrack {
-    background: #1f2937;
-  }
-}
-
-
-/*.actionsNav {
-  flex: 1;
+.actions {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  flex-shrink: 0;
 }
 
-
-.currencySwitch {
-  position: relative;
+.authWrap {
   display: flex;
+  align-items: center;
+}
+
+.menuBtn {
+  display: none;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(10, 37, 64, 0.08);
+  color: var(--navy-800, #1E293B);
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
   align-items: center;
   justify-content: center;
-
-  .toggle {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 92px;
-    height: 38px;
-    border-radius: 9999px;
-    background: linear-gradient(145deg, #012d29, #04413d);
-    cursor: pointer;
-    padding: 4px;
-    box-shadow:
-            inset 0 0 6px rgba(0, 0, 0, 0.4),
-            0 0 18px rgba(50, 214, 154, 0.25);
-    transition: all 0.3s ease;
-
-    &:hover {
-      box-shadow:
-              inset 0 0 10px rgba(50, 214, 154, 0.35),
-              0 0 24px rgba(50, 214, 154, 0.35);
-    }
-  }
-
-  .labelLeft,
-  .labelRight {
-    flex: 1;
-    text-align: center;
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.5);
-    z-index: 2;
-    user-select: none;
-    transition: color 0.3s ease;
-  }
-
-  .thumb {
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 44px;
-    height: 32px;
-    border-radius: 9999px;
-    background: linear-gradient(145deg, #21e4a0, #2ddbb6);
-    box-shadow: 0 0 18px rgba(50, 214, 154, 0.6),
-    0 0 36px rgba(50, 214, 154, 0.25);
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .active {
-    .thumb {
-      left: calc(100% - 47px);
-      background: linear-gradient(145deg, #2ddbb6, #21e4a0);
-      box-shadow: 0 0 18px rgba(94, 234, 212, 0.8),
-      0 0 40px rgba(50, 214, 154, 0.4);
-    }
-
-    .labelLeft {
-      color: #ffffff;
-    }
-
-    .labelRight {
-      color: #ffffff;
-    }
-  }
-
-  &:not(.active) {
-    .labelLeft {
-      color: #ffffff;
-    }
-
-    .labelRight {
-      color: #ffffff;
-    }
-  }
-}*/
-
-.menuButton {
-  display: none;
-  color: var(--text-inverse);
-  background: none;
-  border: none;
-  font-size: 24px;
   cursor: pointer;
+  font-size: 16px;
+  transition: transform 200ms var(--ease-out, ease), background 200ms;
+
+  &:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.9);
+  }
 }
 
-/* Add styles for the new currency select dropdown */
-.currencySelect {
-    padding: 0.5rem;
-    border: 1px solid var(--border-color, #d1d5db);
-    border-radius: 0.375rem;
-    background-color: var(--surface-color, #ffffff);
-    font-size: 1rem;
-    color: var(--text-color, #111827);
-    cursor: pointer;
-    outline: none;
-    transition: border-color 0.2s ease-in-out;
+/* mobile overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: radial-gradient(120% 80% at 100% 0%, rgba(37, 99, 235, 0.22), transparent 60%),
+    radial-gradient(120% 80% at 0% 100%, rgba(30, 58, 138, 0.35), transparent 60%),
+    rgba(10, 37, 64, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 100px 32px 40px;
+  overflow-y: auto;
+  color: #fff;
 }
 
-.currencySelect:focus {
-    border-color: var(--primary-color, #2563eb);
+.overlayNav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 520px;
+  margin: 0 auto;
 }
 
-.currencySelect option {
-    background-color: var(--surface-color, #ffffff);
-    color: var(--text-color, #111827);
+.overlayLink {
+  display: block;
+  padding: 16px 0;
+  font-family: var(--font-display, serif);
+  font-size: clamp(28px, 6vw, 42px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: color 200ms;
+
+  &:hover {
+    color: var(--accent-300, #60A5FA);
+  }
+}
+
+.overlayActions {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
 }
 
 @media (max-width: 1100px) {
-  .nav {
+  .nav,
+  .actions {
     display: none;
   }
-  .actionsNav {
-    display: none;
-  }
-  .menuButton {
-    display: block;
+  .menuBtn {
+    display: inline-flex;
   }
 }

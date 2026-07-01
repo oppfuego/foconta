@@ -32,6 +32,28 @@ const resourcesSchema: PageSchema = {
 Explore expert insights, ready-to-use templates, and case-based lessons that help you plan smarter.`,
             image: "image2",
             align: "right",
+            showTrustBadge: true,
+            eyebrowRotator: ["Business Academy", "Updated weekly"],
+            panel: {
+                docName: "academy.pdf",
+                section1: {
+                    label: "In This Issue",
+                    rows: [92, 78, 86],
+                },
+                section2: {
+                    label: "Topics",
+                    bars: [70, 88, 62, 96, 74],
+                },
+                section3: {
+                    label: "Reader Engagement",
+                    points: [25, 38, 50, 62, 70, 80, 88, 96],
+                },
+                stats: [
+                    { value: "3", label: "In-depth guides" },
+                    { value: "Weekly", label: "Fresh insights" },
+                ],
+                chip: "New issue live",
+            },
         },
 
         // 📚 FEATURED ARTICLES

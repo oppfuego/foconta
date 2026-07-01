@@ -34,6 +34,27 @@ Our experts use AI only to accelerate research and structure, while the strategy
             align: "right",
             showTrustBadge: true,
             primaryCta: { text: "Request My Plan", link: "/sign-up" },
+            eyebrowRotator: ["Kick-off in minutes", "Delivered in 24h"],
+            panel: {
+                docName: "your-brief.pdf",
+                section1: {
+                    label: "Your Brief",
+                    rows: [88, 62, 74, 80],
+                },
+                section2: {
+                    label: "Onboarding Progress",
+                    bars: [100, 100, 100, 60, 25],
+                },
+                section3: {
+                    label: "24-Hour Timeline",
+                    points: [10, 22, 34, 46, 60, 74, 86, 100],
+                },
+                stats: [
+                    { value: "3 min", label: "To submit brief" },
+                    { value: "24h", label: "Until delivery" },
+                ],
+                chip: "Kick-off ready",
+            },
         },
 
         // ⚡ HIGHLIGHT STRIP
