@@ -72,7 +72,8 @@ const HighlightStrip: React.FC<HighlightStripProps> = ({
     };
 
     return (
-        <section className={styles.strip}>
+        <section className={styles.strip} aria-label="Trusted by">
+            <span className={styles.label}>Trusted by teams building the future</span>
             <div className={styles.marquee}>
                 <Marquee
                     speed={speedPxPerSec}          // px/sec

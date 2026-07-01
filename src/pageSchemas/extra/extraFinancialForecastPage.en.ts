@@ -24,6 +24,28 @@ const financialForecastSchema: PageSchema = {
 ${COMPANY_NAME} experts break down forecasting into easy, data-backed steps — even for beginners.`,
             image: "image12",
             align: "right",
+            showTrustBadge: true,
+            eyebrowRotator: ["Guide · 6 min read", `${COMPANY_NAME} Academy`],
+            panel: {
+                docName: "forecast.xlsx",
+                section1: {
+                    label: "Assumptions",
+                    rows: [88, 72, 84, 76, 90],
+                },
+                section2: {
+                    label: "Cost vs Revenue",
+                    bars: [40, 65, 78, 90, 96],
+                },
+                section3: {
+                    label: "3-Year Cash Flow",
+                    points: [20, 28, 42, 56, 68, 78, 88, 100],
+                },
+                stats: [
+                    { value: "3 yr", label: "Projection horizon" },
+                    { value: "5", label: "Simple steps" },
+                ],
+                chip: "Numbers add up",
+            },
         },
 
         {

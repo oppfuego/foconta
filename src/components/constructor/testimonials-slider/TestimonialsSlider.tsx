@@ -1,11 +1,12 @@
-// typescript
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { MdStar, MdStarBorder, MdChevronLeft, MdChevronRight } from "react-icons/md";
+import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { MdStar, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import styles from "./TestimonialsSlider.module.scss";
-import { media } from "@/resources/media";
+import { media as mediaMap } from "@/resources/media";
+import SectionHeading from "@/components/ui/section-heading/SectionHeading";
 
 interface Testimonial {
     name: string;
@@ -22,104 +23,141 @@ interface Props {
 }
 
 export default function TestimonialsSlider({ title, description, testimonials }: Props) {
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [index, setIndex] = useState(0);
+    const [dir, setDir] = useState(1);
+    const reduce = useReducedMotion();
+    const pausedRef = useRef(false);
+    const count = testimonials.length;
 
-    const nextSlide = () => {
-        setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    };
-
-    const prevSlide = () => {
-        setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    const go = (n: number) => {
+        setDir(n > index || (index === count - 1 && n === 0) ? 1 : -1);
+        setIndex((n + count) % count);
     };
 
     useEffect(() => {
-        const interval = setInterval(nextSlide, 5000);
-        return () => clearInterval(interval);
-    }, []);
+        if (reduce || count <= 1) return;
+        const id = setInterval(() => {
+            if (pausedRef.current) return;
+            setDir(1);
+            setIndex((i) => (i + 1) % count);
+        }, 6500);
+        return () => clearInterval(id);
+    }, [count, reduce]);
 
-    const current = testimonials[currentIndex];
+    const current = testimonials[index];
 
-    // Безопасно вычисляем src для изображения вне JSX, чтобы избежать проблем парсинга и ошибок типов
-    let srcValue: string | undefined = undefined;
+    let srcValue: string | undefined;
     if (current?.image) {
-        const key = current.image as keyof typeof media;
-        const m = media[key];
-        if (typeof m === "string") {
-            srcValue = m;
-        } else {
-            // m может быть StaticImageData или другой объект
-            srcValue = (m as any)?.src ?? String(m);
-        }
+        const key = current.image as keyof typeof mediaMap;
+        const m = mediaMap[key];
+        if (typeof m === "string") srcValue = m;
+        else srcValue = (m as { src?: string })?.src;
     }
 
-    return (
-        <section className={styles.section}>
-            {title && <h2 className={styles.title}>{title}</h2>}
-            {description && <p className={styles.description}>{description}</p>}
+    const rating = current?.rating ?? 5;
 
-            <div className={styles.sliderWrapper}>
-                <button className={`${styles.navButton} ${styles.left}`} onClick={prevSlide}>
-                    <MdChevronLeft size={28} />
+    return (
+        <section
+            className={styles.section}
+            onMouseEnter={() => (pausedRef.current = true)}
+            onMouseLeave={() => (pausedRef.current = false)}
+        >
+            <SectionHeading
+                eyebrow="Loved by founders"
+                title={title}
+                description={description}
+                align="center"
+            />
+
+            <div className={styles.stage}>
+                <div className={styles.stageGlow} aria-hidden />
+
+                <button
+                    className={`${styles.navButton} ${styles.left}`}
+                    onClick={() => go(index - 1)}
+                    aria-label="Previous testimonial"
+                    type="button"
+                >
+                    <MdChevronLeft size={24} />
                 </button>
 
                 <div className={styles.slider}>
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={currentIndex}
+                    <AnimatePresence mode="wait" custom={dir}>
+                        <motion.article
+                            key={index}
                             className={styles.card}
-                            initial={{ opacity: 0, x: 80 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -80 }}
-                            transition={{ duration: 0.6, ease: "easeInOut" }}
+                            drag={reduce || count <= 1 ? false : "x"}
+                            dragConstraints={{ left: 0, right: 0 }}
+                            dragElastic={0.2}
+                            onDragEnd={(_, info) => {
+                                if (Math.abs(info.offset.x) < 60) return;
+                                if (info.offset.x < 0) go(index + 1);
+                                else go(index - 1);
+                            }}
+                            custom={dir}
+                            initial={reduce ? undefined : (d) => ({ opacity: 0, x: (d as number) * 40, scale: 0.98 })}
+                            animate={reduce ? undefined : { opacity: 1, x: 0, scale: 1 }}
+                            exit={reduce ? undefined : (d) => ({ opacity: 0, x: -(d as number) * 40, scale: 0.98 })}
+                            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                         >
-                            {/* 🖼️ Фото */}
-                            {srcValue && (
-                                <motion.img
-                                    key={srcValue}
-                                    src={srcValue}
-                                    alt={current.name}
-                                    className={styles.avatar}
-                                    initial={{ scale: 0.9, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    transition={{ duration: 0.4 }}
-                                />
-                            )}
+                            <span className={styles.quoteMark} aria-hidden>“</span>
 
-                            {/* 💬 Текст */}
-                            <p className={styles.text}>“{current.text}”</p>
+                            <p className={styles.text}>{current.text}</p>
 
-                            <div className={styles.footer}>
-                                <div className={styles.info}>
-                                    <h4 className={styles.name}>{current.name}</h4>
-                                    {current.role && <p className={styles.role}>{current.role}</p>}
+                            <div className={styles.foot}>
+                                <div className={styles.who}>
+                                    {srcValue && (
+                                        <span className={styles.avatarRing}>
+                                            <Image
+                                                src={srcValue}
+                                                alt={current.name}
+                                                width={56}
+                                                height={56}
+                                                className={styles.avatar}
+                                            />
+                                        </span>
+                                    )}
+                                    <div>
+                                        <div className={styles.name}>{current.name}</div>
+                                        {current.role && <div className={styles.role}>{current.role}</div>}
+                                    </div>
                                 </div>
 
-                                {/* ⭐ Рейтинг */}
-                                <div className={styles.stars}>
-                                    {Array.from({ length: 5 }).map((_, idx) =>
-                                        idx < (current.rating ?? 5) ? (
-                                            <MdStar key={idx} className={styles.starFilled} />
-                                        ) : (
-                                            <MdStarBorder key={idx} className={styles.starEmpty} />
-                                        )
-                                    )}
+                                <div className={styles.stars} aria-label={`${rating} out of 5`}>
+                                    {Array.from({ length: 5 }).map((_, i) => (
+                                        <MdStar
+                                            key={i}
+                                            className={i < rating ? styles.starOn : styles.starOff}
+                                        />
+                                    ))}
                                 </div>
                             </div>
-                        </motion.div>
+
+                            <span className={styles.cardBorder} aria-hidden />
+                        </motion.article>
                     </AnimatePresence>
                 </div>
 
-                <button className={`${styles.navButton} ${styles.right}`} onClick={nextSlide}>
-                    <MdChevronRight size={28} />
+                <button
+                    className={`${styles.navButton} ${styles.right}`}
+                    onClick={() => go(index + 1)}
+                    aria-label="Next testimonial"
+                    type="button"
+                >
+                    <MdChevronRight size={24} />
                 </button>
             </div>
 
-            <div className={styles.dots}>
+            <div className={styles.dots} role="tablist" aria-label="Testimonials">
                 {testimonials.map((_, i) => (
                     <button
                         key={i}
-                        onClick={() => setCurrentIndex(i)}
-                        className={`${styles.dot} ${i === currentIndex ? styles.active : ""}`}
+                        onClick={() => go(i)}
+                        className={`${styles.dot} ${i === index ? styles.dotActive : ""}`}
+                        aria-label={`Testimonial ${i + 1}`}
+                        aria-selected={i === index}
+                        role="tab"
+                        type="button"
                     />
                 ))}
             </div>

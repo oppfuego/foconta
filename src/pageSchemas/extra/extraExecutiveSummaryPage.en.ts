@@ -24,6 +24,28 @@ const executiveSummarySchema: PageSchema = {
 ${COMPANY_NAME} experts share how to structure it to instantly communicate value.`,
             image: "image8",
             align: "right",
+            showTrustBadge: true,
+            eyebrowRotator: ["Guide · 8 min read", `${COMPANY_NAME} Academy`],
+            panel: {
+                docName: "executive-summary.pdf",
+                section1: {
+                    label: "Structure",
+                    rows: [82, 88, 76, 90, 68],
+                },
+                section2: {
+                    label: "Impact by Section",
+                    bars: [55, 70, 85, 96, 74],
+                },
+                section3: {
+                    label: "Investor Attention",
+                    points: [95, 82, 72, 65, 60, 58, 55, 50],
+                },
+                stats: [
+                    { value: "5", label: "Essential steps" },
+                    { value: "8 min", label: "Read time" },
+                ],
+                chip: "Concise & clear",
+            },
         },
 
         {

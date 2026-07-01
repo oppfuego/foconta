@@ -34,6 +34,27 @@ We blend human intelligence with cutting-edge AI to help founders, students, and
             image: "image7",
             align: "right",
             showTrustBadge: true,
+            eyebrowRotator: ["Founded 2024", "Human + AI"],
+            panel: {
+                docName: "our-story.pdf",
+                section1: {
+                    label: "Our Story",
+                    rows: [95, 82, 70, 88],
+                },
+                section2: {
+                    label: "Milestones",
+                    bars: [30, 55, 68, 82, 94],
+                },
+                section3: {
+                    label: "Community Growth",
+                    points: [20, 30, 45, 55, 62, 75, 82, 96],
+                },
+                stats: [
+                    { value: "5,000+", label: "Founders helped" },
+                    { value: "3", label: "Continents served" },
+                ],
+                chip: "Story updated",
+            },
         },
 
         // 🧭 OUR STORY

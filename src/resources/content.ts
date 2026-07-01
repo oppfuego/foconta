@@ -1,6 +1,6 @@
 import {media} from "@/resources/media";
 import {FaTwitter, FaFacebook, FaLinkedin} from "react-icons/fa";
-import {COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_LEGAL_NAME, COMPANY_NUMBER, COMPANY_PHONE} from "@/resources/constants";
+import {COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_LEGAL_NAME, COMPANY_NAME, COMPANY_NUMBER, COMPANY_PHONE} from "@/resources/constants";
 
 export const baseURL =
     typeof window !== "undefined"
@@ -10,7 +10,7 @@ export const baseURL =
 export const headerContent = {
     logo: {
         src: media.logo.src,
-        alt: "Site Logo",
+        alt: `${COMPANY_NAME || "Site"} Logo`,
         href: "/"
     },
     links: [
@@ -25,7 +25,7 @@ export const headerContent = {
 };
 
 export const footerContent = {
-    logo: {src: media.logo.src, alt: "Site Logo", href: "/"},
+    logo: {src: media.logo.src, alt: `${COMPANY_NAME || "Site"} Logo`, href: "/"},
     columns: [
         {
             title: "Navigate",

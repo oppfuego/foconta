@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { Formik, Form, Field } from "formik";
+import React, { useEffect, useState } from "react";
+import { Formik, Form, Field, useFormikContext } from "formik";
 import * as Yup from "yup";
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
@@ -82,16 +82,85 @@ const stepVariants = {
     exit: { opacity: 0, x: -60, transition: { duration: 0.3 } },
 };
 
+/* ---------------------------------------------------------------------------
+ * Draft persistence — survives the top-up round trip.
+ * Full-page navigations (to the payment provider and back to /dashboard)
+ * destroy React/Formik state; we back the form with sessionStorage so the
+ * user returns to a fully-intact form on the same step.
+ * -------------------------------------------------------------------------*/
+const DRAFT_KEY = "foconta:mg:draft:v1";
+const DRAFT_STEP_KEY = "foconta:mg:draft:step:v1";
+
+type StoredDraft = { values: FormValues; step: number };
+
+function isFormValuesShape(v: unknown): v is FormValues {
+    if (!v || typeof v !== "object") return false;
+    const o = v as Record<string, unknown>;
+    const stringKeys: (keyof FormValues)[] = [
+        "businessName", "niche", "businessType", "teamSize", "budget",
+        "marketDescription", "productDescription", "uniqueValue", "customerPain",
+        "goal", "language", "specialization",
+    ];
+    for (const k of stringKeys) {
+        if (typeof o[k] !== "string") return false;
+    }
+    if (o.planType !== "ai" && o.planType !== "reviewed") return false;
+    if (!Array.isArray(o.extras)) return false;
+    if ((o.extras as unknown[]).some((x) => typeof x !== "string")) return false;
+    return true;
+}
+
+function readDraft(): StoredDraft | null {
+    if (typeof window === "undefined") return null;
+    try {
+        const rawValues = window.sessionStorage.getItem(DRAFT_KEY);
+        if (!rawValues) return null;
+        const parsed = JSON.parse(rawValues);
+        if (!isFormValuesShape(parsed)) return null;
+        const rawStep = window.sessionStorage.getItem(DRAFT_STEP_KEY);
+        const step = Math.max(1, Math.min(STEP_LABELS.length, Number(rawStep) || 1));
+        return { values: parsed, step };
+    } catch {
+        return null;
+    }
+}
+
+function writeDraft(values: FormValues, step: number) {
+    if (typeof window === "undefined") return;
+    try {
+        window.sessionStorage.setItem(DRAFT_KEY, JSON.stringify(values));
+        window.sessionStorage.setItem(DRAFT_STEP_KEY, String(step));
+    } catch {
+        /* quota / privacy mode — silently ignore, form still works in-memory */
+    }
+}
+
+function clearDraft() {
+    if (typeof window === "undefined") return;
+    try {
+        window.sessionStorage.removeItem(DRAFT_KEY);
+        window.sessionStorage.removeItem(DRAFT_STEP_KEY);
+    } catch { /* no-op */ }
+}
+
+/** Auto-saves the current Formik values to sessionStorage as the user types.
+ *  Rendered as an invisible child of <Formik> so it can consume useFormikContext. */
+const DraftAutoSaver: React.FC<{ step: number }> = ({ step }) => {
+    const { values } = useFormikContext<FormValues>();
+    useEffect(() => {
+        writeDraft(values, step);
+    }, [values, step]);
+    return null;
+};
+
 const BusinessGeneratorForm = () => {
     const { showAlert } = useAlert();
     const user = useUser();
     const { refreshUser } = useUserContext();
     const router = useRouter();
-    const [step, setStep] = useState(1);
-    const [loading, setLoading] = useState(false);
     const totalSteps = STEP_LABELS.length;
 
-    const initialValues: FormValues = {
+    const defaultValues: FormValues = {
         businessName: "",
         niche: "",
         businessType: "",
@@ -107,6 +176,19 @@ const BusinessGeneratorForm = () => {
         extras: [],
         specialization: "",
     };
+
+    // Hydrate from any persisted draft — this is what makes the form survive
+    // the top-up round trip (dashboard → pricing → provider → payment-result
+    // → dashboard is two full page loads).
+    const [initialValues, initialStep] = React.useMemo<[FormValues, number]>(() => {
+        const draft = readDraft();
+        if (!draft) return [defaultValues, 1];
+        return [{ ...defaultValues, ...draft.values }, draft.step];
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const [step, setStep] = useState(initialStep);
+    const [loading, setLoading] = useState(false);
 
     const handleNext = () => setStep((s) => Math.min(totalSteps, s + 1));
     const handlePrev = () => setStep((s) => Math.max(1, s - 1));
@@ -154,6 +236,8 @@ const BusinessGeneratorForm = () => {
                     const data = await res.json();
 
                     if (res.ok) {
+                        // Order made it through — the draft has fulfilled its purpose.
+                        clearDraft();
                         if (values.planType === "reviewed") {
                             showAlert(
                                 "Order Placed!",
@@ -183,6 +267,7 @@ const BusinessGeneratorForm = () => {
 
                 return (
                     <Form className={styles.form}>
+                        <DraftAutoSaver step={step} />
                         {/* Header */}
                         <header className={styles.header}>
                             <motion.h2

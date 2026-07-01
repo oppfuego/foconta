@@ -1,131 +1,87 @@
 .textBlock {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
+  gap: 1.4rem;
   line-height: 1.65;
   width: 100%;
-
-  /* ✅ Один шрифт для всього блоку (заголовок теж успадкує, але ми "не трогаєм" його стилі) */
-  font-family: var(--font-family, inherit);
-
-  /* базовий колір лишаємо, але для тексту нижче явно задаємо */
-  color: var(--text-primary);
+  font-family: var(--font-body, sans-serif);
+  color: var(--navy-900, #0a2540);
 }
 
-/* 🧭 Заголовок — НЕ чіпаємо (залишаємо як було) */
 .title {
+  font-family: var(--font-display, serif);
   font-weight: 500;
-  font-size: 2rem;
-  letter-spacing: -0.01em;
-  color: var(--secondary-color);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  letter-spacing: -0.025em;
+  color: var(--navy-900, #0a2540);
   margin: 0;
-  line-height: 1.35;
+  line-height: 1.08;
   max-width: 720px;
   width: 100%;
-  word-break: keep-all;
 
-  & + .description {
-    margin-top: 0.5rem;
-  }
-
-  @media (max-width: 1024px) {
-    font-size: 1.6rem;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 1.4rem;
-  }
+  & + .description { margin-top: 0.35rem; }
 }
 
-/* ✅ Уніфікований стиль для НЕ-заголовків */
 .description,
 .bulletList li {
-  font-family: inherit;           /* один шрифт */
-  color: var(--text-secondary);   /* один колір */
-  font-weight: 400;               /* однакова товщина */
+  font-family: var(--font-body, sans-serif);
+  color: rgba(10, 37, 64, 0.68);
+  font-weight: 400;
 }
 
-/* 📄 Опис */
 .description {
   font-size: 1.05rem;
   margin: 0;
-  line-height: 1.75;
+  line-height: 1.7;
   max-width: 860px;
   width: 100%;
-
-  p {
-    margin: 0 0 0.75rem;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
 }
 
-/* 🧾 Булет-список */
+.description p {
+  margin: 0 0 0.75rem;
+}
+.description p:last-child { margin-bottom: 0; }
+
 .bulletList {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.7rem;
   padding: 0;
   margin: 0;
   max-width: 860px;
-
-  li {
-    list-style: none;
-    position: relative;
-    padding-left: 1.5rem;
-    font-size: 1rem;
-    line-height: 1.6;
-
-    /* ▪️ маркер лишаємо як є */
-    &::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0.8rem;
-      width: 10px;
-      height: 2px;
-      border-radius: 1px;
-      background-color: var(--primary-color);
-    }
-  }
 }
 
-/* 📋 Дескр + булети (НЕ робимо жирним і НЕ міняємо колір) */
-.descriptionWithBullets {
-  margin-top: 1rem;
+.bulletList li {
+  list-style: none;
+  position: relative;
+  padding-left: 1.6rem;
+  font-size: 1rem;
+  line-height: 1.55;
 }
 
-/* 🧩 Центрування */
+.bulletList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent-500, #2563EB), var(--accent-300, #60A5FA));
+}
+
+.descriptionWithBullets { margin-top: 1rem; }
+
 .center {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-
-  .bulletList {
-    align-items: center;
-
-    li {
-      padding-left: 0;
-      text-align: center;
-
-      &::before {
-        display: none;
-      }
-    }
-  }
 }
 
-/* 💼 Ховер для заголовка — лишаємо */
-.textBlock:hover .title {
-  color: var(--primary-color);
-  transition: color 0.3s ease;
-}
+.center .bulletList { align-items: center; }
+.center .bulletList li { padding-left: 0; text-align: center; }
+.center .bulletList li::before { display: none; }
 
-/* 📱 Адаптив */
 @media (max-width: 600px) {
-  .description {
-    font-size: 0.95rem;
-  }
+  .description { font-size: 0.95rem; }
 }

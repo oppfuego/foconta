@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { media } from "@/resources/media";
+import { COMPANY_NAME } from "@/resources/constants";
 import styles from "./LogoBlock.module.scss";
 
 interface LogoBlockProps {
@@ -13,7 +14,7 @@ interface LogoBlockProps {
 const LogoBlock: React.FC<LogoBlockProps> = ({
                                                  width = 180,
                                                  height = 60,
-                                                 alt = "Foconta Logo",
+                                                 alt = `${COMPANY_NAME || "Site"} Logo`,
                                              }) => {
     return (
         <div className={styles.logoWrapper}>

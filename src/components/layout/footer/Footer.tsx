@@ -1,30 +1,35 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import clsx from "clsx";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { FaInstagram, FaLinkedinIn, FaArrowUp } from "react-icons/fa";
+
 import styles from "./Footer.module.scss";
-import {footerContent} from "@/resources/content";
-import {footerStyles} from "@/resources/styles-config";
-import {SmartLinkProps} from "@/types/smart-link";
+import { footerContent } from "@/resources/content";
+import { SmartLinkProps } from "@/types/smart-link";
 import visa from "@/assets/cards/visa.png";
 import mastercard from "@/assets/cards/mastercard.png";
 import pciDss from "@/assets/cards/pci-dss-compliant-logo-vector.svg";
 import {
-    FaInstagram,
-    FaLinkedinIn,
-} from "react-icons/fa";
+    COMPANY_NAME,
+    COMPANY_LEGAL_NAME,
+    COMPANY_NUMBER,
+    COMPANY_ADDRESS,
+    COMPANY_INSTAGRAM,
+    COMPANY_LINKEDIN,
+} from "@/resources/constants";
 
 const SmartLink: React.FC<SmartLinkProps> = ({
-                                                 href,
-                                                 className,
-                                                 children,
-                                                 ariaLabel,
-                                                 title,
-                                                 target,
-                                                 rel,
-                                             }) => {
+    href,
+    className,
+    children,
+    ariaLabel,
+    title,
+    target,
+    rel,
+}) => {
     const isInternal = href?.startsWith("/");
     if (isInternal) {
         return (
@@ -48,282 +53,176 @@ const SmartLink: React.FC<SmartLinkProps> = ({
 };
 
 const Footer: React.FC = () => {
-    const {logo, columns, contact, socials, legal} = footerContent;
+    const { columns, contact, legal } = footerContent;
+    const rootRef = useRef<HTMLElement | null>(null);
+    const reduce = useReducedMotion();
 
-    const PaymentMethods = () => (
-        <div className={styles["footer__payments"]}>
-            <div className={styles.paymentsContent}>
-                <Image
-                    src={visa}
-                    alt="Visa"
-                    placeholder="blur"
-                    className={styles.paymentIcon}
-                />
-                <Image
-                    src={mastercard}
-                    alt="Mastercard"
-                    placeholder="blur"
-                    className={styles.paymentIcon}
-                />
-                <Image
-                    src={pciDss}
-                    alt="PCI DSS Compliant"
-                    className={styles.paymentIcon}
-                />
-            </div>
-        </div>
-    );
+    const cx = useMotionValue(0);
+    const cy = useMotionValue(0);
+    const sx = useSpring(cx, { stiffness: 60, damping: 20, mass: 0.6 });
+    const sy = useSpring(cy, { stiffness: 60, damping: 20, mass: 0.6 });
 
-    const LegalBlock = () =>
-        legal ? (
-            <div className={styles["footer__payments"]}>
-                <div className={styles["footer__legal-line"]}>
-                    <span className={styles["footer__legal-label"]}>Company:</span>{" "}
-                    <strong>{legal.companyName}</strong>
-                </div>
-                {legal.companyNumber && (
-                    <div className={styles["footer__legal-line"]}>
-                        <span>{legal.companyNumber}</span>
-                    </div>
-                )}
-                {contact.email && (
-                    <div className={styles["footer__contact-item"]}>
-                        <a href={`mailto:${contact.email}`}>{contact.email}</a>
-                    </div>
-                )}
-                {contact.phone && (
-                    <div className={styles["footer__contact-item"]}>
-                        <a href={`tel:${contact.phone}`}>{contact.phone}</a>
-                    </div>
-                )}
-                {contact.address && (
-                    <div className={styles["footer__contact-item"]}>
-                        <p>{contact.address}</p>
-                    </div>
-                )}
-            </div>
-        ) : null;
+    const [showTop, setShowTop] = useState(false);
 
-    const cssVars: React.CSSProperties = {
-        ["--footer-maxw" as any]: `${footerStyles.maxWidth}px`,
-        ["--footer-pad-x" as any]: `${footerStyles.paddings?.x ?? 20}px`,
-        ["--footer-pad-y" as any]: `${footerStyles.paddings?.y ?? 32}px`,
-        ["--footer-gap" as any]: `${footerStyles.gap ?? 20}px`,
-        ["--footer-columns-gap" as any]: `${footerStyles.columnsGap ?? 24}px`,
-        ["--footer-logo-w" as any]: `${footerStyles.logo?.width ?? 120}px`,
-        ["--footer-logo-h" as any]: `${footerStyles.logo?.height ?? 30}px`,
+    useEffect(() => {
+        const onScroll = () => setShowTop(window.scrollY > 600);
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
 
-        ["--footer-bg" as any]: footerStyles.colors?.bg ?? "#fff",
-        ["--footer-title-color" as any]: footerStyles.colors?.title ?? "#333",
-        ["--footer-text" as any]: footerStyles.colors?.link ?? "#242424",
-        ["--footer-muted" as any]: footerStyles.colors?.muted ?? "#878787",
-        ["--footer-border" as any]: footerStyles.colors?.border ?? "#eee",
-        ["--footer-link" as any]: footerStyles.colors?.link ?? "#4A90E2",
-        ["--footer-link-hover" as any]: footerStyles.colors?.linkHover ?? "#242424",
-
-        ["--footer-fs" as any]: `${footerStyles.font?.size ?? 16}px`,
-        ["--footer-legal-fs" as any]: `${footerStyles.font?.legalSize ?? 14}px`,
-
-        ["--footer-contact-hover" as any]: footerStyles.colors?.contactHover ?? footerStyles.colors?.linkHover ?? "#242424",
-        ["--footer-social-hover" as any]: footerStyles.colors?.socialHover,
-
-        ["--footer-legal" as any]: footerStyles.colors?.link,
-        ["--footer-contact-label" as any]: footerStyles.colors?.contactLabel ?? footerStyles.colors?.muted,
-
-        ["--footer-radius" as any]: footerStyles.radius ?? "0",
-        ["--footer-shadow" as any]: footerStyles.shadow ?? "none",
-
-        ["--footer-cols-xl" as any]: `${footerStyles.grid?.colsXL ?? 4}`,
-        ["--footer-cols-lg" as any]: `${footerStyles.grid?.colsLG ?? 3}`,
-        ["--footer-cols-md" as any]: `${footerStyles.grid?.colsMD ?? 2}`,
-        ["--footer-cols-sm" as any]: `${footerStyles.grid?.colsSM ?? 1}`,
-
-        ["--footer-title-fs-xl" as any]: `${footerStyles.sizes?.titles?.xl ?? 18}px`,
-        ["--footer-title-fs-lg" as any]: `${footerStyles.sizes?.titles?.lg ?? 16}px`,
-        ["--footer-title-fs-md" as any]: `${footerStyles.sizes?.titles?.md ?? 15}px`,
-        ["--footer-title-fs-sm" as any]: `${footerStyles.sizes?.titles?.sm ?? 14}px`,
-
-        ["--footer-link-fs-xl" as any]: `${footerStyles.sizes?.links?.xl ?? 16}px`,
-        ["--footer-link-fs-lg" as any]: `${footerStyles.sizes?.links?.lg ?? 15}px`,
-        ["--footer-link-fs-md" as any]: `${footerStyles.sizes?.links?.md ?? 14}px`,
-        ["--footer-link-fs-sm" as any]: `${footerStyles.sizes?.links?.sm ?? 13}px`,
-
-        ["--footer-icon-xl" as any]: `${footerStyles.sizes?.icons?.xl ?? 24}px`,
-        ["--footer-icon-lg" as any]: `${footerStyles.sizes?.icons?.lg ?? 22}px`,
-        ["--footer-icon-md" as any]: `${footerStyles.sizes?.icons?.md ?? 20}px`,
-        ["--footer-icon-sm" as any]: `${footerStyles.sizes?.icons?.sm ?? 18}px`,
+    const onMouseMove = (e: React.MouseEvent) => {
+        if (reduce || !rootRef.current) return;
+        const rect = rootRef.current.getBoundingClientRect();
+        cx.set(e.clientX - rect.left);
+        cy.set(e.clientY - rect.top);
     };
 
-    const alignTo = footerStyles.logo?.align ?? "start";
+    const scrollTop = () => {
+        window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    };
 
     return (
-        <footer
-            className={clsx(
-                styles.footer,
-                styles[`footer--${footerStyles.type}`],
-                footerStyles.showTopBorder && styles["footer--top-border"],
-                footerStyles.showBottomBorder && styles["footer--bottom-border"],
-                styles[`footer--logo-${alignTo}`]
-            )}
-            style={cssVars}
-        >
-            {footerStyles.type === "columns" && (
-                <div className={styles["footer__inner"]}>
+        <footer ref={rootRef} className={styles.footer} onMouseMove={onMouseMove}>
+            {/* animated gradient hairline along top */}
+            <div className={styles.hairline} aria-hidden="true" />
 
+            {/* cursor-following glow */}
+            <motion.div
+                className={styles.cursorGlow}
+                aria-hidden="true"
+                style={{ left: sx, top: sy }}
+            />
 
-                    <div className={styles["footer__columns"]}>
-                        {columns.map((col) => (
-                            <div className={styles["footer__column"]} key={col.title}>
-                                <div className={styles["footer__column-title"]}>{col.title}</div>
-                                {col.links.map((link) => (
-                                    <SmartLink href={link.href} className={styles["footer__link"]} key={link.label}>
-                                        {link.label}
-                                    </SmartLink>
-                                ))}
-                            </div>
-                        ))}
+            <div className={styles.grid} aria-hidden="true" />
 
-                        {legal && (
-                            <div className={styles["footer__column"]}>
-                                <LegalBlock/>
-                            </div>
-                        )}
-
-                        {/* 🔹 Колонка соцмереж */}
-                        <div className={styles["footer__column"]}>
-                            <div className={styles["footer__column-title"]}>Follow Us</div>
-                            <div className={styles["footer__socials"]}>
-                                <a href="https://www.instagram.com/foconta.uk" target="_blank" rel="noopener noreferrer"
-                                   aria-label="Instagram" className={styles["footer__social-link"]}>
-                                    <FaInstagram/>
+            <div className={styles.inner}>
+                <div className={styles.top}>
+                    <div className={styles.brandCol}>
+                        <h2 className={styles.wordmark} aria-label={COMPANY_NAME}>
+                            <span className={styles.wordmarkText}>{COMPANY_NAME}</span>
+                        </h2>
+                        <p className={styles.brandTag}>
+                            Ideas become business plans — in 24 hours or instantly with AI.
+                        </p>
+                        <div className={styles.socials}>
+                            {COMPANY_INSTAGRAM && (
+                                <a
+                                    href={COMPANY_INSTAGRAM}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="Instagram"
+                                    className={styles.socialLink}
+                                >
+                                    <FaInstagram />
                                 </a>
-                                <a href="https://www.linkedin.com/company/foconta/" target="_blank" rel="noopener noreferrer"
-                                   aria-label="Linkedinin" className={styles["footer__social-link"]}>
-                                    <FaLinkedinIn/>
+                            )}
+                            {COMPANY_LINKEDIN && (
+                                <a
+                                    href={COMPANY_LINKEDIN}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="LinkedIn"
+                                    className={styles.socialLink}
+                                >
+                                    <FaLinkedinIn />
                                 </a>
-                            </div>
+                            )}
                         </div>
                     </div>
-                </div>
-            )}
 
-            {footerStyles.type === "center" && (
-                <div className={clsx(styles["footer__inner"], styles["footer__inner--center"])}>
-                    <SmartLink href={logo.href} className={styles["footer__logo"]} ariaLabel="Logo">
-                        <Image
-                            src={logo.src}
-                            alt={logo.alt}
-                            width={0}
-                            height={0}
-                            sizes="120px"
-                            style={{width: "var(--footer-logo-w)", height: "var(--footer-logo-h)"}}
-                        />
-                    </SmartLink>
-                    <nav className={styles["footer__center-links"]}>
-                        {columns.flatMap((c) => c.links).map((link) => (
-                            <SmartLink href={link.href} className={styles["footer__center-link"]} key={link.label}>
-                                {link.label}
-                            </SmartLink>
-                        ))}
-                    </nav>
-                    <div className={styles["footer__center-contact"]}>
-                        {contact.address && <span>{contact.address}</span>}
-                        {contact.email && <a href={`mailto:${contact.email}`}>{contact.email}</a>}
-                        {contact.phone && <a href={`tel:${contact.phone}`}>{contact.phone}</a>}
-                    </div>
-                    <div className={styles["footer__center-legal"]}>
-                        <LegalBlock/>
-                    </div>
-                </div>
-            )}
-
-            {footerStyles.type === "mega" && (
-                <div className={clsx(styles["footer__inner"], styles["footer__inner--mega"])}>
-                    <div className={styles["footer__mega-top"]}>
-                        <SmartLink href={logo.href} className={styles["footer__logo"]} ariaLabel="Logo">
-                            <Image
-                                src={logo.src}
-                                alt={logo.alt}
-                                width={0}
-                                height={0}
-                                sizes="120px"
-                                style={{width: "var(--footer-logo-w)", height: "var(--footer-logo-h)"}}
-                            />
-                        </SmartLink>
-                    </div>
-                    <div className={styles["footer__mega-grid"]}>
-                        {columns.map((col) => (
-                            <div className={styles["footer__mega-col"]} key={col.title}>
-                                <div className={styles["footer__column-title"]}>{col.title}</div>
-                                <div className={styles["footer__mega-links"]}>
-                                    {col.links.map((link) => (
-                                        <SmartLink href={link.href} className={styles["footer__link"]} key={link.label}>
-                                            {link.label}
-                                        </SmartLink>
+                    <div className={styles.linkCols}>
+                        {columns.map((col, ci) => (
+                            <motion.div
+                                key={col.title}
+                                className={styles.col}
+                                initial={{ opacity: 0, y: 16 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, amount: 0.4 }}
+                                transition={{ duration: 0.5, delay: ci * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                            >
+                                <div className={styles.colTitle}>{col.title}</div>
+                                <ul className={styles.colList}>
+                                    {col.links.map((l, li) => (
+                                        <motion.li
+                                            key={l.label}
+                                            initial={{ opacity: 0, y: 8 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true, amount: 0.4 }}
+                                            transition={{
+                                                duration: 0.4,
+                                                delay: ci * 0.08 + li * 0.04,
+                                                ease: [0.16, 1, 0.3, 1],
+                                            }}
+                                        >
+                                            <SmartLink href={l.href} className={styles.link}>
+                                                <span>{l.label}</span>
+                                            </SmartLink>
+                                        </motion.li>
                                     ))}
-                                </div>
-                            </div>
+                                </ul>
+                            </motion.div>
                         ))}
-                        {legal && (
-                            <div className={styles["footer__mega-col"]}>
-                                <div className={styles["footer__column-title"]}>Company</div>
-                                <LegalBlock/>
-                            </div>
+
+                        <div className={styles.col}>
+                            <div className={styles.colTitle}>Contact</div>
+                            <ul className={styles.colList}>
+                                {contact.email && (
+                                    <li>
+                                        <a href={`mailto:${contact.email}`} className={styles.link}>
+                                            <span>{contact.email}</span>
+                                        </a>
+                                    </li>
+                                )}
+                                {contact.phone && (
+                                    <li>
+                                        <a href={`tel:${contact.phone}`} className={styles.link}>
+                                            <span>{contact.phone}</span>
+                                        </a>
+                                    </li>
+                                )}
+                                {contact.address && (
+                                    <li className={styles.addr}>{contact.address}</li>
+                                )}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.wordmarkBig} aria-hidden="true">
+                    <span>{COMPANY_NAME.toLowerCase()}</span>
+                </div>
+
+                <div className={styles.bottom}>
+                    <div className={styles.legal}>
+                        <span>
+                            © {new Date().getFullYear()}{" "}
+                            {COMPANY_LEGAL_NAME || legal?.companyName || COMPANY_NAME}. All rights reserved.
+                        </span>
+                        {COMPANY_NUMBER && (
+                            <span className={styles.legalSep}>· Company № {COMPANY_NUMBER}</span>
+                        )}
+                        {COMPANY_ADDRESS && (
+                            <span className={styles.legalSep}>· {COMPANY_ADDRESS}</span>
                         )}
                     </div>
-                </div>
-            )}
 
-            {footerStyles.type === "corporate" && (
-                <div className={clsx(styles["footer__inner"], styles["footer__inner--corporate"])}>
-                    {/* Верхній рядок: лого + 3 колонки */}
-                    <div className={styles["footer__corporate-grid"]}>
-                        <div className={styles["footer__corporate-logo"]}>
-                            <SmartLink href={logo.href} className={styles["footer__logo"]} ariaLabel="Logo">
-                                <Image
-                                    src={logo.src}
-                                    alt={logo.alt}
-                                    width={200}
-                                    height={0}
-                                    sizes="120px"
-                                    style={{width: "var(--footer-logo-w)", height: "var(--footer-logo-h)"}}
-                                />
-                            </SmartLink>
-                        </div>
-
-                        {/* Company info */}
-                        <div className={styles["footer__corporate-col"]}>
-                            <div className={styles["footer__column-title"]}>{legal.companyName}</div>
-                            {legal.companyNumber && <div>Company number {legal.companyNumber}</div>}
-                            {legal.address && <div>{legal.address}</div>}
-                        </div>
-
-                        {/* Contact */}
-                        <div className={styles["footer__corporate-col"]}>
-                            <div className={styles["footer__column-title"]}>Contact Us</div>
-                            {contact.email && <a href={`mailto:${contact.email}`}>{contact.email}</a>}
-                            {contact.phone && <a href={`tel:${contact.phone}`}>{contact.phone}</a>}
-                        </div>
-                    </div>
-
-                    {/* Нижня частина */}
-                    <div className={styles["footer__corporate-bottom"]}>
-                        <div className={styles["footer__corporate-links"]}>
-                            {columns.find(c => c.title === "Legal")?.links.map(link => (
-                                <SmartLink key={link.label} href={link.href} className={styles["footer__link"]}>
-                                    {link.label}
-                                </SmartLink>
-                            ))}
-                        </div>
+                    <div className={styles.payments} aria-label="Accepted payment methods">
+                        <Image src={visa} alt="Visa" className={styles.paymentIcon} />
+                        <Image src={mastercard} alt="Mastercard" className={styles.paymentIcon} />
+                        <Image src={pciDss} alt="PCI DSS Compliant" className={styles.paymentIcon} />
                     </div>
                 </div>
-            )}
-
-
-            <div className={styles["footer__rights"]}>
-                © {new Date().getFullYear()} All rights reserved.
-                <PaymentMethods/>
             </div>
+
+            <button
+                type="button"
+                onClick={scrollTop}
+                aria-label="Back to top"
+                className={`${styles.toTop} ${showTop ? styles.toTopVisible : ""}`}
+            >
+                <FaArrowUp />
+            </button>
         </footer>
     );
 };

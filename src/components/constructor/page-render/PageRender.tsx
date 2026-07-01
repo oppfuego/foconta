@@ -167,8 +167,11 @@ function RenderCustom(b: CustomBlock) {
                     image={b.image}
                     align={b.align}
                     showTrustBadge={b.showTrustBadge}
+                    eyebrowRotator={b.eyebrowRotator}
+                    panel={b.panel}
                 />
             );
+
 
         default:
             return null;

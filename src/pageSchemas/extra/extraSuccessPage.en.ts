@@ -31,6 +31,28 @@ const caseStudiesSchema: PageSchema = {
             description: `Discover how startups, consultants, and small businesses used ${COMPANY_NAME} to create investor-ready business plans — and turn ideas into funded ventures.`,
             image: "image18",
             align: "left",
+            showTrustBadge: true,
+            eyebrowRotator: ["Real outcomes", "Real founders"],
+            panel: {
+                docName: "case-study.pdf",
+                section1: {
+                    label: "Key Wins",
+                    rows: [96, 82, 74, 88],
+                },
+                section2: {
+                    label: "Growth by Year",
+                    bars: [28, 48, 66, 82, 100],
+                },
+                section3: {
+                    label: "Revenue Trajectory",
+                    points: [12, 22, 34, 44, 58, 72, 86, 100],
+                },
+                stats: [
+                    { value: "€3.2M+", label: "Raised by clients" },
+                    { value: "98%", label: "Satisfaction rate" },
+                ],
+                chip: "Deal closed",
+            },
         },
 
         // 🧩 HIGHLIGHT STRIP (logos or industries)

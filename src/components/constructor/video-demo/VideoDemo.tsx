@@ -1,65 +1,97 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import Container from "../container/Container";
-import Text from "../text/Text";
-import Media from "../image/Media";
+
+import React, { useRef, useState } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { FaPlay } from "react-icons/fa";
 import { media as mediaMap } from "@/resources/media";
-import { StaticImageData } from "next/image";
-import styles from "./VideoDemo.module.scss"; // 👈 стилі окремо
+import type { StaticImageData } from "next/image";
+import styles from "./VideoDemo.module.scss";
+import SectionHeading from "@/components/ui/section-heading/SectionHeading";
+import { COMPANY_NAME } from "@/resources/constants";
 
 interface Props {
     title?: string;
     description?: string;
-    video: string; // ключ у mediaMap
+    video: string;
 }
 
 const VideoDemo: React.FC<Props> = ({ title, description, video }) => {
     const resolvedVideo = (mediaMap as Record<string, string | StaticImageData>)[video];
-    const ref = useRef<HTMLDivElement | null>(null);
-    const [isVisible, setIsVisible] = useState(false);
+    const src =
+        typeof resolvedVideo === "string"
+            ? resolvedVideo
+            : (resolvedVideo as StaticImageData)?.src || "";
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => setIsVisible(entry.isIntersecting),
-            { threshold: 0.2 } // коли 20% елемента видно
-        );
+    const wrapRef = useRef<HTMLDivElement | null>(null);
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+    const inView = useInView(wrapRef, { once: true, amount: 0.3 });
+    const reduce = useReducedMotion();
+    const [playing, setPlaying] = useState(false);
 
-        if (ref.current) observer.observe(ref.current);
-        return () => {
-            if (ref.current) observer.unobserve(ref.current);
-        };
-    }, []);
+    const onPlay = () => {
+        if (!videoRef.current) return;
+        videoRef.current.play();
+        setPlaying(true);
+    };
 
     return (
-        <Container
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            gap="0px"
-            style={{ width: "100%", maxWidth: "1100px", margin: "0 auto" }}
-        >
-            <div
-                ref={ref}
-                className={`${styles.fadeBlock} ${isVisible ? styles.visible : ""}`}
-            >
-                <Text
-                    title={title}
-                    description={description}
-                    centerTitle={true}
-                    centerDescription={true}
+        <section className={styles.section}>
+            <SectionHeading
+                eyebrow="Watch the flow"
+                title={title}
+                description={description}
+                align="center"
+            />
 
-                />
-                <Media
-                    type="video"
-                    src={resolvedVideo}
-                    aspectRatio="16/7"
-                    autoPlay
-                    loop
-                    muted
-                    controls={false}
-                />
-            </div>
-        </Container>
+            <motion.div
+                ref={wrapRef}
+                className={styles.frameWrap}
+                initial={reduce ? undefined : { opacity: 0, y: 32 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            >
+                <div className={styles.glow} aria-hidden />
+
+                <div className={styles.device}>
+                    <div className={styles.chrome}>
+                        <span className={styles.dot} />
+                        <span className={styles.dot} />
+                        <span className={styles.dot} />
+                        <span className={styles.chromeLabel}>{(COMPANY_NAME || "site").toLowerCase()} demo</span>
+                    </div>
+
+                    <div className={styles.videoWrap}>
+                        <video
+                            ref={videoRef}
+                            className={styles.video}
+                            src={src}
+                            playsInline
+                            loop
+                            muted
+                            preload="metadata"
+                            controls={playing}
+                        />
+
+                        {!playing && (
+                            <button
+                                type="button"
+                                className={styles.playBtn}
+                                onClick={onPlay}
+                                aria-label="Play demo"
+                            >
+                                <span className={styles.playPulse} aria-hidden />
+                                <span className={styles.playCore}>
+                                    <FaPlay />
+                                </span>
+                                <span className={styles.playLabel}>Play demo</span>
+                            </button>
+                        )}
+                    </div>
+                </div>
+
+                <div className={styles.reflection} aria-hidden />
+            </motion.div>
+        </section>
     );
 };
 

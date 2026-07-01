@@ -105,8 +105,8 @@ export type PricingBlock = {
     title: string;
     price: string;
     tokens: number;
-    description: string;
-    features: string[];
+    description?: string;
+    features?: string[];
     buttonText: string;
     buttonLink: string;
     badgeTop?: string;
@@ -222,6 +222,19 @@ export type LogoBlock = {
     height?: number;
 };
 
+export type HeroPanelSectionRows = { label: string; rows: number[] };
+export type HeroPanelSectionBars = { label: string; bars: number[] };
+export type HeroPanelSectionChart = { label: string; points: number[] };
+export type HeroPanelStat = { value: string; label: string };
+export type HeroPanelData = {
+    docName?: string;
+    section1?: HeroPanelSectionRows;
+    section2?: HeroPanelSectionBars;
+    section3?: HeroPanelSectionChart;
+    stats?: HeroPanelStat[];
+    chip?: string;
+};
+
 export type HeroSectionBlock = {
     type: "custom";
     component: "HeroSection";
@@ -234,6 +247,8 @@ export type HeroSectionBlock = {
     mediaType?: "image" | "video";
     align?: "left" | "right";
     showTrustBadge?: boolean;
+    eyebrowRotator?: string[];
+    panel?: HeroPanelData;
 };
 
 export type TextWithButtonBlock = {
@@ -254,6 +269,7 @@ export type ExpertCTABlock = {
     buttonText?: string;
     buttonLink?: string;
 };
+
 
 
 export type LogoStripBlock = {
