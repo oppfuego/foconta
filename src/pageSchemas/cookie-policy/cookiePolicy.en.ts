@@ -1,14 +1,22 @@
 import { PageSchema } from "@/components/constructor/page-render/types";
+import {
+    COMPANY_NAME,
+    COMPANY_ADDRESS,
+    COMPANY_PHONE,
+    COMPANY_LEGAL_NAME,
+    COMPANY_NUMBER,
+    COMPANY_EMAIL,
+} from "@/resources/constants";
 
 const cookiePolicyEn: PageSchema = {
     meta: {
-        title: "Cookies Policy - Foconta",
-        description: "Foconta Cookies Policy: how we use cookies, storage, pixels, and SDKs, including consent options and your control preferences.",
-        keywords: ["cookies policy", "cookies", "GDPR", "tracking", "privacy", "consent", "foconta"],
+        title: `Cookies Policy - ${COMPANY_NAME}`,
+        description: `${COMPANY_NAME} Cookies Policy: how we use cookies, storage, pixels, and SDKs, including consent options and your control preferences.`,
+        keywords: ["cookies policy", "cookies", "GDPR", "tracking", "privacy", "consent", `${COMPANY_NAME}`],
         canonical: "/cookie-policy",
         ogImage: {
-            title: "Foconta - Cookies Policy",
-            description: "Transparent cookies and consent policy for Foconta AI business planning platform.",
+            title: `${COMPANY_NAME} - Cookies Policy`,
+            description: `Transparent cookies and consent policy for ${COMPANY_NAME} AI business planning platform.`,
             bg: "#ffffff",
             color: "#000000",
         },
@@ -23,17 +31,17 @@ const cookiePolicyEn: PageSchema = {
             type: "text",
             title: `1. Overview`,
             description:
-                `This Cookies Policy explains how Foconta ("we", "us", "our") uses cookies and similar technologies on foconta.co.uk and related services (the "Service").
+                `This Cookies Policy explains how ${COMPANY_NAME} ("we", "us", "our") uses cookies and similar technologies on foconta.co.uk and related services (the "Service").
 
 This Policy should be read together with our Privacy Policy. It applies to our website, user dashboard, AI business plan tools, Expert Order flows, Token purchase flows, Expert registration flows and related digital services.
 
 By using our cookie banner or Cookie Settings panel, you can accept, reject or customise non-essential cookies as described below.
 
-Controller: THE COMPANY YOU NEED LTD
-Company number: 15967968
-Registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF
-Trading name: Foconta
-Contact: info@foconta.co.uk`,
+Controller: ${COMPANY_LEGAL_NAME}
+Company number: ${COMPANY_NUMBER}
+Registered office: ${COMPANY_ADDRESS}
+Trading name: ${COMPANY_NAME}
+Contact: ${COMPANY_EMAIL}`,
         },
         {
             type: "text",
@@ -391,10 +399,10 @@ The Effective date at the top of this Policy indicates the latest version.`,
             description:
                 `Questions about cookies or this Policy should be sent to:
 
-THE COMPANY YOU NEED LTD
-Registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF
-Email: info@foconta.co.uk
-Tel: +44 7537 166412`,
+${COMPANY_LEGAL_NAME}
+Registered office: ${COMPANY_ADDRESS}
+Email: ${COMPANY_EMAIL}
+Tel: ${COMPANY_PHONE}`,
         },
     ],
 };

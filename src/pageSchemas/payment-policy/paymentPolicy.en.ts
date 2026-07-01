@@ -1,14 +1,22 @@
 import { PageSchema } from "@/components/constructor/page-render/types";
+import {
+    COMPANY_NAME,
+    COMPANY_LEGAL_NAME,
+    COMPANY_NUMBER,
+    COMPANY_ADDRESS,
+    COMPANY_EMAIL,
+    COMPANY_PHONE,
+} from "@/resources/constants";
 
 const paymentPolicySchema: PageSchema = {
     meta: {
-        title: "Payment Policy – Foconta",
-        description: "Foconta Payment Policy: how payments, tokens, purchases, expert orders, payouts, and payment security are handled.",
-        keywords: ["payment policy", "foconta", "tokens", "payments", "expert payouts", "Visa", "Mastercard", "GBP", "EUR", "USD"],
+        title: `Payment Policy – ${COMPANY_NAME}`,
+        description: `${COMPANY_NAME} Payment Policy: how payments, tokens, purchases, expert orders, payouts, and payment security are handled.`,
+        keywords: ["payment policy", `${COMPANY_NAME}`, "tokens", "payments", "expert payouts", "Visa", "Mastercard", "GBP", "EUR", "USD"],
         canonical: "/payment-policy",
         ogImage: {
-            title: "Foconta – Payment Policy",
-            description: "Transparent payment policy for Foconta AI business planning platform.",
+            title: `${COMPANY_NAME} – Payment Policy`,
+            description: `Transparent payment policy for ${COMPANY_NAME} AI business planning platform.`,
             bg: "#ffffff",
             color: "#000000",
         },
@@ -26,7 +34,7 @@ const paymentPolicySchema: PageSchema = {
             description:
                 `This Payment Policy explains how payments, Tokens, purchases, Expert Orders, Expert payouts, payment security, chargebacks and related payment matters are handled on foconta.co.uk and related services (the “Service”).
 
-The Service is operated by THE COMPANY YOU NEED LTD (company number 15967968, registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF) trading as Foconta (“Foconta”, “we”, “us”, “our”).
+The Service is operated by ${COMPANY_LEGAL_NAME} (company number ${COMPANY_NUMBER}, registered office: ${COMPANY_ADDRESS}) trading as ${COMPANY_NAME} (“${COMPANY_NAME}”, “we”, “us”, “our”).
 
 By purchasing Tokens, redeeming Tokens, placing an Order, ordering an AI Instant Plan, ordering an Expert 24h Plan, purchasing an Investor Pack, requesting a Custom Plan, registering as an Expert, or requesting an Expert payout, you agree to this Payment Policy, our Terms and Conditions, Refund / Return Policy and any other policies referenced on the Service.`,
         },
@@ -60,13 +68,13 @@ Expert payout requests;
 
 fraud, abuse and payment security checks.
 
-This Policy applies to Customers, Experts and any other users who make or receive payments through Foconta.`,
+This Policy applies to Customers, Experts and any other users who make or receive payments through ${COMPANY_NAME}.`,
         },
         {
             type: "text",
             title: `3. Accepted Currencies`,
             description:
-                `Foconta currently supports the following checkout currencies:
+                `${COMPANY_NAME} currently supports the following checkout currencies:
 
 GBP (£)
 
@@ -74,13 +82,13 @@ EUR (€)
 
 USD ($)
 
-If your bank account, card or payment account is denominated in another currency, your card issuer, bank or payment provider may apply its own exchange rate, conversion fee or other charges. Foconta is not responsible for fees, exchange rates or charges applied by your bank, card issuer or payment provider.`,
+If your bank account, card or payment account is denominated in another currency, your card issuer, bank or payment provider may apply its own exchange rate, conversion fee or other charges. ${COMPANY_NAME} is not responsible for fees, exchange rates or charges applied by your bank, card issuer or payment provider.`,
         },
         {
             type: "text",
             title: `4. Accepted Payment Methods`,
             description:
-                `Foconta currently accepts:
+                `${COMPANY_NAME} currently accepts:
 
 Visa
 
@@ -104,7 +112,7 @@ You are responsible for ensuring that your billing information is accurate and c
             type: "text",
             title: `6. Tokens`,
             description:
-                `6.1. Nature of Tokens. Tokens are Foconta’s internal prepaid digital credits used to access or pay for Services. Tokens are not cash, e-money, cryptocurrency, securities, bank deposits, financial instruments or stored-value money.
+                `6.1. Nature of Tokens. Tokens are ${COMPANY_NAME}’s internal prepaid digital credits used to access or pay for Services. Tokens are not cash, e-money, cryptocurrency, securities, bank deposits, financial instruments or stored-value money.
 
 6.2. Token Rate. The current target Token rate is:
 
@@ -128,7 +136,7 @@ You are responsible for ensuring that your billing information is accurate and c
             type: "text",
             title: `7. Available Packages`,
             description:
-                `Foconta may offer the following packages:
+                `${COMPANY_NAME} may offer the following packages:
 
 7.1. AI Instant Plan
 
@@ -160,11 +168,11 @@ A Custom Plan may combine AI generation, Expert Services, presentation design, f
             description:
                 `8.1. A Custom Plan may require a custom Token amount, direct payment amount or agreed package price.
 
-8.2. Foconta may request additional information before confirming the scope and price of a Custom Plan.
+8.2. ${COMPANY_NAME} may request additional information before confirming the scope and price of a Custom Plan.
 
 8.3. A Custom Plan is not confirmed until the required payment is successfully completed or the required Tokens are redeemed.
 
-8.4. If a Custom Plan requires additional work beyond the originally agreed scope, Foconta may require additional Tokens or additional payment before continuing.
+8.4. If a Custom Plan requires additional work beyond the originally agreed scope, ${COMPANY_NAME} may require additional Tokens or additional payment before continuing.
 
 8.5. Custom Plans may be non-refundable once preparation has substantially begun, subject to our Refund / Return Policy and applicable law.`,
         },
@@ -200,15 +208,15 @@ A Custom Plan may combine AI generation, Expert Services, presentation design, f
             description:
                 `11.1. If a payment fails, is declined, remains pending, is reversed, or cannot be verified, Tokens may not be credited and the relevant Service may not begin.
 
-11.2. If Tokens are credited before a payment is later declined, reversed or charged back, Foconta may remove the relevant Tokens, restrict access to Deliverables, cancel pending Orders or request repayment.
+11.2. If Tokens are credited before a payment is later declined, reversed or charged back, ${COMPANY_NAME} may remove the relevant Tokens, restrict access to Deliverables, cancel pending Orders or request repayment.
 
-11.3. Foconta is not responsible for delays caused by banks, card issuers, payment processors, fraud checks, currency conversion or third-party payment systems.`,
+11.3. ${COMPANY_NAME} is not responsible for delays caused by banks, card issuers, payment processors, fraud checks, currency conversion or third-party payment systems.`,
         },
         {
             type: "text",
             title: `12. Digital Delivery and Immediate Performance`,
             description:
-                `12.1. Foconta supplies digital content and digital services.
+                `12.1. ${COMPANY_NAME} supplies digital content and digital services.
 
 12.2. By redeeming Tokens, starting an AI generation, placing an Expert Order, ordering a Custom Plan, downloading a Deliverable, or requesting immediate Expert performance, you request immediate supply of digital content or services.
 
@@ -234,9 +242,9 @@ A Custom Plan may combine AI generation, Expert Services, presentation design, f
             type: "text",
             title: `14. Chargebacks and Payment Disputes`,
             description:
-                `14.1. If you have a payment issue, you should first contact Foconta at info@foconta.co.uk so we can review and attempt to resolve the matter.
+                `14.1. If you have a payment issue, you should first contact ${COMPANY_NAME} at ${COMPANY_EMAIL} so we can review and attempt to resolve the matter.
 
-14.2. If you initiate a chargeback or payment dispute, Foconta may submit transaction records, checkout evidence, Token redemption history, access logs, delivery records, support communications, revision history and other relevant evidence to the payment provider.
+14.2. If you initiate a chargeback or payment dispute, ${COMPANY_NAME} may submit transaction records, checkout evidence, Token redemption history, access logs, delivery records, support communications, revision history and other relevant evidence to the payment provider.
 
 14.3. If a chargeback is initiated while a refund, revision or dispute review is pending, we may suspend the relevant Account, pause pending Orders, restrict access to Deliverables or stop further work until the payment dispute is resolved.
 
@@ -250,33 +258,33 @@ A Custom Plan may combine AI generation, Expert Services, presentation design, f
             description:
                 `15.1. Customers may redeem Tokens to purchase Expert Services, including Expert 24h Plan, Investor Pack or Custom Plan where expert work is included.
 
-15.2. Once an Expert Order is completed, Foconta may internally convert the relevant Order value into an Expert payout balance, subject to this Policy, the Terms and Conditions, any Expert terms, dispute status, chargeback risk, fraud checks, payment confirmation and internal approval.
+15.2. Once an Expert Order is completed, ${COMPANY_NAME} may internally convert the relevant Order value into an Expert payout balance, subject to this Policy, the Terms and Conditions, any Expert terms, dispute status, chargeback risk, fraud checks, payment confirmation and internal approval.
 
-15.3. Token redemption by Customers does not create a direct payment relationship between the Customer and the Expert. Foconta remains responsible for managing the platform payment flow and Expert settlement process.
+15.3. Token redemption by Customers does not create a direct payment relationship between the Customer and the Expert. ${COMPANY_NAME} remains responsible for managing the platform payment flow and Expert settlement process.
 
-15.4. Customers must not pay Experts directly, attempt to bypass Foconta, or enter into off-platform payment arrangements for work introduced through Foconta.
+15.4. Customers must not pay Experts directly, attempt to bypass ${COMPANY_NAME}, or enter into off-platform payment arrangements for work introduced through ${COMPANY_NAME}.
 
-15.5. Any attempt to bypass Foconta’s payment flow may result in Account suspension, cancellation of Orders, removal of Expert access, refusal of payout, or other action permitted under our Terms.`,
+15.5. Any attempt to bypass ${COMPANY_NAME}’s payment flow may result in Account suspension, cancellation of Orders, removal of Expert access, refusal of payout, or other action permitted under our Terms.`,
         },
         {
             type: "text",
             title: `16. Expert Payouts`,
             description:
-                `16.1. Experts are independent freelancers or contractors and are not employees of Foconta.
+                `16.1. Experts are independent freelancers or contractors and are not employees of ${COMPANY_NAME}.
 
 16.2. Experts may become eligible for payout after completion of the relevant Expert Order.
 
 16.3. Completion normally means that the Deliverable has been supplied and the Order is not subject to an open dispute, unresolved revision or rework request, chargeback, refund request, payment failure, fraud review or breach investigation.
 
-16.4. Foconta applies a standard platform commission of 20% to Expert Orders, unless a different rate is agreed in writing.
+16.4. ${COMPANY_NAME} applies a standard platform commission of 20% to Expert Orders, unless a different rate is agreed in writing.
 
-16.5. Expert payout amounts are calculated after deduction of Foconta’s applicable commission and any relevant adjustments, refunds, reversals, chargebacks, fees, penalties or deductions permitted under the applicable Expert terms.
+16.5. Expert payout amounts are calculated after deduction of ${COMPANY_NAME}’s applicable commission and any relevant adjustments, refunds, reversals, chargebacks, fees, penalties or deductions permitted under the applicable Expert terms.
 
-16.6. Experts may request payout through the process made available by Foconta. After a payout request, Foconta may contact the Expert by email to provide instructions, request payout details, verify information or confirm the payout method.
+16.6. Experts may request payout through the process made available by ${COMPANY_NAME}. After a payout request, ${COMPANY_NAME} may contact the Expert by email to provide instructions, request payout details, verify information or confirm the payout method.
 
-16.7. Expert payouts may be made in EUR or USD to a bank account or card, subject to availability, verification, payment provider rules, compliance checks and Foconta’s internal process.
+16.7. Expert payouts may be made in EUR or USD to a bank account or card, subject to availability, verification, payment provider rules, compliance checks and ${COMPANY_NAME}’s internal process.
 
-16.8. Foconta may withhold, delay, reduce or cancel an Expert payout where:
+16.8. ${COMPANY_NAME} may withhold, delay, reduce or cancel an Expert payout where:
 
 the Customer disputes the Order;
 
@@ -290,7 +298,7 @@ fraud or abuse is suspected;
 
 the Expert breached confidentiality obligations;
 
-the Expert attempted to bypass Foconta;
+the Expert attempted to bypass ${COMPANY_NAME};
 
 the Deliverable is defective, incomplete or outside scope;
 
@@ -300,17 +308,17 @@ legal, tax, compliance or payment provider requirements prevent payout.
 
 16.9. Experts are responsible for their own taxes, social contributions, business registrations, licences, invoices, reporting obligations and compliance with laws applicable to their services and income.
 
-16.10. Expert payout conversion is an internal settlement mechanism between Foconta and Experts. It does not make Tokens cash, e-money, cryptocurrency, securities, bank deposits or a general cash-equivalent product for Customers.`,
+16.10. Expert payout conversion is an internal settlement mechanism between ${COMPANY_NAME} and Experts. It does not make Tokens cash, e-money, cryptocurrency, securities, bank deposits or a general cash-equivalent product for Customers.`,
         },
         {
             type: "text",
             title: `17. Payment Errors and Pricing Errors`,
             description:
-                `17.1. If an obvious pricing, Token, currency, package or checkout error occurs, Foconta may cancel, correct or reverse the affected transaction.
+                `17.1. If an obvious pricing, Token, currency, package or checkout error occurs, ${COMPANY_NAME} may cancel, correct or reverse the affected transaction.
 
-17.2. If Tokens are credited due to a technical, pricing or payment error, Foconta may remove the incorrectly credited Tokens or adjust the Account balance.
+17.2. If Tokens are credited due to a technical, pricing or payment error, ${COMPANY_NAME} may remove the incorrectly credited Tokens or adjust the Account balance.
 
-17.3. If a Service is purchased at an incorrect price due to a clear technical error, Foconta may cancel the Order and restore Tokens or issue an appropriate refund.
+17.3. If a Service is purchased at an incorrect price due to a clear technical error, ${COMPANY_NAME} may cancel the Order and restore Tokens or issue an appropriate refund.
 
 17.4. We will use reasonable efforts to notify affected users where material payment or pricing corrections are made.`,
         },
@@ -330,11 +338,11 @@ legal, tax, compliance or payment provider requirements prevent payout.
             type: "text",
             title: `19. Invoices, Receipts and Records`,
             description:
-                `19.1. Foconta may provide electronic receipts, invoices or payment confirmations.
+                `19.1. ${COMPANY_NAME} may provide electronic receipts, invoices or payment confirmations.
 
 19.2. You are responsible for downloading, saving or requesting copies of payment records needed for your own accounting, tax or business purposes.
 
-19.3. Foconta may retain payment, Token, Order, refund, chargeback and payout records as described in our Privacy Policy and Refund / Return Policy.
+19.3. ${COMPANY_NAME} may retain payment, Token, Order, refund, chargeback and payout records as described in our Privacy Policy and Refund / Return Policy.
 
 19.4. Records may be retained for at least 24 months and up to 6 years where required for tax, accounting, dispute, chargeback, legal, audit, fraud prevention or compliance purposes.`,
         },
@@ -354,11 +362,11 @@ legal, tax, compliance or payment provider requirements prevent payout.
             description:
                 `Questions about payments, Tokens, invoices, refunds or Expert payouts should be sent to:
 
-THE COMPANY YOU NEED LTD
-Registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF
-Company number: 15967968
-Email: info@foconta.co.uk
-Tel: +44 7537 166412
+${COMPANY_LEGAL_NAME}
+Registered office: ${COMPANY_ADDRESS}
+Company number: ${COMPANY_NUMBER}
+Email: ${COMPANY_EMAIL}
+Tel: ${COMPANY_PHONE}
 
 Accepted currencies: GBP (£), EUR (€), USD ($)
 Accepted payment methods: Visa, Mastercard`,

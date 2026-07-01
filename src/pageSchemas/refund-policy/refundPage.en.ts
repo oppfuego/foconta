@@ -1,14 +1,21 @@
 import { PageSchema } from "@/components/constructor/page-render/types";
+import {
+    COMPANY_NAME,
+    COMPANY_LEGAL_NAME,
+    COMPANY_ADDRESS,
+    COMPANY_EMAIL,
+    COMPANY_PHONE,
+} from "@/resources/constants";
 
 const refundPolicySchema: PageSchema = {
     meta: {
-        title: "Refund / Return Policy - Foconta",
-        description: "Official Refund / Return Policy for Foconta: refunds for tokens, digital outputs, services, and consumer rights.",
-        keywords: ["refund policy", "return policy", "foconta", "tokens", "AI business", "digital content", "consumer rights"],
+        title: `Refund / Return Policy - ${COMPANY_NAME}`,
+        description: `Official Refund / Return Policy for ${COMPANY_NAME}: refunds for tokens, digital outputs, services, and consumer rights.`,
+        keywords: ["refund policy", "return policy", `${COMPANY_NAME}`, "tokens", "AI business", "digital content", "consumer rights"],
         canonical: "/refund-policy",
         ogImage: {
-            title: "Foconta - Refund / Return Policy",
-            description: "Transparent refund and return policy for Foconta AI business planning platform.",
+            title: `${COMPANY_NAME} - Refund / Return Policy`,
+            description: `Transparent refund and return policy for ${COMPANY_NAME} AI business planning platform.`,
             bg: "#ffffff",
             color: "#000000",
         },
@@ -23,9 +30,9 @@ const refundPolicySchema: PageSchema = {
             type: "text",
             title: `1. Summary`,
             description:
-                `This Policy explains how refunds, cancellations, disputes, reworks and Token credits are handled on Foconta.
+                `This Policy explains how refunds, cancellations, disputes, reworks and Token credits are handled on ${COMPANY_NAME}.
 
-Foconta provides digital services only. We do not sell or ship physical goods, so there are no physical returns.
+${COMPANY_NAME} provides digital services only. We do not sell or ship physical goods, so there are no physical returns.
 
 Refunds are assessed under this Policy, our Terms and Conditions, and applicable consumer law.
 
@@ -39,7 +46,7 @@ Expert Orders follow specific cancellation, revision and dispute rules because w
 
 Promotional, bonus or complimentary Tokens are non-refundable.
 
-Refund and cancellation requests must be sent to info@foconta.co.uk with your Order reference and supporting details.
+Refund and cancellation requests must be sent to ${COMPANY_EMAIL} with your Order reference and supporting details.
 
 Accepted currencies: GBP (£), EUR (€) and USD ($).
 
@@ -49,11 +56,11 @@ Accepted payment methods: Visa and Mastercard.`,
             type: "text",
             title: `2. Scope and Legal Note`,
             description:
-                `This Refund / Return Policy ("Policy") applies to Tokens, AI-generated digital outputs, Expert Services, Investor Packs, Custom Plans, Add-ons, downloadable files and other digital services supplied by THE COMPANY YOU NEED LTD via foconta.co.uk ("Foconta", "we", "us", "our").
+                `This Refund / Return Policy ("Policy") applies to Tokens, AI-generated digital outputs, Expert Services, Investor Packs, Custom Plans, Add-ons, downloadable files and other digital services supplied by ${COMPANY_LEGAL_NAME} via foconta.co.uk ("${COMPANY_NAME}", "we", "us", "our").
 
 Nothing in this Policy limits or excludes any mandatory consumer rights you may have under applicable law, including the Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013 and the Consumer Rights Act 2015, where applicable.
 
-Because Foconta supplies digital content and digital services, cancellation rights may be affected once you request immediate supply, start an AI generation, redeem Tokens, place an Expert Order, download a Deliverable, or otherwise access the relevant digital content or service.`,
+Because ${COMPANY_NAME} supplies digital content and digital services, cancellation rights may be affected once you request immediate supply, start an AI generation, redeem Tokens, place an Expert Order, download a Deliverable, or otherwise access the relevant digital content or service.`,
         },
         {
             type: "text",
@@ -61,21 +68,21 @@ Because Foconta supplies digital content and digital services, cancellation righ
             description:
                 `For the purposes of this Policy:
 
-Account means your registered user profile on Foconta.
+Account means your registered user profile on ${COMPANY_NAME}.
 
-AI Instant Plan means a business plan or related output generated primarily through Foconta's AI-powered tools based on your inputs.
+AI Instant Plan means a business plan or related output generated primarily through ${COMPANY_NAME}'s AI-powered tools based on your inputs.
 
 Business Hours means Monday to Friday, excluding UK public holidays, unless otherwise stated or agreed in writing.
 
-Customer means a person or entity purchasing Tokens, redeeming Tokens or ordering Services through Foconta.
+Customer means a person or entity purchasing Tokens, redeeming Tokens or ordering Services through ${COMPANY_NAME}.
 
-Deliverables / Outputs means any digital materials supplied through Foconta, including business plans, reports, market notes, competitor analysis, financial projections, spreadsheets, pitch decks, PDF files, DOCX files, presentations, text exports, AI-generated outputs and expert-prepared outputs.
+Deliverables / Outputs means any digital materials supplied through ${COMPANY_NAME}, including business plans, reports, market notes, competitor analysis, financial projections, spreadsheets, pitch decks, PDF files, DOCX files, presentations, text exports, AI-generated outputs and expert-prepared outputs.
 
-Expert means an independent specialist, freelancer or contractor who may be assigned by Foconta to prepare, review or assist with a Deliverable.
+Expert means an independent specialist, freelancer or contractor who may be assigned by ${COMPANY_NAME} to prepare, review or assist with a Deliverable.
 
 Expert Order means any Order that involves an Expert, including the Expert 24h Plan, Investor Pack or Custom Plan where expert work is included.
 
-Expert Assigned means the point at which Foconta has allocated an Expert to the relevant Order. For refund purposes, this may be treated as the point at which substantial preparation has begun.
+Expert Assigned means the point at which ${COMPANY_NAME} has allocated an Expert to the relevant Order. For refund purposes, this may be treated as the point at which substantial preparation has begun.
 
 Investor Pack means a package that may include a business plan, investor pitch deck, design layout, investor-ready formatting and expert support, as described at the time of purchase.
 
@@ -85,7 +92,7 @@ Order means a confirmed purchase, Token top-up, Token redemption, AI generation 
 
 Redeemed / Spent Tokens means Tokens used to access, generate, order or receive a Service or Deliverable.
 
-Tokens / Credits means Foconta's internal prepaid digital credits used to access or pay for Services. Tokens are not cash, e-money, cryptocurrency, securities, bank deposits or financial instruments.
+Tokens / Credits means ${COMPANY_NAME}'s internal prepaid digital credits used to access or pay for Services. Tokens are not cash, e-money, cryptocurrency, securities, bank deposits or financial instruments.
 
 Unused Tokens means Tokens credited to your Account but not yet redeemed.
 
@@ -95,7 +102,7 @@ Promotional / Bonus Tokens means Tokens issued free of charge, at a discount, as
             type: "text",
             title: `4. Token Rates, Currencies and Payment Methods`,
             description:
-                `4.1. Foconta currently supports the following target Token rate:
+                `4.1. ${COMPANY_NAME} currently supports the following target Token rate:
 
 100 Tokens = 1 GBP
 
@@ -107,7 +114,7 @@ Promotional / Bonus Tokens means Tokens issued free of charge, at a discount, as
 
 4.3. Unless otherwise stated at checkout, applicable taxes are included in the displayed price.
 
-4.4. If your card or bank account is denominated in another currency, your card issuer or payment provider may apply currency conversion rates, fees or charges. Foconta is not responsible for fees charged by your bank, card issuer or payment provider.`,
+4.4. If your card or bank account is denominated in another currency, your card issuer or payment provider may apply currency conversion rates, fees or charges. ${COMPANY_NAME} is not responsible for fees charged by your bank, card issuer or payment provider.`,
         },
         {
             type: "text",
@@ -133,7 +140,7 @@ Promotional / Bonus Tokens means Tokens issued free of charge, at a discount, as
             description:
                 `6.1. If you are a consumer, you may request cancellation of a Token top-up within 14 days of purchase, provided that no Tokens from that top-up have been redeemed.
 
-6.2. If part of a Token top-up has been redeemed, the top-up may no longer be eligible for a full refund. Foconta may, at its discretion or where required by law, approve a partial refund, Token credit, or other reasonable remedy.
+6.2. If part of a Token top-up has been redeemed, the top-up may no longer be eligible for a full refund. ${COMPANY_NAME} may, at its discretion or where required by law, approve a partial refund, Token credit, or other reasonable remedy.
 
 6.3. Unused Tokens are refunded based on the amount originally paid for the relevant top-up, not based on later exchange-rate movements or later Token price changes.
 
@@ -151,15 +158,15 @@ Promotional / Bonus Tokens means Tokens issued free of charge, at a discount, as
 
 7.3. Tokens redeemed for an AI Instant Plan are generally non-refundable once the generation has started or the output has been supplied, except where:
 
-the output is not delivered due to a technical issue attributable to Foconta;
+the output is not delivered due to a technical issue attributable to ${COMPANY_NAME};
 
 the file is corrupted, inaccessible or materially incomplete;
 
 the output is clearly not as described;
 
-Foconta is required by law to provide a refund or remedy.
+${COMPANY_NAME} is required by law to provide a refund or remedy.
 
-7.4. If an AI generation fails for technical reasons attributable to Foconta and no usable output is supplied, we may restore the relevant Tokens, re-run the generation, provide support, or issue another appropriate remedy.
+7.4. If an AI generation fails for technical reasons attributable to ${COMPANY_NAME} and no usable output is supplied, we may restore the relevant Tokens, re-run the generation, provide support, or issue another appropriate remedy.
 
 7.5. Dissatisfaction with style, wording, business assumptions, market interpretation or AI-generated structure will normally be handled through available editing, regeneration, support or revision options rather than a refund, unless the output is defective or not as described.`,
         },
@@ -169,13 +176,13 @@ Foconta is required by law to provide a refund or remedy.
             description:
                 `8.1. Expert Orders include any package or Order involving an Expert, including the Expert 24h Plan, Investor Pack and Custom Plan where expert work is included.
 
-8.2. You may request cancellation of an Expert Order by emailing info@foconta.co.uk with your Order reference, Account email and reason for cancellation.
+8.2. You may request cancellation of an Expert Order by emailing ${COMPANY_EMAIL} with your Order reference, Account email and reason for cancellation.
 
-8.3. If you request cancellation before an Expert has been assigned, Foconta may restore the redeemed Tokens or approve a refund to the original payment method, subject to fraud checks, payment status, processor rules and applicable law.
+8.3. If you request cancellation before an Expert has been assigned, ${COMPANY_NAME} may restore the redeemed Tokens or approve a refund to the original payment method, subject to fraud checks, payment status, processor rules and applicable law.
 
 8.4. Once an Expert has been assigned, the Order has entered the expert workflow and substantial preparation may be treated as having begun.
 
-8.5. After an Expert has been assigned, cancellation is not automatically eligible for a full refund. Foconta may, depending on the circumstances, offer:
+8.5. After an Expert has been assigned, cancellation is not automatically eligible for a full refund. ${COMPANY_NAME} may, depending on the circumstances, offer:
 
 continuation of the Order;
 
@@ -197,7 +204,7 @@ rejection of the cancellation request with reasons.
 
 8.7. If you fail to provide required information, do not respond to clarification requests, provide contradictory instructions, change the scope, or delay the Expert's work, this may pause or extend delivery timing and may reduce or remove refund eligibility.
 
-8.8. If Foconta fails to supply the Expert Service as contracted and the failure is attributable to Foconta, we may provide rework, replacement Expert support, Token credit, partial refund, full refund or another appropriate remedy.`,
+8.8. If ${COMPANY_NAME} fails to supply the Expert Service as contracted and the failure is attributable to ${COMPANY_NAME}, we may provide rework, replacement Expert support, Token credit, partial refund, full refund or another appropriate remedy.`,
         },
         {
             type: "text",
@@ -213,7 +220,7 @@ the Customer has not submitted a complete brief;
 
 required files are missing, corrupted or unusable;
 
-the Expert or Foconta support requests clarification;
+the Expert or ${COMPANY_NAME} support requests clarification;
 
 the Customer changes the scope or Specialisation;
 
@@ -223,9 +230,9 @@ the Order is unusually complex;
 
 technical, third-party or force majeure issues affect delivery.
 
-9.4. Weekends and UK public holidays are not included in the 24-hour delivery period unless Foconta expressly agrees otherwise or an Expert voluntarily completes work during that period.
+9.4. Weekends and UK public holidays are not included in the 24-hour delivery period unless ${COMPANY_NAME} expressly agrees otherwise or an Expert voluntarily completes work during that period.
 
-9.5. If a delay occurs, Foconta will review the circumstances and may agree with the Customer on an appropriate remedy, such as:
+9.5. If a delay occurs, ${COMPANY_NAME} will review the circumstances and may agree with the Customer on an appropriate remedy, such as:
 
 revised delivery time;
 
@@ -279,7 +286,7 @@ work that materially differs from the original Order.
 
 10.6. Requests outside the original scope may require additional Tokens, a paid add-on, a Custom Plan or a new Order.
 
-10.7. If you are dissatisfied with an Expert Deliverable, you must first allow Foconta a reasonable opportunity to provide revision or rework before a refund review is considered, unless applicable law requires otherwise.`,
+10.7. If you are dissatisfied with an Expert Deliverable, you must first allow ${COMPANY_NAME} a reasonable opportunity to provide revision or rework before a refund review is considered, unless applicable law requires otherwise.`,
         },
         {
             type: "text",
@@ -287,7 +294,7 @@ work that materially differs from the original Order.
             description:
                 `11.1. A dispute about an Expert Deliverable must be submitted within 7 days after delivery.
 
-11.2. To submit a dispute, email info@foconta.co.uk with:
+11.2. To submit a dispute, email ${COMPANY_EMAIL} with:
 
 Order reference;
 
@@ -307,7 +314,7 @@ requested remedy.
 
 11.4. Downloading, using, submitting, sharing, presenting or otherwise relying on a Deliverable may be considered evidence that you accessed and used the digital content and may affect refund eligibility.
 
-11.5. Foconta support will review disputes based on relevant evidence, including:
+11.5. ${COMPANY_NAME} support will review disputes based on relevant evidence, including:
 
 original brief;
 
@@ -331,9 +338,9 @@ support communications;
 
 payment and Token redemption records.
 
-11.6. Foconta will aim to provide a dispute decision or proposed remedy within 10 business days after receiving sufficient information, although complex cases may take longer.
+11.6. ${COMPANY_NAME} will aim to provide a dispute decision or proposed remedy within 10 business days after receiving sufficient information, although complex cases may take longer.
 
-11.7. Following review, Foconta may decide to:
+11.7. Following review, ${COMPANY_NAME} may decide to:
 
 require revision or rework;
 
@@ -357,11 +364,11 @@ reject the dispute with reasons.
             description:
                 `12.1. Custom Plans, Investor Packs, bespoke research, additional financial modelling, design work, pitch deck preparation, localisation, extra revisions, urgent support and other Add-ons may involve customised work.
 
-12.2. Customised or bespoke work is generally non-refundable once preparation has substantially begun, unless Foconta fails to supply the Service as contracted, the Deliverable is defective or not as described, or a refund is required by law.
+12.2. Customised or bespoke work is generally non-refundable once preparation has substantially begun, unless ${COMPANY_NAME} fails to supply the Service as contracted, the Deliverable is defective or not as described, or a refund is required by law.
 
 12.3. If a Custom Plan is priced dynamically, the applicable Token cost or payment amount will be displayed or agreed before confirmation.
 
-12.4. If a Custom Plan is cancelled before work has substantially begun, Foconta may offer a refund, Token restoration or Token credit depending on the payment status, scope and circumstances.
+12.4. If a Custom Plan is cancelled before work has substantially begun, ${COMPANY_NAME} may offer a refund, Token restoration or Token credit depending on the payment status, scope and circumstances.
 
 12.5. Extra revision rounds, urgent add-ons and scope expansions are treated as separate paid services and follow the same refund principles as the main Order.`,
         },
@@ -369,9 +376,9 @@ reject the dispute with reasons.
             type: "text",
             title: `13. Defective, Corrupted or Misdescribed Deliverables`,
             description:
-                `13.1. If a Deliverable is corrupted, inaccessible, materially incomplete, missing an agreed file, or clearly not as described, you should contact info@foconta.co.uk as soon as possible and provide your Order reference and supporting evidence.
+                `13.1. If a Deliverable is corrupted, inaccessible, materially incomplete, missing an agreed file, or clearly not as described, you should contact ${COMPANY_EMAIL} as soon as possible and provide your Order reference and supporting evidence.
 
-13.2. Depending on the issue, Foconta may:
+13.2. Depending on the issue, ${COMPANY_NAME} may:
 
 repair the file;
 
@@ -393,29 +400,29 @@ provide a full refund where appropriate or required by law.
 
 13.3. Minor wording preferences, subjective dissatisfaction, disagreement with non-guaranteed business assumptions, or a change of mind after delivery will not normally qualify as a defect.
 
-13.4. Foconta is not responsible for errors caused by inaccurate, incomplete, misleading, outdated or unlawful information supplied by the Customer.`,
+13.4. ${COMPANY_NAME} is not responsible for errors caused by inaccurate, incomplete, misleading, outdated or unlawful information supplied by the Customer.`,
         },
         {
             type: "text",
             title: `14. Expert Payouts and Customer Refunds`,
             description:
-                `14.1. Where an Expert Order is completed, the internal value of the Order may be converted by Foconta into an Expert payout balance after deduction of Foconta's applicable platform commission.
+                `14.1. Where an Expert Order is completed, the internal value of the Order may be converted by ${COMPANY_NAME} into an Expert payout balance after deduction of ${COMPANY_NAME}'s applicable platform commission.
 
-14.2. Foconta's standard platform commission for Expert Orders is 20%, unless otherwise agreed in writing.
+14.2. ${COMPANY_NAME}'s standard platform commission for Expert Orders is 20%, unless otherwise agreed in writing.
 
 14.3. Expert payout eligibility may be delayed, reduced or cancelled if the relevant Order is disputed, refunded, charged back, reversed, fraudulent, incomplete, defective or affected by Expert misconduct.
 
 14.4. A Customer refund, chargeback or reversal may affect whether the Expert receives payout for the relevant Order.
 
-14.5. Token conversion for Expert payouts is an internal settlement mechanism between Foconta and Experts. It does not make Tokens cash, e-money, cryptocurrency, securities, bank deposits or a general cash-equivalent product for Customers.`,
+14.5. Token conversion for Expert payouts is an internal settlement mechanism between ${COMPANY_NAME} and Experts. It does not make Tokens cash, e-money, cryptocurrency, securities, bank deposits or a general cash-equivalent product for Customers.`,
         },
         {
             type: "text",
             title: `15. Chargebacks, Fraud and Abuse`,
             description:
-                `15.1. If you initiate a chargeback while a refund or dispute request is pending, Foconta may treat the matter as a payment dispute and submit transaction evidence to the payment provider.
+                `15.1. If you initiate a chargeback while a refund or dispute request is pending, ${COMPANY_NAME} may treat the matter as a payment dispute and submit transaction evidence to the payment provider.
 
-15.2. Filing a chargeback before allowing Foconta to complete its support, revision, rework or dispute process may result in:
+15.2. Filing a chargeback before allowing ${COMPANY_NAME} to complete its support, revision, rework or dispute process may result in:
 
 temporary Account suspension;
 
@@ -431,7 +438,7 @@ submission of evidence to payment providers;
 
 closure of the Account in cases of abuse or fraud.
 
-15.3. If funds are reversed, Foconta may remove the equivalent Tokens, revoke access to related Deliverables, cancel pending Orders and recover amounts owed where lawful.
+15.3. If funds are reversed, ${COMPANY_NAME} may remove the equivalent Tokens, revoke access to related Deliverables, cancel pending Orders and recover amounts owed where lawful.
 
 15.4. We may refuse refunds, suspend Accounts or close Accounts where we reasonably suspect fraud, abuse, repeated chargebacks, misuse of the refund process, false claims, unauthorised payment use, or attempts to obtain services without payment.`,
         },
@@ -439,7 +446,7 @@ closure of the Account in cases of abuse or fraud.
             type: "text",
             title: `16. How to Request a Refund, Cancellation or Dispute Review`,
             description:
-                `To request a refund, cancellation or dispute review, email info@foconta.co.uk and provide:
+                `To request a refund, cancellation or dispute review, email ${COMPANY_EMAIL} and provide:
 
 Order reference number;
 
@@ -471,7 +478,7 @@ process any approved refund within 5-10 business days, subject to bank and payme
             description:
                 `17.1. Approved refunds are normally issued to the original payment method in the original checkout currency.
 
-17.2. If refund to the original payment method is not possible, Foconta may offer a reasonable alternative, such as bank transfer, subject to verification, compliance checks and payment-provider rules.
+17.2. If refund to the original payment method is not possible, ${COMPANY_NAME} may offer a reasonable alternative, such as bank transfer, subject to verification, compliance checks and payment-provider rules.
 
 17.3. Token credits or restored Tokens may be offered where appropriate, especially for technical failures, rework situations, delayed delivery, partial service issues, or where the Customer agrees to continue using the Service.
 
@@ -513,15 +520,15 @@ You buy 5,000 Tokens and redeem 2,000 Tokens for an Expert 24h Plan. The remaini
 
 20.3. AI Output Already Generated
 
-You redeem Tokens for an AI Instant Plan and the output is generated and made available. A refund is generally not available for change of mind, but Foconta may assist if the file is corrupted, inaccessible or not supplied.
+You redeem Tokens for an AI Instant Plan and the output is generated and made available. A refund is generally not available for change of mind, but ${COMPANY_NAME} may assist if the file is corrupted, inaccessible or not supplied.
 
 20.4. Expert Cancellation Before Assignment
 
-You place an Expert Order and email support requesting cancellation before an Expert is assigned. Foconta may restore Tokens or approve a refund, subject to review.
+You place an Expert Order and email support requesting cancellation before an Expert is assigned. ${COMPANY_NAME} may restore Tokens or approve a refund, subject to review.
 
 20.5. Expert Cancellation After Assignment
 
-You place an Expert Order and an Expert is assigned. Because substantial preparation may have begun, a full refund is not automatic. Foconta may offer rework, revised timing, Token credit, partial refund or another appropriate remedy.
+You place an Expert Order and an Expert is assigned. Because substantial preparation may have begun, a full refund is not automatic. ${COMPANY_NAME} may offer rework, revised timing, Token credit, partial refund or another appropriate remedy.
 
 20.6. Revision Request
 
@@ -539,10 +546,10 @@ You receive 100 bonus Tokens as part of a campaign. These Tokens are non-refunda
             type: "text",
             title: `21. Contact Details`,
             description:
-                `THE COMPANY YOU NEED LTD
-Registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF
-Email: info@foconta.co.uk
-Tel: +44 7537 166412
+                `${COMPANY_LEGAL_NAME}
+Registered office: ${COMPANY_ADDRESS}
+Email: ${COMPANY_EMAIL}
+Tel: ${COMPANY_PHONE}
 Accepted currencies: GBP (£), EUR (€), USD ($)
 Payment methods: Visa, Mastercard`,
         },

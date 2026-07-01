@@ -1,14 +1,15 @@
 import { PageSchema } from "@/components/constructor/page-render/types";
+import { COMPANY_NAME, COMPANY_ADDRESS, COMPANY_PHONE, COMPANY_LEGAL_NAME, COMPANY_NUMBER, COMPANY_EMAIL } from "@/resources/constants";
 
 const privacyPolicySchema: PageSchema = {
     meta: {
-        title: "Privacy Policy - Foconta",
-        description: "Foconta Privacy Policy: details on what data we collect, how we use it, how long we retain it, and your rights under UK GDPR.",
-        keywords: ["privacy policy", "GDPR", "data protection", "foconta", "AI business", "personal data", "uk gdpr"],
+        title: `Privacy Policy - ${COMPANY_NAME}`,
+        description: `${COMPANY_NAME} Privacy Policy: details on what data we collect, how we use it, how long we retain it, and your rights under UK GDPR.`,
+        keywords: ["privacy policy", "GDPR", "data protection", `${COMPANY_NAME}`, "AI business", "personal data", "uk gdpr"],
         canonical: "/privacy-policy",
         ogImage: {
-            title: "Foconta - Privacy Policy",
-            description: "Transparent privacy practices for Foconta AI business planning platform under UK GDPR.",
+            title: `${COMPANY_NAME} - Privacy Policy`,
+            description: `Transparent privacy practices for ${COMPANY_NAME} AI business planning platform under UK GDPR.`,
             bg: "#ffffff",
             color: "#000000",
         },
@@ -25,23 +26,23 @@ const privacyPolicySchema: PageSchema = {
             description:
                 `We respect your privacy. This Privacy Policy explains what personal data we collect, why we use it, how we share it, how long we keep it, and how you can exercise your rights when using foconta.co.uk and related services (the "Service").
 
-Controller: THE COMPANY YOU NEED LTD
-Company number: 15967968
-Registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF
-Trading name: Foconta
-Contact: info@foconta.co.uk
+Controller: ${COMPANY_LEGAL_NAME}
+Company number: ${COMPANY_NUMBER}
+Registered office: ${COMPANY_ADDRESS}
+Trading name: ${COMPANY_NAME}
+Contact: ${COMPANY_EMAIL}
 
-In this Privacy Policy, "Foconta", "we", "us" and "our" refer to THE COMPANY YOU NEED LTD.
+In this Privacy Policy, "${COMPANY_NAME}", "we", "us" and "our" refer to ${COMPANY_LEGAL_NAME}.
 
 This Policy applies to Customers, registered users, website visitors, Experts, applicants, contractors and other individuals who interact with the Service. The Service is intended for individuals aged 18 or over.`,
         },
         {
             type: "text",
-            title: `2. What Foconta Does`,
+            title: `2. What ${COMPANY_NAME} Does`,
             description:
-                `Foconta provides digital business planning services, including AI-assisted business plan generation, expert-prepared business plans, investor packs, pitch deck support, financial planning support, downloadable documents and related services.
+                `${COMPANY_NAME} provides digital business planning services, including AI-assisted business plan generation, expert-prepared business plans, investor packs, pitch deck support, financial planning support, downloadable documents and related services.
 
-Some Services are delivered automatically using AI tools. Other Services may involve independent Experts, freelancers or contractors assigned by Foconta based on your selected package, brief, business requirements and selected Specialisation.`,
+Some Services are delivered automatically using AI tools. Other Services may involve independent Experts, freelancers or contractors assigned by ${COMPANY_NAME} based on your selected package, brief, business requirements and selected Specialisation.`,
         },
         {
             type: "text",
@@ -101,7 +102,7 @@ invoice and receipt information.
 
 We do not intentionally store full payment card numbers. Card payments are processed by third-party payment providers.
 
-Foconta currently supports payments in GBP (£), EUR (€) and USD ($) through Visa and Mastercard.
+${COMPANY_NAME} currently supports payments in GBP (£), EUR (€) and USD ($) through Visa and Mastercard.
 
 3.3 Business plan inputs and Customer content
 
@@ -193,7 +194,7 @@ internal rating or status;
 
 verification status;
 
-communications with Foconta;
+communications with ${COMPANY_NAME};
 
 payout request data.
 
@@ -221,13 +222,13 @@ dispute and chargeback status;
 
 tax or invoicing information, where needed.
 
-Expert payouts may be made in EUR or USD to a bank account or card, subject to verification, payment provider rules and Foconta's internal process.
+Expert payouts may be made in EUR or USD to a bank account or card, subject to verification, payment provider rules and ${COMPANY_NAME}'s internal process.
 
 3.6 Communications and support data
 
 We may collect and store:
 
-emails sent to or from Foconta;
+emails sent to or from ${COMPANY_NAME};
 
 support tickets;
 
@@ -239,13 +240,13 @@ revision requests;
 
 Order clarification messages;
 
-Expert-Customer communications routed through Foconta;
+Expert-Customer communications routed through ${COMPANY_NAME};
 
 complaints;
 
 internal notes needed to resolve support issues.
 
-Customer and Expert communication must take place through Foconta-controlled platform, email or workflow channels. We may review such communications for service delivery, dispute resolution, quality control, fraud prevention and compliance.
+Customer and Expert communication must take place through ${COMPANY_NAME}-controlled platform, email or workflow channels. We may review such communications for service delivery, dispute resolution, quality control, fraud prevention and compliance.
 
 3.7 Technical and usage data
 
@@ -377,7 +378,7 @@ use Customer content or feedback for model improvement where we ask for consent;
 
 publish testimonials, case studies or portfolio examples where identifiable information is used.
 
-You may withdraw consent at any time by contacting us at info@foconta.co.uk or using available account or cookie settings. Withdrawal does not affect processing already carried out lawfully before withdrawal.
+You may withdraw consent at any time by contacting us at ${COMPANY_EMAIL} or using available account or cookie settings. Withdrawal does not affect processing already carried out lawfully before withdrawal.
 
 6.3 Legitimate interests
 
@@ -403,7 +404,7 @@ communicating important non-marketing Service updates;
 
 maintaining business records;
 
-protecting Foconta, Customers, Experts and third parties from harm or misuse;
+protecting ${COMPANY_NAME}, Customers, Experts and third parties from harm or misuse;
 
 conducting limited B2B outreach related to our Service, subject to your right to object.
 
@@ -433,7 +434,7 @@ We may process and retain relevant data where necessary to establish, exercise o
             type: "text",
             title: `7. AI, Automated Processing and Profiling`,
             description:
-                `Foconta uses AI tools to generate, structure, analyse and improve business plan materials based on the information you provide.
+                `${COMPANY_NAME} uses AI tools to generate, structure, analyse and improve business plan materials based on the information you provide.
 
 This may involve automated processing to:
 
@@ -453,7 +454,7 @@ support Experts with research and drafting.
 
 For Expert Services, AI may be used as a support tool, but the assigned Expert may review, write, refine or adapt the Deliverable depending on the package and scope.
 
-We do not make legal or similarly significant decisions about you solely by automated means. Foconta does not use AI to make decisions such as credit approval, investment decisions, employment decisions or legally binding eligibility determinations.
+We do not make legal or similarly significant decisions about you solely by automated means. ${COMPANY_NAME} does not use AI to make decisions such as credit approval, investment decisions, employment decisions or legally binding eligibility determinations.
 
 You may request human review of a support, dispute or refund outcome by contacting us.`,
         },
@@ -461,7 +462,7 @@ You may request human review of a support, dispute or refund outcome by contacti
             type: "text",
             title: `8. Expert Matching and Expert Access to Customer Data`,
             description:
-                `When you place an Expert Order, Foconta may share relevant Customer data with the assigned Expert so that the Expert can perform the requested work.
+                `When you place an Expert Order, ${COMPANY_NAME} may share relevant Customer data with the assigned Expert so that the Expert can perform the requested work.
 
 This may include:
 
@@ -487,7 +488,7 @@ delivery requirements.
 
 Experts are required to use Customer information only for the assigned work and to comply with confidentiality obligations. Experts must not use Customer information for their own marketing, direct contact, portfolio use, resale, publication or unrelated purposes unless expressly authorised.
 
-Foconta may restrict or remove an Expert who misuses Customer information, attempts to bypass Foconta, breaches confidentiality, or violates our Terms.`,
+${COMPANY_NAME} may restrict or remove an Expert who misuses Customer information, attempts to bypass ${COMPANY_NAME}, breaches confidentiality, or violates our Terms.`,
         },
         {
             type: "text",
@@ -559,7 +560,7 @@ For more information, please review our Cookies Policy.`,
             description:
                 `We may send marketing communications where you have opted in or where another lawful basis applies, such as permitted B2B communication under applicable rules.
 
-You can unsubscribe from marketing emails at any time by using the unsubscribe link in the message or contacting info@foconta.co.uk.
+You can unsubscribe from marketing emails at any time by using the unsubscribe link in the message or contacting ${COMPANY_EMAIL}.
 
 We will still send important non-marketing messages where necessary, such as account notices, Order updates, security alerts, payment confirmations, policy updates and service communications.`,
         },
@@ -645,7 +646,7 @@ withdraw consent where processing is based on consent;
 
 not be subject to a decision based solely on automated processing where it produces legal or similarly significant effects.
 
-To exercise your rights, contact info@foconta.co.uk from the email associated with your Account where possible.
+To exercise your rights, contact ${COMPANY_EMAIL} from the email associated with your Account where possible.
 
 We may request proof of identity before responding. We aim to respond within one month. Where a request is complex or numerous, we may extend the response period by up to two further months, as permitted by law.`,
         },
@@ -653,7 +654,7 @@ We may request proof of identity before responding. We aim to respond within one
             type: "text",
             title: `16. Deleting Your Account`,
             description:
-                `You may request deletion of your Account by contacting info@foconta.co.uk.
+                `You may request deletion of your Account by contacting ${COMPANY_EMAIL}.
 
 Account deletion may not immediately remove all data. We may retain certain records where necessary for:
 
@@ -683,7 +684,7 @@ Where deletion is not possible immediately, we will restrict or minimise data wh
             description:
                 `The Service is intended for users aged 18 or over. We do not knowingly collect personal data from children.
 
-If you believe a child has provided personal data to us, please contact info@foconta.co.uk so we can review and delete the data where appropriate.`,
+If you believe a child has provided personal data to us, please contact ${COMPANY_EMAIL} so we can review and delete the data where appropriate.`,
         },
         {
             type: "text",
@@ -717,10 +718,10 @@ The Effective date at the top of this Policy indicates the latest version.`,
             type: "text",
             title: `21. Contact and Complaints`,
             description:
-                `Controller: THE COMPANY YOU NEED LTD
-Registered office: 31 Auctioneers Way, Northampton, United Kingdom, NN1 1HF
-Email: info@foconta.co.uk
-Tel: +44 7537 166412
+                `Controller: ${COMPANY_LEGAL_NAME}
+Registered office: ${COMPANY_ADDRESS}
+Email: ${COMPANY_EMAIL}
+Tel: ${COMPANY_PHONE}
 
 If you are not satisfied with our response, you may lodge a complaint with the UK Information Commissioner's Office (ICO).
 
