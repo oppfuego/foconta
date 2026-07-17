@@ -44,7 +44,7 @@ const ExpertCTA: React.FC<ExpertCTAProps> = ({
                 <h2 className={styles.title}>{title}</h2>
                 <p className={styles.description}>{description}</p>
 
-                <MagneticButton as="a" href={buttonLink} className={styles.magnetic}>
+                <MagneticButton as="div" className={styles.magnetic}>
                     <Link href={buttonLink} className={styles.cta}>
                         <span>{buttonText}</span>
                         <span className={styles.arrow} aria-hidden>→</span>

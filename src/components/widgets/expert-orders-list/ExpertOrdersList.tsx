@@ -4,7 +4,11 @@ import React, { useEffect, useState, useRef } from "react";
 import { FaRegClock, FaUpload, FaPlay, FaCheck } from "react-icons/fa";
 import { useUser } from "@/context/UserContext";
 import ButtonUI from "@/components/ui/button/ButtonUI";
+import { getServiceByCategory } from "@/resources/services";
 import styles from "./ExpertOrdersList.module.scss";
+
+const categoryLabel = (category: string) =>
+    getServiceByCategory(category)?.title ?? category;
 
 interface ExpertOrder {
     _id: string;
@@ -151,7 +155,7 @@ export default function ExpertOrdersList() {
                 <div className={styles.cardBody}>
                     <p className={styles.clientEmail}>{order.email}</p>
                     <p className={styles.category}>
-                        Category: <strong>{order.category}</strong>
+                        Service: <strong>{categoryLabel(order.category)}</strong>
                     </p>
                     {order.language && order.language !== "English" && (
                         <p className={styles.language}>Language: {order.language}</p>
@@ -165,6 +169,15 @@ export default function ExpertOrdersList() {
 
                     {order.fields && (
                         <div className={styles.fieldsPreview}>
+                            {order.fields.topic && (
+                                <p><strong>Topic:</strong> {order.fields.topic}</p>
+                            )}
+                            {order.fields.subject && (
+                                <p><strong>Subject:</strong> {order.fields.subject}</p>
+                            )}
+                            {order.fields.audience && (
+                                <p><strong>Audience:</strong> {order.fields.audience}</p>
+                            )}
                             {order.fields.businessName && (
                                 <p><strong>Business:</strong> {order.fields.businessName}</p>
                             )}
