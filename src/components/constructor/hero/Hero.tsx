@@ -130,7 +130,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         transition={{ duration: 0.6, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
                     >
                         {primaryCta && (
-                            <MagneticButton as="a" href={primaryCta.link} className={styles.primaryCta}>
+                            <MagneticButton as="div" className={styles.primaryCta}>
                                 <Link href={primaryCta.link} className={styles.primaryCtaInner}>
                                     <span>{primaryCta.text}</span>
                                     <span className={styles.ctaArrow} aria-hidden>→</span>

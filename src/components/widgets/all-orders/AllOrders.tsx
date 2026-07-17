@@ -8,6 +8,10 @@ import ButtonUI from "@/components/ui/button/ButtonUI";
 import Link from "next/link";
 import {downloadUniversalPDF} from "@/pdf-creator/PdfCreator";
 import {UniversalOrderType} from "@/backend/types/universal.types";
+import {getServiceByCategory} from "@/resources/services";
+
+const categoryLabel = (category: string) =>
+    getServiceByCategory(category)?.title ?? category;
 
 const EXPERT_STATUS_CONFIG: Record<string, { label: string; className: string; icon: React.ReactNode }> = {
     pending: { label: "Pending", className: "expertPending", icon: <FaHourglassHalf /> },
@@ -126,7 +130,7 @@ const AllOrders: React.FC = () => {
                                             </span>
                                         </div>
                                         <p className={styles.extraInfo}>
-                                            Category: <strong>{order.category}</strong> | Language:{" "}
+                                            Service: <strong>{categoryLabel(order.category)}</strong> | Language:{" "}
                                             {order.language || "English"}
                                         </p>
                                         {!isDone && (
@@ -176,7 +180,7 @@ const AllOrders: React.FC = () => {
                                         </span>
                                     </div>
                                     <p className={styles.extraInfo}>
-                                        Category: <strong>{order.category}</strong> | Language:{" "}
+                                        Service: <strong>{categoryLabel(order.category)}</strong> | Language:{" "}
                                         {order.language || "English"}
                                     </p>
                                 </div>

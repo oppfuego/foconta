@@ -7,6 +7,11 @@ import OpenAI from "openai";
 import { ENV } from "../config/env";
 import mongoose from "mongoose";
 import { mailService } from "../services/mail.service";
+import {
+    getServiceByCategory,
+    type ServiceDefinition,
+    type ServicePlan,
+} from "@/resources/services";
 
 const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
@@ -251,6 +256,45 @@ ${spec.brief}
 }
 
 
+/* =============================================================================
+ * Catalog service generation (academic / professional fixed-price services).
+ * Reuses the LOCKED Markdown vocabulary so PdfCreator.parseBlocks can render it.
+ * ==========================================================================*/
+
+function buildCatalogSystemPrompt(service: ServiceDefinition, languageNote: string): string {
+    return [
+        service.promptRole,
+        "You produce professional, original, well-structured deliverables for a paying client. Ground every section in the client's provided inputs; never output filler, placeholders, or meta-commentary.",
+        "",
+        languageNote,
+        "",
+        BP_MARKDOWN_RULES,
+    ].join("\n");
+}
+
+function buildCatalogUserPrompt(service: ServiceDefinition, fields: Record<string, unknown>): string {
+    const inputs = Object.entries(fields || {})
+        .map(([k, v]) => `- ${k}: ${v == null || v === "" ? "(not provided)" : String(v)}`)
+        .join("\n");
+    const sections = service.deliverables.map((d, i) => `${i + 1}. ${d}`).join("\n");
+    return `
+You are producing a **${service.title}** for the client below. Use every input. If a field is "(not provided)", make a reasonable, clearly-stated assumption and continue.
+
+## CLIENT INPUTS
+${inputs}
+
+## REQUIRED SECTIONS (produce all, in this order, using "## <Name>" headings)
+${sections}
+
+## QUALITY BAR
+- Every section must reference the client's specific inputs — no generic filler.
+- No section may be a single sentence; deliver real, useful depth.
+- Do not use tables, links, images, or code fences. Headings and bullets only.
+
+Begin now.
+`.trim();
+}
+
 function buildPrompt(body: any): string {
     const { category, fields, planType } = body;
     const jsonData = JSON.stringify(fields, null, 2);
@@ -424,8 +468,21 @@ export const universalService = {
         const user = await User.findById(userId);
         if (!user) throw new Error("User not found");
 
-        const languageCost = body.language && body.language !== "English" ? 5 : 0;
-        const totalCost = Number(body.totalTokens) + languageCost;
+        // Price authority: for catalog services the SERVER sets the fixed price
+        // from the registry (the client-supplied totalTokens is never trusted).
+        // Legacy categories (business/training/nutrition) keep the old behavior.
+        const service = getServiceByCategory(body.category);
+        let totalCost: number;
+        if (service) {
+            const planKey: ServicePlan = body.planType === "reviewed" ? "reviewed" : "ai";
+            const fixed = service.prices[planKey];
+            if (fixed == null)
+                throw new Error(`Service "${service.title}" does not offer the ${planKey} plan`);
+            totalCost = fixed;
+        } else {
+            const languageCost = body.language && body.language !== "English" ? 5 : 0;
+            totalCost = Number(body.totalTokens) + languageCost;
+        }
 
         if (user.tokens < totalCost)
             throw new Error(`Insufficient tokens (have ${user.tokens}, need ${totalCost})`);
@@ -435,7 +492,7 @@ export const universalService = {
         await user.save();
         await transactionService.record(user._id, email, totalCost, "spend", user.tokens);
 
-        const totalTokensCharged = Number(body.totalTokens) + (languageCost || 0);
+        const totalTokensCharged = totalCost;
 
         // ========== EXPERT PATH (reviewed) ==========
         if (body.planType === "reviewed") {
@@ -483,10 +540,10 @@ export const universalService = {
                 to: user.email,
                 firstName: user.firstName,
                 subject: "Expert Order Placed",
-                summary: "Your order has been placed! An expert will prepare your business plan. You'll be notified when it's ready.",
+                summary: `Your order has been placed! An expert will prepare your ${service?.title ?? "order"}. You'll be notified when it's ready.`,
                 transactionDate: order.createdAt || new Date(),
                 details: [
-                    `Service category: ${body.category}`,
+                    `Service: ${service?.title ?? body.category}`,
                     `Plan type: Expert-Written`,
                     `Tokens used: ${totalTokensCharged}`,
                 ],
@@ -500,6 +557,7 @@ export const universalService = {
             ? `Write the entire output in ${body.language}.`
             : "Write the entire output in English.";
         const isBusiness = body.category === "business";
+        const isCatalog = !!service;
         const bpModel = ENV.OPENAI_BP_MODEL;
         // Bounded output caps — enough for real depth, but capped so a runaway
         // generation can't hang the request.
@@ -528,7 +586,11 @@ export const universalService = {
         let mainText = "";
         // Cached across the main + all extra calls in this request so the OpenAI
         // prompt-caching layer sees an identical stable prefix on every call.
-        const bpSystemPrompt = isBusiness ? buildBpAnalystSystemPrompt(languageNote) : "";
+        const bpSystemPrompt = isBusiness
+            ? buildBpAnalystSystemPrompt(languageNote)
+            : isCatalog
+                ? buildCatalogSystemPrompt(service!, languageNote)
+                : "";
 
         try {
             if (isBusiness) {
@@ -573,6 +635,40 @@ export const universalService = {
                         `This typically means max_completion_tokens is too small for the model's reasoning + output.`
                     );
                 }
+            } else if (isCatalog) {
+                const req = buildChatRequest({
+                    model: bpModel,
+                    maxTokens: BP_MAIN_MAX_TOKENS,
+                    temperature: BP_TEMPERATURE,
+                    messages: [
+                        { role: "system", content: bpSystemPrompt },
+                        { role: "user", content: buildCatalogUserPrompt(service!, body.fields || {}) },
+                    ],
+                });
+                console.log("[universalService.createOrder] Catalog AI call starting", {
+                    userId, category: body.category, model: bpModel,
+                    timeoutMs: BP_MAIN_TIMEOUT_MS, maxTokens: BP_MAIN_MAX_TOKENS,
+                });
+                const t0 = Date.now();
+                const mainRes = await openai.chat.completions.create(
+                    req as any,
+                    { signal: AbortSignal.timeout(BP_MAIN_TIMEOUT_MS) }
+                );
+                mainText = mainRes.choices?.[0]?.message?.content?.trim() || "";
+                const choice0 = (mainRes.choices?.[0] || {}) as { finish_reason?: string };
+                const usage = (mainRes as unknown as { usage?: Record<string, number> }).usage;
+                console.log("[universalService.createOrder] Catalog AI call finished", {
+                    userId, category: body.category, model: bpModel,
+                    elapsedMs: Date.now() - t0,
+                    finishReason: choice0.finish_reason,
+                    contentChars: mainText.length,
+                    usage,
+                });
+                if (!mainText) {
+                    throw new Error(
+                        `AI generation produced empty content (finish_reason=${choice0.finish_reason || "unknown"}).`
+                    );
+                }
             } else {
                 const mainPrompt = buildPrompt(body);
                 const mainRes = await openai.chat.completions.create({
@@ -597,7 +693,7 @@ export const universalService = {
                 "unknown";
             console.error("[universalService.createOrder] AI main generation failed", {
                 userId,
-                model: isBusiness ? bpModel : LEGACY_MODEL,
+                model: isBusiness || isCatalog ? bpModel : LEGACY_MODEL,
                 detail,
             });
             throw new Error("AI generation failed, please retry later");
@@ -708,7 +804,7 @@ export const universalService = {
             summary: "Your order was completed successfully.",
             transactionDate: order.createdAt || new Date(),
             details: [
-                `Service category: ${body.category}`,
+                `Service: ${service?.title ?? body.category}`,
                 `Plan type: ${body.planType}`,
                 `Tokens used: ${orderDoc.totalTokens}`,
             ],
